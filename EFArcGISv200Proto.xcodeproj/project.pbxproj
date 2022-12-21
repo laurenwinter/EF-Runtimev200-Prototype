@@ -1,0 +1,588 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		154F779C2953812500A06195 /* EFArcGISv200ProtoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F779B2953812500A06195 /* EFArcGISv200ProtoApp.swift */; };
+		154F779E2953812500A06195 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F779D2953812500A06195 /* ContentView.swift */; };
+		154F77A02953812600A06195 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 154F779F2953812600A06195 /* Assets.xcassets */; };
+		154F77A32953812600A06195 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 154F77A22953812600A06195 /* Preview Assets.xcassets */; };
+		154F77AD2953812600A06195 /* EFArcGISv200ProtoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F77AC2953812600A06195 /* EFArcGISv200ProtoTests.swift */; };
+		154F77B72953812600A06195 /* EFArcGISv200ProtoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F77B62953812600A06195 /* EFArcGISv200ProtoUITests.swift */; };
+		154F77B92953812600A06195 /* EFArcGISv200ProtoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F77B82953812600A06195 /* EFArcGISv200ProtoUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		154F77A92953812600A06195 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 154F77902953812500A06195 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 154F77972953812500A06195;
+			remoteInfo = EFArcGISv200Proto;
+		};
+		154F77B32953812600A06195 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 154F77902953812500A06195 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 154F77972953812500A06195;
+			remoteInfo = EFArcGISv200Proto;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		154F77982953812500A06195 /* EFArcGISv200Proto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EFArcGISv200Proto.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		154F779B2953812500A06195 /* EFArcGISv200ProtoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFArcGISv200ProtoApp.swift; sourceTree = "<group>"; };
+		154F779D2953812500A06195 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		154F779F2953812600A06195 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		154F77A22953812600A06195 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		154F77A82953812600A06195 /* EFArcGISv200ProtoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EFArcGISv200ProtoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		154F77AC2953812600A06195 /* EFArcGISv200ProtoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFArcGISv200ProtoTests.swift; sourceTree = "<group>"; };
+		154F77B22953812600A06195 /* EFArcGISv200ProtoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EFArcGISv200ProtoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		154F77B62953812600A06195 /* EFArcGISv200ProtoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFArcGISv200ProtoUITests.swift; sourceTree = "<group>"; };
+		154F77B82953812600A06195 /* EFArcGISv200ProtoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFArcGISv200ProtoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		154F77952953812500A06195 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		154F77A52953812600A06195 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		154F77AF2953812600A06195 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		154F778F2953812500A06195 = {
+			isa = PBXGroup;
+			children = (
+				154F779A2953812500A06195 /* EFArcGISv200Proto */,
+				154F77AB2953812600A06195 /* EFArcGISv200ProtoTests */,
+				154F77B52953812600A06195 /* EFArcGISv200ProtoUITests */,
+				154F77992953812500A06195 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		154F77992953812500A06195 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				154F77982953812500A06195 /* EFArcGISv200Proto.app */,
+				154F77A82953812600A06195 /* EFArcGISv200ProtoTests.xctest */,
+				154F77B22953812600A06195 /* EFArcGISv200ProtoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		154F779A2953812500A06195 /* EFArcGISv200Proto */ = {
+			isa = PBXGroup;
+			children = (
+				154F779B2953812500A06195 /* EFArcGISv200ProtoApp.swift */,
+				154F779D2953812500A06195 /* ContentView.swift */,
+				154F779F2953812600A06195 /* Assets.xcassets */,
+				154F77A12953812600A06195 /* Preview Content */,
+			);
+			path = EFArcGISv200Proto;
+			sourceTree = "<group>";
+		};
+		154F77A12953812600A06195 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				154F77A22953812600A06195 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		154F77AB2953812600A06195 /* EFArcGISv200ProtoTests */ = {
+			isa = PBXGroup;
+			children = (
+				154F77AC2953812600A06195 /* EFArcGISv200ProtoTests.swift */,
+			);
+			path = EFArcGISv200ProtoTests;
+			sourceTree = "<group>";
+		};
+		154F77B52953812600A06195 /* EFArcGISv200ProtoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				154F77B62953812600A06195 /* EFArcGISv200ProtoUITests.swift */,
+				154F77B82953812600A06195 /* EFArcGISv200ProtoUITestsLaunchTests.swift */,
+			);
+			path = EFArcGISv200ProtoUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		154F77972953812500A06195 /* EFArcGISv200Proto */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 154F77BC2953812600A06195 /* Build configuration list for PBXNativeTarget "EFArcGISv200Proto" */;
+			buildPhases = (
+				154F77942953812500A06195 /* Sources */,
+				154F77952953812500A06195 /* Frameworks */,
+				154F77962953812500A06195 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EFArcGISv200Proto;
+			productName = EFArcGISv200Proto;
+			productReference = 154F77982953812500A06195 /* EFArcGISv200Proto.app */;
+			productType = "com.apple.product-type.application";
+		};
+		154F77A72953812600A06195 /* EFArcGISv200ProtoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 154F77BF2953812600A06195 /* Build configuration list for PBXNativeTarget "EFArcGISv200ProtoTests" */;
+			buildPhases = (
+				154F77A42953812600A06195 /* Sources */,
+				154F77A52953812600A06195 /* Frameworks */,
+				154F77A62953812600A06195 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				154F77AA2953812600A06195 /* PBXTargetDependency */,
+			);
+			name = EFArcGISv200ProtoTests;
+			productName = EFArcGISv200ProtoTests;
+			productReference = 154F77A82953812600A06195 /* EFArcGISv200ProtoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		154F77B12953812600A06195 /* EFArcGISv200ProtoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 154F77C22953812600A06195 /* Build configuration list for PBXNativeTarget "EFArcGISv200ProtoUITests" */;
+			buildPhases = (
+				154F77AE2953812600A06195 /* Sources */,
+				154F77AF2953812600A06195 /* Frameworks */,
+				154F77B02953812600A06195 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				154F77B42953812600A06195 /* PBXTargetDependency */,
+			);
+			name = EFArcGISv200ProtoUITests;
+			productName = EFArcGISv200ProtoUITests;
+			productReference = 154F77B22953812600A06195 /* EFArcGISv200ProtoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		154F77902953812500A06195 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					154F77972953812500A06195 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					154F77A72953812600A06195 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 154F77972953812500A06195;
+					};
+					154F77B12953812600A06195 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 154F77972953812500A06195;
+					};
+				};
+			};
+			buildConfigurationList = 154F77932953812500A06195 /* Build configuration list for PBXProject "EFArcGISv200Proto" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 154F778F2953812500A06195;
+			productRefGroup = 154F77992953812500A06195 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				154F77972953812500A06195 /* EFArcGISv200Proto */,
+				154F77A72953812600A06195 /* EFArcGISv200ProtoTests */,
+				154F77B12953812600A06195 /* EFArcGISv200ProtoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		154F77962953812500A06195 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				154F77A32953812600A06195 /* Preview Assets.xcassets in Resources */,
+				154F77A02953812600A06195 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		154F77A62953812600A06195 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		154F77B02953812600A06195 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		154F77942953812500A06195 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				154F779E2953812500A06195 /* ContentView.swift in Sources */,
+				154F779C2953812500A06195 /* EFArcGISv200ProtoApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		154F77A42953812600A06195 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				154F77AD2953812600A06195 /* EFArcGISv200ProtoTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		154F77AE2953812600A06195 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				154F77B72953812600A06195 /* EFArcGISv200ProtoUITests.swift in Sources */,
+				154F77B92953812600A06195 /* EFArcGISv200ProtoUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		154F77AA2953812600A06195 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 154F77972953812500A06195 /* EFArcGISv200Proto */;
+			targetProxy = 154F77A92953812600A06195 /* PBXContainerItemProxy */;
+		};
+		154F77B42953812600A06195 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 154F77972953812500A06195 /* EFArcGISv200Proto */;
+			targetProxy = 154F77B32953812600A06195 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		154F77BA2953812600A06195 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		154F77BB2953812600A06195 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		154F77BD2953812600A06195 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EFArcGISv200Proto/Preview Content\"";
+				DEVELOPMENT_TEAM = 75Z67E6SV2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.arcgis.swift.samples.EFArcGISv200Proto;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		154F77BE2953812600A06195 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EFArcGISv200Proto/Preview Content\"";
+				DEVELOPMENT_TEAM = 75Z67E6SV2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.arcgis.swift.samples.EFArcGISv200Proto;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		154F77C02953812600A06195 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75Z67E6SV2;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.arcgis.swift.samples.EFArcGISv200ProtoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EFArcGISv200Proto.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EFArcGISv200Proto";
+			};
+			name = Debug;
+		};
+		154F77C12953812600A06195 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75Z67E6SV2;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.arcgis.swift.samples.EFArcGISv200ProtoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EFArcGISv200Proto.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EFArcGISv200Proto";
+			};
+			name = Release;
+		};
+		154F77C32953812600A06195 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75Z67E6SV2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.arcgis.swift.samples.EFArcGISv200ProtoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = EFArcGISv200Proto;
+			};
+			name = Debug;
+		};
+		154F77C42953812600A06195 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75Z67E6SV2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.arcgis.swift.samples.EFArcGISv200ProtoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = EFArcGISv200Proto;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		154F77932953812500A06195 /* Build configuration list for PBXProject "EFArcGISv200Proto" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				154F77BA2953812600A06195 /* Debug */,
+				154F77BB2953812600A06195 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		154F77BC2953812600A06195 /* Build configuration list for PBXNativeTarget "EFArcGISv200Proto" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				154F77BD2953812600A06195 /* Debug */,
+				154F77BE2953812600A06195 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		154F77BF2953812600A06195 /* Build configuration list for PBXNativeTarget "EFArcGISv200ProtoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				154F77C02953812600A06195 /* Debug */,
+				154F77C12953812600A06195 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		154F77C22953812600A06195 /* Build configuration list for PBXNativeTarget "EFArcGISv200ProtoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				154F77C32953812600A06195 /* Debug */,
+				154F77C42953812600A06195 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 154F77902953812500A06195 /* Project object */;
+}
