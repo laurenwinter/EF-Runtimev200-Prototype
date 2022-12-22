@@ -49,8 +49,13 @@ struct ESMapSceneView: View {
                                             showContentAndGroup.toggle()
                                         } label: {
                                             Image(systemName: "map.circle")
-                                                .padding()
+                                                .resizable()
+                                                .frame(width: 32.0, height: 32.0)
+                                                .tint(Color.white)
                                         }
+                                        .padding()
+                                        .background(Color.blue)
+                                        .clipShape(Circle())
                                     } else {
                                         EFPortalUserTabbedView(portal: portal, showContentAndGroup: $showContentAndGroup, sceneContentViewModel: sceneContentViewModel)
                                     }
