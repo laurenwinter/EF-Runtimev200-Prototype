@@ -41,9 +41,26 @@ struct ESMapSceneView: View {
                             sceneContentViewModel.sceneView
                                 .edgesIgnoringSafeArea(.top)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            HStack {
+                                .toolbar {
+                                    ToolbarItem(placement: .navigationBarTrailing) {
+                                        Button {
+                                            showProfile = true
+                                        } label: {
+                                            Image(systemName: "person.circle")
+                                                .resizable()
+                                                .frame(width: 16.0, height: 16.0)
+                                                .tint(Color.white)
+                                        }
+                                    }
+                                }
+                                .sheet(isPresented: $showProfile) {
+                                    ProfileView(portal: portal) {
+                                        self.portal = nil
+                                    }
+                                }
+                            HStack(alignment: .top) {
                                 Spacer()
-                                VStack {
+                                VStack() {
                                     if !showContentAndGroup {
                                         Button {
                                             showContentAndGroup.toggle()
@@ -59,19 +76,6 @@ struct ESMapSceneView: View {
                                     } else {
                                         EFPortalUserTabbedView(portal: portal, showContentAndGroup: $showContentAndGroup, sceneContentViewModel: sceneContentViewModel)
                                     }
-                                    Spacer()
-//                                    if !showProfile {
-//                                        Button {
-//                                            showProfile.toggle()
-//                                        } label: {
-//                                            Image(systemName: "person.circle")
-//                                                .padding()
-//                                        }
-//                                    } else {
-//                                        ProfileView(portal: portal) {
-//                                            self.portal = nil
-//                                        }
-//                                    }
                                 }
                             }
                         }
