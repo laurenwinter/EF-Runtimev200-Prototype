@@ -65,6 +65,8 @@ struct EFMapSceneView: View {
                                         self.portal = nil
                                     }
                                 }
+                                .backgroundStyle(.green.gradient)
+                                .background(Color.black.opacity(0.9).gradient)
                             HStack {
                                 Spacer()
                                 VStack {

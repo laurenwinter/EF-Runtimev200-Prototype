@@ -81,6 +81,7 @@ struct SignInView: View {
             }
         }
         .padding()
+        .background(Color.black.opacity(0.8).gradient)
     }
     
     var signInButtonText: String {
@@ -104,7 +105,8 @@ struct SignInView: View {
             signIn()
         } label: {
             Text(signInButtonText)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, minHeight: 50.0)
+                .font(.largeTitle)
         }
         .buttonStyle(.bordered)
         .controlSize(.large)
