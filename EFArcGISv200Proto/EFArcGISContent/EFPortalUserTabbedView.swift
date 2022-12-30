@@ -65,3 +65,9 @@ struct EFPortalUserTabbedView: View {
         .shadow(radius: 10)
     }
 }
+
+struct EFPortalUserTabbedView_Preview: PreviewProvider {
+    static var previews: some View {
+        EFPortalUserTabbedView(portal: .arcGISOnline(connection: .anonymous), showContentAndGroup: .constant(false), sceneContentViewModel: EFSceneContentViewModel())
+    }
+}

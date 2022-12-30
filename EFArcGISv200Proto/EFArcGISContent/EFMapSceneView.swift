@@ -119,24 +119,7 @@ struct EFMapSceneView: View {
     }
 }
 
-class EFSceneContentViewModel_Preview {
-    var portal: Portal?
-    
-    init() {
-        portal = .arcGISOnline(connection: .anonymous)
-        //= Portal(url: .portal, connection: .authenticated)
-    }
-}
-
 struct EFMapSceneView_Preview: PreviewProvider {
-    @State var portal: Portal?
-    
-//    @State var viewModel : EFSceneContentViewModel_Preview = EFSceneContentViewModel_Preview()
-//
-//    init() {
-//        self.viewModel = EFSceneContentViewModel_Preview()
-//        portal = viewModel.portal
-//    }
     
     static var previews: some View {
             EFMapSceneView(portal: .arcGISOnline(connection: .anonymous), sceneLoadResult: .success(()))
