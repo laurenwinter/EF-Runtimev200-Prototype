@@ -1,5 +1,5 @@
 //
-//  ESMapSceneView.swift
+//  EFMapSceneView.swift
 //  EFArcGISv200Proto
 //
 //  Created by Lauren Winter on 12/21/22.
@@ -11,7 +11,7 @@ import ArcGISToolkit
 
 var scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
 
-struct ESMapSceneView: View {
+struct EFMapSceneView: View {
     /// The portal that the user is signed in to.
     @State var portal: Portal?
     
@@ -24,6 +24,7 @@ struct ESMapSceneView: View {
     /// The result of loading the scene.
     @State var sceneLoadResult: Result<Void, Error>?
     
+    /// The persistent ArcGIS layer view model for all the User and Group content
     @ObservedObject var sceneContentViewModel : EFSceneContentViewModel
     
     init() {
@@ -65,7 +66,7 @@ struct ESMapSceneView: View {
                                         Button {
                                             showContentAndGroup.toggle()
                                         } label: {
-                                            Image(systemName: "map.circle")
+                                            Image(systemName: "square.3.layers.3d")
                                                 .resizable()
                                                 .frame(width: 32.0, height: 32.0)
                                                 .tint(Color.white)
@@ -106,36 +107,6 @@ struct ESMapSceneView: View {
         } else {
             SignInView(portal: $portal)
         }
-        
-            /*
-            VStack {
-                let sceneView = ArcGIS.SceneView(scene: scene)
-                sceneView
-                    .edgesIgnoringSafeArea(.top)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                Image(systemName: "globe")
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                Text("Hello, world!")
-            }
-            .padding()
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showProfile = true
-                    } label: {
-                        Image(systemName: "person.circle")
-                    }
-                }
-            }
-            .sheet(isPresented: $showProfile) {
-                ProfileView(portal: portal) {
-                    self.portal = nil
-                }
-            }
-        } else {
-            SignInView(portal: $portal)
-        }*/
     }
 }
 

@@ -15,12 +15,10 @@ public final class EFSceneContentViewModel: ObservableObject {
     public var sceneView: ArcGIS.SceneView
 
     @Published var scene: ArcGIS.Scene
+    
+    // All of the ArcGIS User content, items are placed in associated folders
     @ObservedObject var userContentViewModel = EFUserContentViewModel()
-
-    @State private var showErrorAlert = false
-    
-    private var subscription : AnyCancellable?
-    
+        
     init() {
         let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
         self.scene = scene
@@ -28,25 +26,40 @@ public final class EFSceneContentViewModel: ObservableObject {
         self.userContentViewModel.portalItemSelected = itemSelectedCallback
     }
     
-    private func itemSelectedCallback(_ itemModel: EFPortalItemModel, _ isSelected: Bool) {
+    private func itemSelectedCallback(_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) {
         let title = itemModel.portalItem.title
-        print("itemSelectedFunc, \(title)")
+        print("itemSelectedFunc, \(title), selected: \(state)")
         // WIP, either add or remove the item...to the Scene!
-        if isSelected {
+        switch state {
+        case .initialized:
+            // Do nothing
+            ()
+        case .visible:
             // WIP, this is simple demo for Web Scene, needs to be a layer handler
             if itemModel.portalItem.typeName.contains("Web Scene") {
                 scene = Scene(item: itemModel.portalItem)
                 sceneView = SceneView(scene: scene)
             }
+        case .hidden:
+            // For testing only, return the map scene to it's default state
+            let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
+            self.scene = scene
+            self.sceneView = SceneView(scene: scene)
         }
     }
 }
 
 class EFPortalItemModel: ObservableObject, Identifiable {
+    
+    enum ItemState {
+        case initialized, visible, hidden
+    }
+    
+    /// The ArcGIS PortalItem
     var portalItem: PortalItem
     
-    // https://developer.apple.com/documentation/combine/receiving-and-handling-events-with-combine
-    @Published var isVisible = false
+    /// State that is set by the app user to load and show the portal item on the map
+    @Published var currentState = ItemState.initialized
     
     let id = UUID()
     
@@ -72,7 +85,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
 
 @MainActor class EFUserContentViewModel: ObservableObject {
     
-    public var portalItemSelected: ((_ itemModel: EFPortalItemModel, _ isSelected: Bool) -> Void)?
+    public var portalItemSelected: ((_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) -> Void)?
         
     @Published var portalItemModels : [EFPortalItemModel] = []
     
@@ -88,7 +101,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
         if let contentItems = await updatePortalContent(user) {
             contentItems.forEach() { item in
                 let portalItemModel = EFPortalItemModel(portalItem: item)
-                portalItemModel.$isVisible
+                portalItemModel.$currentState
                     .sink { isVisible in
                         let title = item.title
                         print("Item \(title) is visible: \(isVisible)")
@@ -103,7 +116,6 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                 results.append(portalItemModel)
             }
         }
-        //print("xxx updatePortalItems complete \(results.count)")
         self.portalItemModels.removeAll()
         self.portalItemModels = results
     }
@@ -134,7 +146,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
             let contentItems = try await user.content.items
             contentItems.forEach { rootItem in
                 let portalItemModel = EFPortalItemModel(portalItem: rootItem)
-                portalItemModel.$isVisible
+                portalItemModel.$currentState
                     .sink { isVisible in
                         self.portalItemSelected?(portalItemModel, isVisible)
                         let title = rootItem.title
@@ -161,7 +173,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                         folderItems.forEach { folderItem in
                             if let portalFolderModel = portalFolderModels[folder.id.rawValue], portalFolderModel.portalItemModels[folderItem.id.rawValue] == nil {
                                 let portalItemModel = EFPortalItemModel(portalItem: folderItem)
-                                portalItemModel.$isVisible
+                                portalItemModel.$currentState
                                     .sink { isVisible in
                                         self.portalItemSelected?(portalItemModel, isVisible)
                                         let title = folderItem.title

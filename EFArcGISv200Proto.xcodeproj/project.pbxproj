@@ -20,7 +20,7 @@
 		155190782954C0DA00BF2128 /* EFPortalFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155190732954C0DA00BF2128 /* EFPortalFolderView.swift */; };
 		155190792954C0DA00BF2128 /* EFSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155190742954C0DA00BF2128 /* EFSceneViewModel.swift */; };
 		1551907A2954C0DA00BF2128 /* EFPortalUserTabbedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155190752954C0DA00BF2128 /* EFPortalUserTabbedView.swift */; };
-		1551907B2954C0DA00BF2128 /* ESMapSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155190762954C0DA00BF2128 /* ESMapSceneView.swift */; };
+		1551907B2954C0DA00BF2128 /* EFMapSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155190762954C0DA00BF2128 /* EFMapSceneView.swift */; };
 		1551907C2954C0DA00BF2128 /* EFUserContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155190772954C0DA00BF2128 /* EFUserContentView.swift */; };
 		1551907E2954C0F500BF2128 /* LoadableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1551907D2954C0F500BF2128 /* LoadableImageView.swift */; };
 		155190812954C15000BF2128 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = 155190802954C15000BF2128 /* Collections */; };
@@ -60,7 +60,7 @@
 		155190732954C0DA00BF2128 /* EFPortalFolderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EFPortalFolderView.swift; sourceTree = "<group>"; };
 		155190742954C0DA00BF2128 /* EFSceneViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EFSceneViewModel.swift; sourceTree = "<group>"; };
 		155190752954C0DA00BF2128 /* EFPortalUserTabbedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EFPortalUserTabbedView.swift; sourceTree = "<group>"; };
-		155190762954C0DA00BF2128 /* ESMapSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ESMapSceneView.swift; sourceTree = "<group>"; };
+		155190762954C0DA00BF2128 /* EFMapSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EFMapSceneView.swift; sourceTree = "<group>"; };
 		155190772954C0DA00BF2128 /* EFUserContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EFUserContentView.swift; sourceTree = "<group>"; };
 		1551907D2954C0F500BF2128 /* LoadableImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadableImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -164,11 +164,11 @@
 		154F77D129538E4500A06195 /* EFArcGISContent */ = {
 			isa = PBXGroup;
 			children = (
+				155190742954C0DA00BF2128 /* EFSceneViewModel.swift */,
 				155190732954C0DA00BF2128 /* EFPortalFolderView.swift */,
 				155190752954C0DA00BF2128 /* EFPortalUserTabbedView.swift */,
-				155190742954C0DA00BF2128 /* EFSceneViewModel.swift */,
 				155190772954C0DA00BF2128 /* EFUserContentView.swift */,
-				155190762954C0DA00BF2128 /* ESMapSceneView.swift */,
+				155190762954C0DA00BF2128 /* EFMapSceneView.swift */,
 			);
 			path = EFArcGISContent;
 			sourceTree = "<group>";
@@ -312,7 +312,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1551907B2954C0DA00BF2128 /* ESMapSceneView.swift in Sources */,
+				1551907B2954C0DA00BF2128 /* EFMapSceneView.swift in Sources */,
 				1551907E2954C0F500BF2128 /* LoadableImageView.swift in Sources */,
 				1551907C2954C0DA00BF2128 /* EFUserContentView.swift in Sources */,
 				154F77CB29538A4E00A06195 /* ProfileView.swift in Sources */,

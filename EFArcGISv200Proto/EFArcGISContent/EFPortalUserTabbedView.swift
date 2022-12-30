@@ -58,7 +58,7 @@ struct EFPortalUserTabbedView: View {
                 }
             }
         }
-        .frame(width: 350, height: 500, alignment: .topTrailing)
+        .frame(width: 350, alignment: .topTrailing)
         .padding()
         .background(Color.white.opacity(0.9))
         .cornerRadius(10)

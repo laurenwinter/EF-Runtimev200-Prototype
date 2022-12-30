@@ -30,7 +30,7 @@ struct EFArcGISv200ProtoApp: App {
                 if isSettingUp {
                     ProgressView()
                 } else {
-                    ESMapSceneView()
+                    EFMapSceneView()
                 }
             }
             // Using this view modifier will cause a prompt when the authenticator is asked

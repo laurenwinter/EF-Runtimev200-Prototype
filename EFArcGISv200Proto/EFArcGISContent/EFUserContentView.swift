@@ -62,7 +62,11 @@ struct LRWPortalItemView: View {
     
     init(item: EFPortalItemModel) {
         self.item = item
-        self.isToggled = item.isVisible
+        if item.currentState == .visible {
+            self.isToggled = true
+        } else {
+            self.isToggled = false
+        }
     }
     
     var body: some View {
@@ -84,9 +88,13 @@ struct LRWPortalItemView: View {
             
             Toggle("", isOn: $isToggled)
                 .frame(width: 50.0)
-                .onChange(of: isToggled) { value in
-                    item.isVisible = value
-                    print("onChange \(item.portalItem.title) is \(value)")
+                .onChange(of: isToggled) { toggledValue in
+                    if toggledValue {
+                        item.currentState = .visible
+                    } else {
+                        item.currentState = .hidden
+                    }
+                    print("onChange \(item.portalItem.title) is \(toggledValue)")
                 }
             
         }
