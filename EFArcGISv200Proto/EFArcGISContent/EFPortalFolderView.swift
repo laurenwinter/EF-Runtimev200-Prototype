@@ -91,25 +91,6 @@ struct ContentFolderView: View {
     }
 }
 
-class EFUserContentViewModel_Preview : EFUserContentViewModel {
-    override init() {
-        super.init()
-        let portal: Portal = .arcGISOnline(connection: .anonymous)
-        for index in 1...25 {
-            let folderModel = EFPortalItemFolderModel("\(index)", id: "\(index)", portalFolder: nil)
-            portalFolderModels[folderModel.portalID] = folderModel
-            
-        }
-        
-        for itemIndex in 1...5 {
-            let item = EFPortalItemModel(portalItem: PortalItem(portal: portal,
-                                                                id: Item.ID(rawValue: "\(itemIndex)")!))
-            portalItemModels.append(item)
-        }
-        
-    }
-}
-
 struct EFPortalFolderView_Preview: PreviewProvider {
 
     static var previews: some View {

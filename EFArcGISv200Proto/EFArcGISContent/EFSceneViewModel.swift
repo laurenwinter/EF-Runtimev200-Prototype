@@ -179,7 +179,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                                     .sink { isVisible in
                                         self.portalItemSelected?(portalItemModel, isVisible)
                                         let title = folderItem.title
-                                        print("Folder Item \(title) is visible: \(isVisible)")
+                                        //print("Folder Item \(title) is visible: \(isVisible)")
                                     }.store(in: &subscriptions)
                                 portalFolderModel.portalItemModels[portalItemModel.portalItem.id.rawValue] = portalItemModel
                             }
@@ -194,7 +194,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
     private func updatePortalContent(_ user: ArcGIS.PortalUser) async -> [PortalItem]? {
         do {
             let contentItems = try await user.content.items
-            print("xxx portal user content = \(contentItems.count)")
+            //print("xxx portal user content = \(contentItems.count)")
             return contentItems
         } catch {
             return nil
@@ -209,7 +209,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                     // WIP let folderItem = EFPortalItemFolderModel(portalFolder: folder)
                     if let folderItems = await loadFolderContent(user, folder: folder) {
                         allFolderItems.append(contentsOf: folderItems)
-                        print("xxx folder: \(folder.title) items = \(folderItems.count)")
+                        //print("xxx folder: \(folder.title) items = \(folderItems.count)")
                     }
                 }
                 return allFolderItems
@@ -225,5 +225,31 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
         } catch {
             return nil
         }
+    }
+}
+
+///
+/// For Previews ============================================
+///
+class EFUserContentViewModel_Preview : EFUserContentViewModel {
+    override init() {
+        super.init()
+        let portal: Portal = .arcGISOnline(connection: .anonymous)
+        for index in 1...25 {
+            let folderModel = EFPortalItemFolderModel("\(index)", id: "\(index)", portalFolder: nil)
+            portalFolderModels[folderModel.portalID] = folderModel
+            
+        }
+        
+        for itemIndex in 1...5 {
+            guard var portalItem = PortalItem(json: "{\"access\":\"private\",\"avgRating\":0,\"commentsEnabled\":false,\"created\":1597947840000,\"culture\":\"en-us\",\"id\":\"94d345453e6243778e6c8b9bd18a1ddc\",\"modified\":1597953188000,\"numComments\":0,\"numRatings\":0,\"numViews\":612,\"owner\":\"lwinter@esri.com\",\"ownerFolder\":\"d7975ba758404121895e7136cafdcc47\",\"size\":2298,\"tags\":[\"Site Scan\"],\"thumbnail\":\"thumbnail/ago_downloaded.jpeg\",\"title\":\"BridgeOffsetTest\",\"type\":\"Web Scene\",\"typeKeywords\":[\"3D\",\"Map\",\"Scene\",\"Streaming\",\"Web\",\"Web Scene\"]}", portal: portal) else {
+                return
+            }
+            let uiImage = UIImage(systemName: "globe.asia.australia.fill")
+            portalItem.setThumbnail(image: uiImage)
+            let item = EFPortalItemModel(portalItem: portalItem) //PortalItem(portal: portal, id: Item.ID(rawValue: "\(itemIndex)")!))
+            portalItemModels.append(item)
+        }
+        
     }
 }

@@ -106,7 +106,7 @@ struct SignInView: View {
         } label: {
             Text(signInButtonText)
                 .frame(maxWidth: .infinity, minHeight: 50.0)
-                .font(.largeTitle)
+                .font(.title2)
         }
         .buttonStyle(.bordered)
         .controlSize(.large)
