@@ -32,7 +32,7 @@ struct EFPortalFolderView: View {
                         NavigationLink(destination: ContentFolderView(folderModel: folderModel), label: {
                             HStack {
                                 Image(systemName: "folder.fill")
-                                Text(folderModel.portalFolder?.title ?? "Root")
+                                Text(folderModel.folderTitle)
                             }
                         })
                     }
@@ -88,6 +88,32 @@ struct ContentFolderView: View {
         }
         .navigationTitle(folderModel.portalFolder?.title ?? "")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+class EFUserContentViewModel_Preview : EFUserContentViewModel {
+    override init() {
+        super.init()
+        let portal: Portal = .arcGISOnline(connection: .anonymous)
+        for index in 1...25 {
+            let folderModel = EFPortalItemFolderModel("\(index)", id: "\(index)", portalFolder: nil)
+            portalFolderModels[folderModel.portalID] = folderModel
+            
+        }
+        
+        for itemIndex in 1...5 {
+            let item = EFPortalItemModel(portalItem: PortalItem(portal: portal,
+                                                                id: Item.ID(rawValue: "\(itemIndex)")!))
+            portalItemModels.append(item)
+        }
+        
+    }
+}
+
+struct EFPortalFolderView_Preview: PreviewProvider {
+
+    static var previews: some View {
+        EFPortalFolderView(portal: .arcGISOnline(connection: .anonymous), contentViewModel: EFUserContentViewModel_Preview())
     }
 }
 

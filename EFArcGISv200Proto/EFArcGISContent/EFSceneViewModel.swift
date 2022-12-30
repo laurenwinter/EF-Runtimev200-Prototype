@@ -72,6 +72,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
     public static let ARCGIS_ROOT_FOLDER_ID = "Root"
 
     var portalID = ""
+    var folderTitle = ""
     var portalFolder: PortalFolder?
     var portalItemModels: Dictionary = [String: EFPortalItemModel]()
 
@@ -79,6 +80,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
     
     init(_ title: String, id: String, portalFolder: PortalFolder?) {
         self.portalID = id
+        self.folderTitle = title
         self.portalFolder = portalFolder
     }
 }

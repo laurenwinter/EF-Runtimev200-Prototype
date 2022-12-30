@@ -100,3 +100,10 @@ struct LRWPortalItemView: View {
         }
     }
 }
+
+struct EFUserContentView_Preview: PreviewProvider {
+
+    static var previews: some View {
+        EFUserContentView(portal: .arcGISOnline(connection: .anonymous), contentViewModel: EFUserContentViewModel_Preview())
+    }
+}
