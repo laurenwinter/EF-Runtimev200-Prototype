@@ -53,10 +53,10 @@ struct EFMapSceneView: View {
                                         Button {
                                             showProfile = true
                                         } label: {
-                                            Image(systemName: "person.circle")
+                                            Image(systemName: "person.crop.square")
                                                 .resizable()
-                                                .frame(width: 16.0, height: 16.0)
-                                                .tint(Color.red)
+                                                .frame(width: 24.0, height: 24.0)
+                                                .tint(Color.blue)
                                         }
                                     }
                                 }
@@ -65,9 +65,9 @@ struct EFMapSceneView: View {
                                         self.portal = nil
                                     }
                                 }
-                            HStack(alignment: .top) {
+                            HStack {
                                 Spacer()
-                                VStack() {
+                                VStack {
                                     if !showContentAndGroup {
                                         Button {
                                             showContentAndGroup.toggle()
@@ -77,6 +77,7 @@ struct EFMapSceneView: View {
                                                 .frame(width: 32.0, height: 32.0)
                                                 .tint(Color.white)
                                         }
+                                        .padding(.horizontal, 20) // Inset 20 from the right edge
                                         .padding()
                                         .background(Color.blue)
                                         .clipShape(Circle())
