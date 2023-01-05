@@ -24,7 +24,7 @@ struct EFUserContentView: View {
         Group {
             VStack {
                 if contentViewModel.portalItemModels.isEmpty {
-                    ProgressView("Loading Content")
+                    ProgressView("Loading Folder Items")
                 } else {
                     List(contentViewModel.portalItemModels) { item in
                         LRWPortalItemView(item: item)
