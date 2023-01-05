@@ -27,9 +27,7 @@ public final class EFSceneContentViewModel: ObservableObject {
     }
     
     private func itemSelectedCallback(_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) {
-        let title = itemModel.portalItem.title
-        print("itemSelectedFunc, \(title), selected: \(state)")
-        // WIP, either add or remove the item...to the Scene!
+        //print("itemSelectedFunc, \(itemModel.portalItem.title), selected: \(state)")
         switch state {
         case .initialized:
             // Do nothing
@@ -105,8 +103,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                 let portalItemModel = EFPortalItemModel(portalItem: item)
                 portalItemModel.$currentState
                     .sink { isVisible in
-                        let title = item.title
-                        print("Item \(title) is visible: \(isVisible)")
+                        //print("Item \(item.title) is visible: \(isVisible)")
                 }.store(in: &subscriptions)
 
                 results.append(portalItemModel)
@@ -126,7 +123,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
         do {
             try await portal.load()
             if let user = portal.user {
-                print("xxx portal user = \(user.fullName)")
+                //print("xxx portal user = \(user.fullName)")
                 return user
             } else {
                 return nil
@@ -151,8 +148,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                 portalItemModel.$currentState
                     .sink { isVisible in
                         self.portalItemSelected?(portalItemModel, isVisible)
-                        let title = rootItem.title
-                        print("Root Item \(title) is visible: \(isVisible)")
+                        //print("Root Item \(rootItem.title) is visible: \(isVisible)")
                 }.store(in: &subscriptions)
 
                 // If it doesn't already exist then add the item to the root folder
@@ -178,8 +174,6 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                                 portalItemModel.$currentState
                                     .sink { isVisible in
                                         self.portalItemSelected?(portalItemModel, isVisible)
-                                        let title = folderItem.title
-                                        //print("Folder Item \(title) is visible: \(isVisible)")
                                     }.store(in: &subscriptions)
                                 portalFolderModel.portalItemModels[portalItemModel.portalItem.id.rawValue] = portalItemModel
                             }
@@ -243,7 +237,7 @@ class EFUserContentViewModel_Preview : EFUserContentViewModel {
         
         for itemIndex in 1...5 {
             let viewCount = Int.random(in: 0..<100000)
-            guard var portalItem = PortalItem(json: "{\"access\":\"private\",\"avgRating\":0,\"commentsEnabled\":false,\"created\":1597947840000,\"culture\":\"en-us\",\"id\":\(itemIndex),\"modified\":1597953188000,\"numComments\":0,\"numRatings\":0,\"numViews\":\(viewCount),\"owner\":\"lwinter@esri.com\",\"ownerFolder\":\"d7975ba758404121895e7136cafdcc47\",\"size\":2298,\"tags\":[\"Site Scan\"],\"thumbnail\":\"thumbnail/ago_downloaded.jpeg\",\"title\":\"BridgeOffsetTest\",\"type\":\"Web Scene\",\"typeKeywords\":[\"3D\",\"Map\",\"Scene\",\"Streaming\",\"Web\",\"Web Scene\"]}", portal: portal) else {
+            guard let portalItem = PortalItem(json: "{\"access\":\"private\",\"avgRating\":0,\"commentsEnabled\":false,\"created\":1597947840000,\"culture\":\"en-us\",\"id\":\(itemIndex),\"modified\":1597953188000,\"numComments\":0,\"numRatings\":0,\"numViews\":\(viewCount),\"owner\":\"lwinter@esri.com\",\"ownerFolder\":\"d7975ba758404121895e7136cafdcc47\",\"size\":2298,\"tags\":[\"Site Scan\"],\"thumbnail\":\"thumbnail/ago_downloaded.jpeg\",\"title\":\"BridgeOffsetTest\",\"type\":\"Web Scene\",\"typeKeywords\":[\"3D\",\"Map\",\"Scene\",\"Streaming\",\"Web\",\"Web Scene\"]}", portal: portal) else {
                 return
             }
             let uiImage = UIImage(systemName: "moon.stars.fill")?.withTintColor(UIColor(red: CGFloat.random(in: 0.0..<1.0), green: CGFloat.random(in: 0.0..<1.0), blue: CGFloat.random(in: 0.0..<1.0), alpha: 1.0))

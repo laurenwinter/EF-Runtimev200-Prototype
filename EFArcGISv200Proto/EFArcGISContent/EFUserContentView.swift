@@ -94,7 +94,7 @@ struct LRWPortalItemView: View {
                     } else {
                         item.currentState = .hidden
                     }
-                    print("onChange \(item.portalItem.title) is \(toggledValue)")
+                    //print("onChange \(item.portalItem.title) is \(toggledValue)")
                 }
             
         }

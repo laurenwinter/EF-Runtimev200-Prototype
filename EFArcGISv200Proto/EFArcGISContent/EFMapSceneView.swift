@@ -97,7 +97,6 @@ struct EFMapSceneView: View {
                 }
         
             .onChange(of: sceneContentViewModel.scene, perform: { _ in
-                print("Scene was changed 2")
                 Task {
                     sceneLoadResult = await Result { try await sceneContentViewModel.scene.load() }
                     switch sceneLoadResult {

@@ -74,6 +74,8 @@ struct SignInView: View {
                             return ""
                         case .serverTrust:
                             return nil
+                        @unknown default:
+                            return nil
                         }
                     }
                     .first
@@ -140,6 +142,8 @@ private extension ArcGISCredential {
             case .token(let credential):
                 return credential.username
             case .staticToken:
+                return nil
+            @unknown default:
                 return nil
             }
         }

@@ -40,12 +40,6 @@ struct EFPortalUserTabbedView: View {
                             }.tag(1)
                         
                     }
-                    .onAppear() {
-                        print("LRWPortalUserTabbedView appear")
-                    }
-                    .onDisappear() {
-                        print("LRWPortalUserTabbedView disappear")
-                    }
                 }
                 .navigationTitle(viewTitles[selection])
                 .navigationBarTitleDisplayMode(.inline)
