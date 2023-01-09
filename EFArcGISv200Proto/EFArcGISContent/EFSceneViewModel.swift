@@ -23,6 +23,7 @@ public final class EFSceneContentViewModel: ObservableObject {
         let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
         self.scene = scene
         self.sceneView = SceneView(scene: scene)
+        //self.sceneView.graphicsOverlays = [GraphicsOverlay]()
         self.userContentViewModel.portalItemSelected = itemSelectedCallback
     }
     

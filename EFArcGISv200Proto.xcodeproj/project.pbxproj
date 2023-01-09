@@ -116,6 +116,7 @@
 		154F779A2953812500A06195 /* EFArcGISv200Proto */ = {
 			isa = PBXGroup;
 			children = (
+				15B7396C2968AF46008558AC /* EFArcGISGraphics */,
 				154F77D129538E4500A06195 /* EFArcGISContent */,
 				154F77D029538B5E00A06195 /* RuntimeCode */,
 				154F779B2953812500A06195 /* EFArcGISv200ProtoApp.swift */,
@@ -171,6 +172,13 @@
 				155190762954C0DA00BF2128 /* EFMapSceneView.swift */,
 			);
 			path = EFArcGISContent;
+			sourceTree = "<group>";
+		};
+		15B7396C2968AF46008558AC /* EFArcGISGraphics */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = EFArcGISGraphics;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
