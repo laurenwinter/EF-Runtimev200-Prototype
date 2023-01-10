@@ -18,10 +18,10 @@ struct EFArcGISv200ProtoApp: App {
         // Create an authenticator.
         authenticator = Authenticator(
             // If you want to use OAuth, uncomment this code:
-            //oAuthConfigurations: [.arcgisDotCom]
+            //oAuthUserConfigurations: [.arcgisDotCom]
         )
         // Set the challenge handler to be the authenticator we just created.
-        ArcGISEnvironment.authenticationChallengeHandler = authenticator
+        ArcGISEnvironment.authenticationManager.authenticationChallengeHandler = authenticator
     }
 
     var body: some SwiftUI.Scene {

@@ -13,7 +13,6 @@
 		154F77AD2953812600A06195 /* EFArcGISv200ProtoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F77AC2953812600A06195 /* EFArcGISv200ProtoTests.swift */; };
 		154F77B72953812600A06195 /* EFArcGISv200ProtoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F77B62953812600A06195 /* EFArcGISv200ProtoUITests.swift */; };
 		154F77B92953812600A06195 /* EFArcGISv200ProtoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F77B82953812600A06195 /* EFArcGISv200ProtoUITestsLaunchTests.swift */; };
-		154F77C72953825200A06195 /* ArcGISToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 154F77C62953825200A06195 /* ArcGISToolkit */; };
 		154F77C9295388EC00A06195 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F77C8295388EC00A06195 /* SignInView.swift */; };
 		154F77CB29538A4E00A06195 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F77CA29538A4E00A06195 /* ProfileView.swift */; };
 		154F77CD29538A8A00A06195 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F77CC29538A8A00A06195 /* UserView.swift */; };
@@ -25,6 +24,7 @@
 		1551907E2954C0F500BF2128 /* LoadableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1551907D2954C0F500BF2128 /* LoadableImageView.swift */; };
 		155190812954C15000BF2128 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = 155190802954C15000BF2128 /* Collections */; };
 		155190832954C15000BF2128 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 155190822954C15000BF2128 /* OrderedCollections */; };
+		15A7C683296CE24200AE7021 /* ArcGISToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 15A7C682296CE24200AE7021 /* ArcGISToolkit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +63,7 @@
 		155190762954C0DA00BF2128 /* EFMapSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EFMapSceneView.swift; sourceTree = "<group>"; };
 		155190772954C0DA00BF2128 /* EFUserContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EFUserContentView.swift; sourceTree = "<group>"; };
 		1551907D2954C0F500BF2128 /* LoadableImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadableImageView.swift; sourceTree = "<group>"; };
+		15B73975296CD30D008558AC /* arcgis-maps-sdk-swift-toolkit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "arcgis-maps-sdk-swift-toolkit"; path = "../../v200.1 Samples/arcgis-maps-sdk-swift-toolkit"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,8 +71,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15A7C683296CE24200AE7021 /* ArcGISToolkit in Frameworks */,
 				155190812954C15000BF2128 /* Collections in Frameworks */,
-				154F77C72953825200A06195 /* ArcGISToolkit in Frameworks */,
 				155190832954C15000BF2128 /* OrderedCollections in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +97,7 @@
 		154F778F2953812500A06195 = {
 			isa = PBXGroup;
 			children = (
+				15B73974296CD30D008558AC /* Packages */,
 				154F779A2953812500A06195 /* EFArcGISv200Proto */,
 				154F77AB2953812600A06195 /* EFArcGISv200ProtoTests */,
 				154F77B52953812600A06195 /* EFArcGISv200ProtoUITests */,
@@ -181,6 +183,14 @@
 			path = EFArcGISGraphics;
 			sourceTree = "<group>";
 		};
+		15B73974296CD30D008558AC /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				15B73975296CD30D008558AC /* arcgis-maps-sdk-swift-toolkit */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -198,9 +208,9 @@
 			);
 			name = EFArcGISv200Proto;
 			packageProductDependencies = (
-				154F77C62953825200A06195 /* ArcGISToolkit */,
 				155190802954C15000BF2128 /* Collections */,
 				155190822954C15000BF2128 /* OrderedCollections */,
+				15A7C682296CE24200AE7021 /* ArcGISToolkit */,
 			);
 			productName = EFArcGISv200Proto;
 			productReference = 154F77982953812500A06195 /* EFArcGISv200Proto.app */;
@@ -275,8 +285,8 @@
 			);
 			mainGroup = 154F778F2953812500A06195;
 			packageReferences = (
-				154F77C52953825200A06195 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */,
 				1551907F2954C15000BF2128 /* XCRemoteSwiftPackageReference "swift-collections" */,
+				15A7C681296CE24200AE7021 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */,
 			);
 			productRefGroup = 154F77992953812500A06195 /* Products */;
 			projectDirPath = "";
@@ -656,14 +666,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		154F77C52953825200A06195 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		1551907F2954C15000BF2128 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-collections.git";
@@ -672,14 +674,17 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		15A7C681296CE24200AE7021 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		154F77C62953825200A06195 /* ArcGISToolkit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 154F77C52953825200A06195 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */;
-			productName = ArcGISToolkit;
-		};
 		155190802954C15000BF2128 /* Collections */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1551907F2954C15000BF2128 /* XCRemoteSwiftPackageReference "swift-collections" */;
@@ -689,6 +694,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1551907F2954C15000BF2128 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = OrderedCollections;
+		};
+		15A7C682296CE24200AE7021 /* ArcGISToolkit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 15A7C681296CE24200AE7021 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */;
+			productName = ArcGISToolkit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
