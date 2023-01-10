@@ -17,7 +17,7 @@ import ArcGISToolkit
 import CryptoKit
 
 /// A view that allows the user to sign in to a portal.
-struct SignInView: View {
+struct EFSignInView: View {
     /// The authenticator which has been passed from the app through the environment.
     @EnvironmentObject var authenticator: Authenticator
     
@@ -43,6 +43,8 @@ struct SignInView: View {
             Spacer()
             if isSigningIn {
                 ProgressView()
+                    .edgesIgnoringSafeArea(.top)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 Text(URL.portal.host!)
                     .font(.footnote)
@@ -122,6 +124,9 @@ struct SignInView: View {
                 let portal = Portal(url: .portal, connection: .authenticated)
                 try await portal.load()
                 self.portal = portal
+//                if let arcGISCredential = ArcGISEnvironment.authenticationManager.arcGISCredentialStore.credential(for: .portal) {
+//                    ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(arcGISCredential)
+//                }
             } catch {
                 self.error = error
             }
@@ -144,4 +149,5 @@ private extension Error {
         }
     }
 }
+
 

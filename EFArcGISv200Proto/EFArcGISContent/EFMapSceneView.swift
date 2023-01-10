@@ -65,7 +65,6 @@ struct EFMapSceneView: View {
                                         self.portal = nil
                                     }
                                 }
-                                .backgroundStyle(.green.gradient)
                                 .background(Color.black.opacity(0.9).gradient)
                             HStack {
                                 Spacer()
@@ -113,7 +112,7 @@ struct EFMapSceneView: View {
                 sceneLoadResult = await Result { try await sceneContentViewModel.scene.load() }
             }
         } else {
-            SignInView(portal: $portal)
+            EFSignInView(portal: $portal)
         }
     }
 }

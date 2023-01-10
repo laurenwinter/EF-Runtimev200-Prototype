@@ -33,6 +33,7 @@ struct EFArcGISv200ProtoApp: App {
                     EFMapSceneView()
                 }
             }
+            
             // Using this view modifier will cause a prompt when the authenticator is asked
             // to handle an authentication challenge.
             // This will handle many different types of authentication, for example:
@@ -54,6 +55,18 @@ struct EFArcGISv200ProtoApp: App {
         }
     }
 }
+
+// If you want to use OAuth, you can uncomment this code:
+//private extension OAuthUserConfiguration {
+//    static let arcgisDotCom = OAuthUserConfiguration(
+//        portalURL: .portal,
+//        clientID: "SUWt4Y5H6lp92TZ7",
+//        // Note: You must have the same redirect URL used here
+//        // registered with your client ID.
+//        // The scheme of the redirect URL is also specified in the Info.plist file.
+//        redirectURL: URL(string: "authexample://auth")!
+//    )
+//}
 
 extension URL {
     // If you want to use your own portal, provide your own URL here:
