@@ -44,6 +44,14 @@ struct EFArcGISv200ProtoApp: App {
             .environmentObject(authenticator)
             .task {
                 isSettingUp = true
+                // Runtime fix for v200.1 update.
+                // Used only once to clear out the old cache
+//                do {
+//                    try await Keychain.shared.removeItems(labeled: "ArcGISCredential")
+//                } catch {
+//                    print("keychain error")
+//                }
+
                 // Here we make the authenticator persistent, which means that it will synchronize
                 // with they keychain for storing credentials.
                 // It also means that a user can sign in without having to be prompted for
