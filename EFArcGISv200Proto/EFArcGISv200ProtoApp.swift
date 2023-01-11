@@ -57,11 +57,31 @@ struct EFArcGISv200ProtoApp: App {
                 // It also means that a user can sign in without having to be prompted for
                 // credentials. Once credentials are cleared from the stores ("sign-out"),
                 // then the user will need to be prompted once again.
-                try? await authenticator.setupPersistentCredentialStorage(access: .whenUnlockedThisDeviceOnly)
+                try? await setupPersistentCredentialStorage(access: .whenUnlockedThisDeviceOnly)
                 isSettingUp = false
             }
         }
     }
+}
+
+/// Sets up new credential stores that will be persisted to the keychain.
+/// - Remark: The credentials will be stored in the default access group of the keychain.
+/// You can find more information about what the default group would be here:
+/// https://developer.apple.com/documentation/security/keychain_services/keychain_items/sharing_access_to_keychain_items_among_a_collection_of_apps
+/// - Parameters:
+///   - access: When the credentials stored in the keychain can be accessed.
+///   - synchronizesWithiCloud: A Boolean value indicating whether the credentials are synchronized with iCloud.
+private func setupPersistentCredentialStorage(access: ArcGIS.KeychainAccess, synchronizesWithiCloud: Bool = false) async throws {
+    let previousArcGISCredentialStore = ArcGISEnvironment.authenticationManager.arcGISCredentialStore
+    
+    do {
+            ArcGISEnvironment.authenticationManager.arcGISCredentialStore = try await .makePersistent(access: .afterFirstUnlockThisDeviceOnly)
+            await ArcGISEnvironment.authenticationManager.setNetworkCredentialStore(try .makePersistent(access: .afterFirstUnlockThisDeviceOnly))
+        } catch {
+            //Logger.log("Failed to set up persistent credential store: \(error)", category: .authentication)
+            ArcGISEnvironment.authenticationManager.arcGISCredentialStore = previousArcGISCredentialStore
+            throw error
+        }
 }
 
 // If you want to use OAuth, you can uncomment this code:
