@@ -21,6 +21,9 @@ struct EFMapSceneView: View {
     /// A Boolean value indicating whether the content view should be presented.
     @State var showContentAndGroup = false
     
+    /// A Boolean value indicating whether the basemap selector view should be presented.
+    @State var showBasemapSelector = false
+    
     /// The result of loading the scene.
     @State var sceneLoadResult: Result<Void, Error>?
     
@@ -51,7 +54,7 @@ struct EFMapSceneView: View {
                                 .toolbar {
                                     ToolbarItem(placement: .navigationBarTrailing) {
                                         Button {
-                                            showProfile = true
+                                            showBasemapSelector = true
                                         } label: {
                                             Image(systemName: "rectangle.grid.2x2")
                                                 .resizable()
@@ -68,6 +71,12 @@ struct EFMapSceneView: View {
                                                 .frame(width: 24.0, height: 24.0)
                                                 .tint(Color.blue)
                                         }
+                                    }
+                                }
+                                .overlay(alignment: .topTrailing) {
+                                    if showBasemapSelector {
+                                        EFBasemapGalleryView(sceneContentViewModel: sceneContentViewModel, showView: $showBasemapSelector)
+                                            .padding()
                                     }
                                 }
                                 .sheet(isPresented: $showProfile) {

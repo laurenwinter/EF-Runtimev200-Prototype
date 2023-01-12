@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1520FF6829708D0A00D1A7D4 /* MapDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520FF6729708D0A00D1A7D4 /* MapDataModel.swift */; };
+		1520FF6A2970B72C00D1A7D4 /* EFBasemapGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520FF692970B72C00D1A7D4 /* EFBasemapGalleryView.swift */; };
 		154F779C2953812500A06195 /* EFArcGISv200ProtoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F779B2953812500A06195 /* EFArcGISv200ProtoApp.swift */; };
 		154F77A02953812600A06195 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 154F779F2953812600A06195 /* Assets.xcassets */; };
 		154F77A32953812600A06195 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 154F77A22953812600A06195 /* Preview Assets.xcassets */; };
@@ -49,6 +51,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1520FF6729708D0A00D1A7D4 /* MapDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDataModel.swift; sourceTree = "<group>"; };
+		1520FF692970B72C00D1A7D4 /* EFBasemapGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFBasemapGalleryView.swift; sourceTree = "<group>"; };
 		154F77982953812500A06195 /* EFArcGISv200Proto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EFArcGISv200Proto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		154F779B2953812500A06195 /* EFArcGISv200ProtoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFArcGISv200ProtoApp.swift; sourceTree = "<group>"; };
 		154F779F2953812600A06195 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -102,6 +106,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1520FF6429708C6500D1A7D4 /* RuntimeSamplesCode */ = {
+			isa = PBXGroup;
+			children = (
+				1520FF6729708D0A00D1A7D4 /* MapDataModel.swift */,
+			);
+			path = RuntimeSamplesCode;
+			sourceTree = "<group>";
+		};
 		154F778F2953812500A06195 = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +138,7 @@
 		154F779A2953812500A06195 /* EFArcGISv200Proto */ = {
 			isa = PBXGroup;
 			children = (
+				1520FF6429708C6500D1A7D4 /* RuntimeSamplesCode */,
 				15B7396C2968AF46008558AC /* EFArcGISGraphics */,
 				154F77D129538E4500A06195 /* EFArcGISContent */,
 				154F77D029538B5E00A06195 /* RuntimeCode */,
@@ -181,6 +194,7 @@
 				155190772954C0DA00BF2128 /* EFUserContentView.swift */,
 				155190762954C0DA00BF2128 /* EFMapSceneView.swift */,
 				15DE89BE296E1B0400C4F632 /* EFSignInView.swift */,
+				1520FF692970B72C00D1A7D4 /* EFBasemapGalleryView.swift */,
 			);
 			path = EFArcGISContent;
 			sourceTree = "<group>";
@@ -354,7 +368,9 @@
 				1551907E2954C0F500BF2128 /* LoadableImageView.swift in Sources */,
 				1551907C2954C0DA00BF2128 /* EFUserContentView.swift in Sources */,
 				154F77CB29538A4E00A06195 /* ProfileView.swift in Sources */,
+				1520FF6A2970B72C00D1A7D4 /* EFBasemapGalleryView.swift in Sources */,
 				15DE89BF296E1B0400C4F632 /* EFSignInView.swift in Sources */,
+				1520FF6829708D0A00D1A7D4 /* MapDataModel.swift in Sources */,
 				159CBF75296F2FB500CF0BEC /* KeychainAccess.swift in Sources */,
 				154F77CD29538A8A00A06195 /* UserView.swift in Sources */,
 				154F779C2953812500A06195 /* EFArcGISv200ProtoApp.swift in Sources */,
