@@ -18,12 +18,19 @@ public final class EFSceneContentViewModel: ObservableObject {
     
     // All of the ArcGIS User content, items are placed in associated folders
     @ObservedObject var userContentViewModel = EFUserContentViewModel()
+    
+    public let dropPinGraphicsOverlay = GraphicsOverlay()
+    public let favoritesGraphicsOverlay = GraphicsOverlay()
+    public let searchResultsGraphicsOverlay = GraphicsOverlay()
+    public let measureGraphicsOverlay = GraphicsOverlay()
+
+    public var graphicsOverlays = [GraphicsOverlay]()
         
     init() {
         let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
         self.scene = scene
-        self.sceneView = SceneView(scene: scene)
-        //self.sceneView.graphicsOverlays = [GraphicsOverlay]()
+        self.graphicsOverlays.append(contentsOf: [favoritesGraphicsOverlay, searchResultsGraphicsOverlay, dropPinGraphicsOverlay, measureGraphicsOverlay])
+        self.sceneView = SceneView(scene: scene, graphicsOverlays: self.graphicsOverlays)
         self.userContentViewModel.portalItemSelected = itemSelectedCallback
     }
     
@@ -37,14 +44,43 @@ public final class EFSceneContentViewModel: ObservableObject {
             // WIP, this is simple demo for Web Scene, needs to be a layer handler
             if itemModel.portalItem.typeName.contains("Web Scene") {
                 scene = Scene(item: itemModel.portalItem)
-                sceneView = SceneView(scene: scene)
+                updateSceneView(scene: scene)
             }
         case .hidden:
             // For testing only, return the map scene to it's default state
             let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
             self.scene = scene
-            self.sceneView = SceneView(scene: scene)
+            updateSceneView(scene: scene)
+
         }
+    }
+    
+    func updateSceneView(scene: ArcGIS.Scene) {
+        dropPinGraphicsOverlay.removeAllGraphics()
+
+        sceneView = SceneView(scene: scene, graphicsOverlays: self.graphicsOverlays)
+            .onLongPressGesture { _, mapPoint in
+                self.handleLongPress(point: mapPoint)
+        }
+    }
+    
+    func handleLongPress(point: Point?) {
+
+        guard let point = point, let symbol = createDroppedPinSymbol() else {
+            return
+        }
+        
+        dropPinGraphicsOverlay.removeAllGraphics()
+        dropPinGraphicsOverlay.addGraphic(Graphic(geometry: point, attributes: [:], symbol: symbol))
+    }
+
+    private func createDroppedPinSymbol() -> PictureMarkerSymbol? {
+        guard let image = UIImage(systemName: "mappin.and.ellipse") else {
+            return nil
+        }
+        let symbol = PictureMarkerSymbol(image: image)
+        symbol.offsetY = image.size.height / 2.0
+        return symbol
     }
 }
 

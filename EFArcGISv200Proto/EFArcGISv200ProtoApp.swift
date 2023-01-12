@@ -64,6 +64,9 @@ struct EFArcGISv200ProtoApp: App {
     }
 }
 
+/*
+ This func is copied from the Runtime Authenticator.swift file, it has updates for v200.1.x
+ */
 /// Sets up new credential stores that will be persisted to the keychain.
 /// - Remark: The credentials will be stored in the default access group of the keychain.
 /// You can find more information about what the default group would be here:
