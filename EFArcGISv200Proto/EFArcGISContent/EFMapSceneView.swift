@@ -53,6 +53,16 @@ struct EFMapSceneView: View {
                                         Button {
                                             showProfile = true
                                         } label: {
+                                            Image(systemName: "rectangle.grid.2x2")
+                                                .resizable()
+                                                .frame(width: 24.0, height: 24.0)
+                                                .tint(Color.blue)
+                                        }
+                                    }
+                                    ToolbarItem(placement: .navigationBarTrailing) {
+                                        Button {
+                                            showProfile = true
+                                        } label: {
                                             Image(systemName: "person.crop.square")
                                                 .resizable()
                                                 .frame(width: 24.0, height: 24.0)

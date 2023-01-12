@@ -75,11 +75,12 @@ public final class EFSceneContentViewModel: ObservableObject {
     }
 
     private func createDroppedPinSymbol() -> PictureMarkerSymbol? {
-        guard let image = UIImage(systemName: "mappin.and.ellipse") else {
+        guard let image = UIImage(systemName: "mappin.and.ellipse")?.withTintColor(.systemCyan) else {
             return nil
         }
         let symbol = PictureMarkerSymbol(image: image)
-        symbol.offsetY = image.size.height / 2.0
+        symbol.height = image.size.height * 2
+        symbol.width = image.size.width * 2
         return symbol
     }
 }
