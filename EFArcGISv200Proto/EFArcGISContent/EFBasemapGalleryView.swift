@@ -24,12 +24,17 @@ struct EFBasemapGalleryView: View {
         
     var body: some View {
         VStack {
-            Button("Done") {
-                showView.toggle()
-            }.padding()
+            HStack {
+                Spacer()
+                Button("Done") {
+                    showView.toggle()
+                }
+            }
+            .padding()
+            .frame(width: 300)
             BasemapGallery(items: sceneContentViewModel.basemaps, geoModel: dataModel.map)
         }
-        .frame(height: 300)
+        .frame(height: 280)
         .background(Color.white.opacity(0.9))
         .cornerRadius(10)
         .shadow(radius: 10)
