@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import ArcGIS
 import ArcGISToolkit
 
 /// A view that displays the profile of a user.

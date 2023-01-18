@@ -7,7 +7,6 @@
 
 import SwiftUI
 import ArcGIS
-import ArcGISToolkit
 import Combine
 
 var scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
@@ -30,16 +29,10 @@ struct EFMapSceneView: View {
     
     /// The persistent ArcGIS layer view model for all the User and Group content
     @ObservedObject var sceneContentViewModel : EFSceneContentViewModel
-        
-    /// The data model containing the `Map` displayed in the `MapView`.
-    var baseMapDataModel: EFBasemapDataModel
     
     init() {
         let sceneContentViewModel = EFSceneContentViewModel()
         self.sceneContentViewModel = sceneContentViewModel
-        baseMapDataModel = EFBasemapDataModel(
-            geoModel: sceneContentViewModel.scene
-        )
     }
     
     init(portal: Portal, sceneLoadResult: Result<Void, Error>) {
@@ -47,9 +40,6 @@ struct EFMapSceneView: View {
         self.sceneLoadResult = sceneLoadResult
         let sceneContentViewModel = EFSceneContentViewModel()
         self.sceneContentViewModel = sceneContentViewModel
-        baseMapDataModel = EFBasemapDataModel(
-            geoModel: sceneContentViewModel.scene
-        )
     }
     
     var body: some View {
@@ -87,7 +77,7 @@ struct EFMapSceneView: View {
                                 }
                                 .overlay(alignment: .topTrailing) {
                                     if showBasemapSelector {
-                                        EFBasemapGalleryView(baseMapDataModel: baseMapDataModel, showView: $showBasemapSelector)
+                                        EFBasemapGalleryView(baseMapDataModel: sceneContentViewModel.baseMapDataModel, showView: $showBasemapSelector)
                                             .padding()
                                     }
                                 }

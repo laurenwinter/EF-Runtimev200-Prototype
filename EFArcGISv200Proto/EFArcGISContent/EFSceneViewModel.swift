@@ -7,7 +7,6 @@
 
 import SwiftUI
 import ArcGIS
-import ArcGISToolkit
 import Combine
 import OrderedCollections
 
@@ -20,6 +19,8 @@ public final class EFSceneContentViewModel: ObservableObject {
     // All of the ArcGIS User content, items are placed in associated folders
     @ObservedObject var userContentViewModel = EFUserContentViewModel()
     
+    let baseMapDataModel: EFBasemapDataModel
+    
     public let dropPinGraphicsOverlay = GraphicsOverlay()
     public let favoritesGraphicsOverlay = GraphicsOverlay()
     public let searchResultsGraphicsOverlay = GraphicsOverlay()
@@ -30,6 +31,8 @@ public final class EFSceneContentViewModel: ObservableObject {
     init() {
         let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
         self.scene = scene
+        self.baseMapDataModel = EFBasemapDataModel(geoModel: scene)
+
         self.graphicsOverlays.append(contentsOf: [favoritesGraphicsOverlay, searchResultsGraphicsOverlay, dropPinGraphicsOverlay, measureGraphicsOverlay])
         self.sceneView = SceneView(scene: scene, graphicsOverlays: self.graphicsOverlays)
         self.userContentViewModel.portalItemSelected = itemSelectedCallback
@@ -63,6 +66,8 @@ public final class EFSceneContentViewModel: ObservableObject {
             .onLongPressGesture { _, mapPoint in
                 self.handleLongPress(point: mapPoint)
         }
+        
+        baseMapDataModel.geoModel = scene
     }
     
     func handleLongPress(point: Point?) {
