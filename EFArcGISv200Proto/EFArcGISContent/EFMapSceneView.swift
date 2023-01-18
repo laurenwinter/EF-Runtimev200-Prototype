@@ -123,18 +123,6 @@ struct EFMapSceneView: View {
                             .foregroundColor(.secondary)
                     }
                 }
-            
-            .onChange(of: sceneContentViewModel.scene, perform: { _ in
-                Task {
-                    sceneLoadResult = await Result { try await sceneContentViewModel.scene.load() }
-                    switch sceneLoadResult {
-                    case .failure(_):
-                            print("Error loading the scene")
-                        default:
-                        ()
-                    }
-                }
-            })
             .navigationViewStyle(.stack)
             .task {
                 guard sceneLoadResult == nil else { return }

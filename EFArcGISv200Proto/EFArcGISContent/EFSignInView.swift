@@ -108,7 +108,7 @@ struct EFSignInView: View {
         } label: {
             Text(signInButtonText)
                 .frame(maxWidth: .infinity, minHeight: 50.0)
-                .font(.largeTitle)
+                .font(.headline)
         }
         .buttonStyle(.bordered)
         .controlSize(.large)

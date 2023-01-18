@@ -28,7 +28,7 @@ struct EFBasemapGalleryView: View {
             .frame(width: 300)
             BasemapGallery(items: baseMapDataModel.basemaps, geoModel: baseMapDataModel.geoModel)
         }
-        .frame(height: 280)
+        .frame(height: 400)
         .background(Color.white.opacity(0.9))
         .cornerRadius(10)
         .shadow(radius: 10)

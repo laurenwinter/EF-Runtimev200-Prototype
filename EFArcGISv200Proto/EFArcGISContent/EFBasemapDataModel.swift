@@ -25,7 +25,7 @@ class EFBasemapDataModel {
     }
     
     /// The initial list of basemaps.
-    public let basemaps = initialBasemaps()
+    public let basemaps = initialEndpointBasemaps() //initialBasemaps()
             
     /// Creates a `MapDataModel`.
     /// - Parameter map: The `Map` used for display.
@@ -35,10 +35,16 @@ class EFBasemapDataModel {
     
     private static func initialEndpointBasemaps() -> [BasemapGalleryItem] {
         let identifiers = [
-            "46a87c20f09e4fc48fa3c38081e0cae6",
+            "c03a526d94704bfb839445e80de95495",
+            "67372ff42cd145319639a99152b15bc3",
+            "459cc334740944d38580455a0a777a24",
+            "931d892ac7a843d7ba29d085e0433465",
+            "c50de463235e4161b206d000587af18b",
             "f33a34de3a294590ab48f246e99958c9",
-            "52bdc7ab7fb044d98add148764eaa30a",  // <<== mismatched spatial reference
-            "3a8d410a4a034a2ba9738bb0860d68c4"   // <<== incorrect portal item type
+            "e409ec0a5ef94d5cb486571894143b7c",
+            "459cc334740944d38580455a0a777a24",
+            "46a87c20f09e4fc48fa3c38081e0cae6",
+            "3a8d410a4a034a2ba9738bb0860d68c4"   // <<== incorrect portal item type, this is a test
         ]
         
         return identifiers.map { identifier in
@@ -57,7 +63,12 @@ class EFBasemapDataModel {
         ]
         
         return identifiers.map { identifier in
-            return BasemapGalleryItem(basemap: Basemap(style: identifier))
+            let basemap = Basemap(style: identifier)
+            
+            guard let url = basemap.url, let portalItem = PortalItem(url: url) else {
+                return BasemapGalleryItem(basemap: Basemap(style: identifier))
+            }
+            return BasemapGalleryItem(basemap: Basemap(item: portalItem))
         }
     }
         
