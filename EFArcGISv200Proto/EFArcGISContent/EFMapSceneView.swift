@@ -57,6 +57,8 @@ struct EFMapSceneView: View {
                                     ToolbarItem(placement: .navigationBarTrailing) {
                                         Button {
                                             showBasemapSelector = true
+                                            showProfile = false
+                                            showContentAndGroup = false
                                         } label: {
                                             Image(systemName: "rectangle.grid.2x2")
                                                 .resizable()
@@ -67,6 +69,8 @@ struct EFMapSceneView: View {
                                     ToolbarItem(placement: .navigationBarTrailing) {
                                         Button {
                                             showProfile = true
+                                            showBasemapSelector = false
+                                            showContentAndGroup = false
                                         } label: {
                                             Image(systemName: "person.crop.square")
                                                 .resizable()
@@ -93,6 +97,10 @@ struct EFMapSceneView: View {
                                     if !showContentAndGroup {
                                         Button {
                                             showContentAndGroup.toggle()
+                                            if showContentAndGroup {
+                                                showProfile = false
+                                                showBasemapSelector = false
+                                            }
                                         } label: {
                                             Image(systemName: "square.3.layers.3d")
                                                 .resizable()
