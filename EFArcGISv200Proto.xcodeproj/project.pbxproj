@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1520FF6829708D0A00D1A7D4 /* MapDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520FF6729708D0A00D1A7D4 /* MapDataModel.swift */; };
 		1520FF6A2970B72C00D1A7D4 /* EFBasemapGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520FF692970B72C00D1A7D4 /* EFBasemapGalleryView.swift */; };
+		1520FF6C2977188C00D1A7D4 /* EFBasemapDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520FF6B2977188C00D1A7D4 /* EFBasemapDataModel.swift */; };
 		154F779C2953812500A06195 /* EFArcGISv200ProtoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F779B2953812500A06195 /* EFArcGISv200ProtoApp.swift */; };
 		154F77A02953812600A06195 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 154F779F2953812600A06195 /* Assets.xcassets */; };
 		154F77A32953812600A06195 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 154F77A22953812600A06195 /* Preview Assets.xcassets */; };
@@ -53,6 +54,7 @@
 /* Begin PBXFileReference section */
 		1520FF6729708D0A00D1A7D4 /* MapDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDataModel.swift; sourceTree = "<group>"; };
 		1520FF692970B72C00D1A7D4 /* EFBasemapGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFBasemapGalleryView.swift; sourceTree = "<group>"; };
+		1520FF6B2977188C00D1A7D4 /* EFBasemapDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFBasemapDataModel.swift; sourceTree = "<group>"; };
 		154F77982953812500A06195 /* EFArcGISv200Proto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EFArcGISv200Proto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		154F779B2953812500A06195 /* EFArcGISv200ProtoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFArcGISv200ProtoApp.swift; sourceTree = "<group>"; };
 		154F779F2953812600A06195 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				155190762954C0DA00BF2128 /* EFMapSceneView.swift */,
 				15DE89BE296E1B0400C4F632 /* EFSignInView.swift */,
 				1520FF692970B72C00D1A7D4 /* EFBasemapGalleryView.swift */,
+				1520FF6B2977188C00D1A7D4 /* EFBasemapDataModel.swift */,
 			);
 			path = EFArcGISContent;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				155190792954C0DA00BF2128 /* EFSceneViewModel.swift in Sources */,
 				1551907A2954C0DA00BF2128 /* EFPortalUserTabbedView.swift in Sources */,
 				155190782954C0DA00BF2128 /* EFPortalFolderView.swift in Sources */,
+				1520FF6C2977188C00D1A7D4 /* EFBasemapDataModel.swift in Sources */,
 				159CBF78296F2FB500CF0BEC /* Keychain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

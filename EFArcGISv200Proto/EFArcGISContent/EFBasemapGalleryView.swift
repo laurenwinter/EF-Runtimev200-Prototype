@@ -12,13 +12,8 @@ import ArcGISToolkit
 /// A view that displays the profile of a user.
 struct EFBasemapGalleryView: View {
     
-    /// The data model containing the `Map` displayed in the `MapView`.
-    @StateObject private var dataModel = MapDataModel(
-        map: Map(basemapStyle: .arcGISImagery)
-    )
-    
     /// The persistent ArcGIS layer view model for all the User and Group content
-    @ObservedObject var sceneContentViewModel : EFSceneContentViewModel
+    var baseMapDataModel : EFBasemapDataModel
     
     @Binding var showView: Bool
         
@@ -32,7 +27,7 @@ struct EFBasemapGalleryView: View {
             }
             .padding()
             .frame(width: 300)
-            BasemapGallery(items: sceneContentViewModel.basemaps, geoModel: dataModel.map)
+            BasemapGallery(items: baseMapDataModel.basemaps, geoModel: baseMapDataModel.geoModel)
         }
         .frame(height: 280)
         .background(Color.white.opacity(0.9))

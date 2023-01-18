@@ -8,6 +8,7 @@
 import SwiftUI
 import ArcGIS
 import ArcGISToolkit
+import Combine
 
 var scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
 
@@ -29,15 +30,26 @@ struct EFMapSceneView: View {
     
     /// The persistent ArcGIS layer view model for all the User and Group content
     @ObservedObject var sceneContentViewModel : EFSceneContentViewModel
+        
+    /// The data model containing the `Map` displayed in the `MapView`.
+    var baseMapDataModel: EFBasemapDataModel
     
     init() {
-        sceneContentViewModel = EFSceneContentViewModel()
+        let sceneContentViewModel = EFSceneContentViewModel()
+        self.sceneContentViewModel = sceneContentViewModel
+        baseMapDataModel = EFBasemapDataModel(
+            geoModel: sceneContentViewModel.scene
+        )
     }
     
     init(portal: Portal, sceneLoadResult: Result<Void, Error>) {
         self.portal = portal
         self.sceneLoadResult = sceneLoadResult
-        sceneContentViewModel = EFSceneContentViewModel()
+        let sceneContentViewModel = EFSceneContentViewModel()
+        self.sceneContentViewModel = sceneContentViewModel
+        baseMapDataModel = EFBasemapDataModel(
+            geoModel: sceneContentViewModel.scene
+        )
     }
     
     var body: some View {
@@ -75,7 +87,7 @@ struct EFMapSceneView: View {
                                 }
                                 .overlay(alignment: .topTrailing) {
                                     if showBasemapSelector {
-                                        EFBasemapGalleryView(sceneContentViewModel: sceneContentViewModel, showView: $showBasemapSelector)
+                                        EFBasemapGalleryView(baseMapDataModel: baseMapDataModel, showView: $showBasemapSelector)
                                             .padding()
                                     }
                                 }
@@ -113,7 +125,7 @@ struct EFMapSceneView: View {
                             .foregroundColor(.secondary)
                     }
                 }
-        
+            
             .onChange(of: sceneContentViewModel.scene, perform: { _ in
                 Task {
                     sceneLoadResult = await Result { try await sceneContentViewModel.scene.load() }

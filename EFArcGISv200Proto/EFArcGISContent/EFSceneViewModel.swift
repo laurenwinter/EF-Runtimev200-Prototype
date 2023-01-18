@@ -17,9 +17,6 @@ public final class EFSceneContentViewModel: ObservableObject {
 
     @Published var scene: ArcGIS.Scene
     
-    /// The initial list of basemaps.
-    public let basemaps = initialBasemaps()
-    
     // All of the ArcGIS User content, items are placed in associated folders
     @ObservedObject var userContentViewModel = EFUserContentViewModel()
     
@@ -86,20 +83,6 @@ public final class EFSceneContentViewModel: ObservableObject {
         symbol.height = image.size.height * 2
         symbol.width = image.size.width * 2
         return symbol
-    }
-    
-    private static func initialBasemaps() -> [BasemapGalleryItem] {
-        let identifiers = [
-            "46a87c20f09e4fc48fa3c38081e0cae6",
-            "f33a34de3a294590ab48f246e99958c9",
-            "52bdc7ab7fb044d98add148764eaa30a",  // <<== mismatched spatial reference
-            "3a8d410a4a034a2ba9738bb0860d68c4"   // <<== incorrect portal item type
-        ]
-        
-        return identifiers.map { identifier in
-            let url = URL(string: "https://www.arcgis.com/home/item.html?id=\(identifier)")!
-            return BasemapGalleryItem(basemap: Basemap(item: PortalItem(url: url)!))
-        }
     }
 }
 
