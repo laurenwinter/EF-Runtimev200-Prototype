@@ -26,6 +26,9 @@ public final class EFSceneContentViewModel: ObservableObject {
     public let measureGraphicsOverlay = GraphicsOverlay()
 
     public var graphicsOverlays = [GraphicsOverlay]()
+    
+    // An array of tasks to handle multiple asynchnous server calls
+    private var arcGISGeodatabaseSyncTasks = [ServiceGeodatabase]()
         
     init() {
         let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
@@ -45,10 +48,30 @@ public final class EFSceneContentViewModel: ObservableObject {
             ()
         case .visible:
             // WIP, this is simple demo for Web Scene, needs to be a layer handler
-            if itemModel.portalItem.typeName.contains("Web Scene") {
+            switch itemModel.portalItem.kind {
+            case .webScene:
                 scene = Scene(item: itemModel.portalItem)
                 updateSceneView(scene: scene)
+            case .featureService:
+                guard let featureURL = itemModel.portalItem.serviceURL else {
+                    return
+                }
+                let featureTable = ArcGIS.ServiceFeatureTable(url: featureURL)
+                let arcGISLayer = ArcGIS.FeatureLayer(item: itemModel.portalItem)
+                //let arcGISLayer = ArcGIS.FeatureLayer(featureTable: featureTable)
+                scene.addOperationalLayer(arcGISLayer)
+            case .kml:
+                let layer = ArcGIS.KMLLayer(item: itemModel.portalItem)
+                scene.addOperationalLayer(layer)
+                
+            case .sceneService:
+                let layer = ArcGIS.ArcGISSceneLayer(item: itemModel.portalItem)
+                scene.addOperationalLayer(layer)
+
+            default:
+                () // Do nothing
             }
+            
         case .hidden:
             // For testing only, return the map scene to it's default state
             let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
