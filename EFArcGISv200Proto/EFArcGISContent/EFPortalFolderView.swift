@@ -28,7 +28,8 @@ struct EFPortalFolderView: View {
                 if contentViewModel.portalFolderModels.keys.isEmpty {
                     ProgressView("Loading Content Folders")
                 } else {
-                    List(orderedDict.values) { folderModel in
+                    let alphaFolderList = orderedDict.values.sorted { $0.folderTitle.lowercased() < $1.folderTitle.lowercased() }
+                    List(alphaFolderList) { folderModel in
                         NavigationLink(destination: ContentFolderView(folderModel: folderModel), label: {
                             HStack {
                                 Image(systemName: "folder.fill")
@@ -72,7 +73,8 @@ struct ContentFolderView: View {
                 if folderModel.portalItemModels.keys.isEmpty {
                     Text("0 layer items")
                 } else {
-                    List(orderedDict.values) { itemModel in
+                    let alphaItemList = orderedDict.values.sorted { $0.portalItem.title.lowercased() < $1.portalItem.title.lowercased() }
+                    List(alphaItemList) { itemModel in
                         LRWPortalItemView(item: itemModel)
                     }
                     .listStyle(.plain)

@@ -8,7 +8,6 @@
 import SwiftUI
 import ArcGIS
 import Combine
-import OrderedCollections
 
 public final class EFSceneContentViewModel: ObservableObject {
         
@@ -160,7 +159,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
             }
         }
         self.portalItemModels.removeAll()
-        self.portalItemModels = results
+        self.portalItemModels = results.sorted { $0.portalItem.title.lowercased() < $1.portalItem.title.lowercased() }
     }
     
     func loadPortal(portal: Portal) async throws -> ArcGIS.PortalUser? {
