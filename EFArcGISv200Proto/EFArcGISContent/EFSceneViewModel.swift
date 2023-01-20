@@ -11,7 +11,12 @@ import Combine
 
 public final class EFSceneContentViewModel: ObservableObject {
         
-    public var sceneView: ArcGIS.SceneView
+    public var sceneView: ArcGIS.SceneView {
+        willSet {
+            // This will update the Views that are using the SceneView
+            objectWillChange.send()
+        }
+    }
     
     private var sceneCamera: ArcGIS.Camera
     private var sceneCameraController: ArcGIS.CameraController
@@ -66,7 +71,6 @@ public final class EFSceneContentViewModel: ObservableObject {
                     // Web Map types can not be loaded into a 3D Scene so they're loaded into an AGSMap and then the operational layers are copied for loading into the Scene
                     let map = Map(item: itemModel.portalItem)
                     try await map.load()
-                    let extent = map.initialViewpoint?.targetGeometry.extent
                     
                     map.operationalLayers.forEach { (layer) in
                         let clone = layer.clone()
@@ -74,7 +78,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     }
                     
                     if let extent = itemModel.portalItem.extent {
-                        print("full extent: \(extent)")
+                        print("webMap full extent: \(extent)")
                         updateSceneView(scene: scene, extent: extent)
                     }
                     
@@ -84,7 +88,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     
                     try await layer.load()
                     if let extent = layer.fullExtent {
-                        print("full extent: \(extent)")
+                        print("featureService full extent: \(extent)")
                         updateSceneView(scene: scene, extent: extent)
                     }
                     
@@ -94,7 +98,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     
                     try await layer.load()
                     if let extent = layer.fullExtent {
-                        print("full extent: \(extent)")
+                        print("kml full extent: \(extent)")
                         updateSceneView(scene: scene, extent: extent)
                     }
                     
@@ -104,7 +108,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     
                     try await layer.load()
                     if let extent = layer.fullExtent {
-                        print("full extent: \(extent)")
+                        print("sceneService full extent: \(extent)")
                         updateSceneView(scene: scene, extent: extent)
                     }
                     

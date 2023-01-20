@@ -26,7 +26,7 @@ struct EFMapSceneView: View {
     
     /// The result of loading the scene.
     @State var sceneLoadResult: Result<Void, Error>?
-    
+                
     /// The persistent ArcGIS layer view model for all the User and Group content
     @ObservedObject var sceneContentViewModel : EFSceneContentViewModel
     
