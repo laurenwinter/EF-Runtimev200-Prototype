@@ -47,37 +47,81 @@ public final class EFSceneContentViewModel: ObservableObject {
             // Do nothing
             ()
         case .visible:
-            // WIP, this is simple demo for Web Scene, needs to be a layer handler
-            switch itemModel.portalItem.kind {
-            case .webScene:
-                scene = Scene(item: itemModel.portalItem)
-                updateSceneView(scene: scene)
-            case .featureService:
-                guard let featureURL = itemModel.portalItem.serviceURL else {
-                    return
+            Task {
+                // WIP, this is simple demo for Web Scene, needs to be a layer handler
+                switch itemModel.portalItem.kind {
+                case .webScene:
+                    scene = Scene(item: itemModel.portalItem)
+                    updateSceneView(scene: scene)
+                    
+                case .webMap:
+                    // Web Map types can not be loaded into a 3D Scene so they're loaded into an AGSMap and then the operational layers are copied for loading into the Scene
+                    let map = Map(item: itemModel.portalItem)
+                    try await map.load()
+                    let extent = map.initialViewpoint?.targetGeometry.extent
+                    
+                    map.operationalLayers.forEach { (layer) in
+                        let clone = layer.clone()
+                        scene.addOperationalLayer(clone)
+                    }
+                    
+                    if let extent = itemModel.portalItem.extent {
+                        print("full extent: \(extent)")
+                        updateSceneExtent(extent: extent)
+                    }
+                    
+                case .featureService:
+                    let layer = ArcGIS.FeatureLayer(item: itemModel.portalItem)
+                    scene.addOperationalLayer(layer)
+                    
+                    try await layer.load()
+                    if let extent = layer.fullExtent {
+                        print("full extent: \(extent)")
+                        updateSceneExtent(extent: extent)
+                    }
+                    
+                case .kml:
+                    let layer = ArcGIS.KMLLayer(item: itemModel.portalItem)
+                    scene.addOperationalLayer(layer)
+                    
+                    try await layer.load()
+                    if let extent = layer.fullExtent {
+                        print("full extent: \(extent)")
+                        updateSceneExtent(extent: extent)
+                    }
+                    
+                case .sceneService:
+                    let layer = ArcGIS.ArcGISSceneLayer(item: itemModel.portalItem)
+                    scene.addOperationalLayer(layer)
+                    
+                    try await layer.load()
+                    if let extent = layer.fullExtent {
+                        print("full extent: \(extent)")
+                        updateSceneExtent(extent: extent)
+                    }
+                    
+                default:
+                    () // Do nothing
                 }
-                let featureTable = ArcGIS.ServiceFeatureTable(url: featureURL)
-                let arcGISLayer = ArcGIS.FeatureLayer(item: itemModel.portalItem)
-                //let arcGISLayer = ArcGIS.FeatureLayer(featureTable: featureTable)
-                scene.addOperationalLayer(arcGISLayer)
-            case .kml:
-                let layer = ArcGIS.KMLLayer(item: itemModel.portalItem)
-                scene.addOperationalLayer(layer)
-                
-            case .sceneService:
-                let layer = ArcGIS.ArcGISSceneLayer(item: itemModel.portalItem)
-                scene.addOperationalLayer(layer)
-
-            default:
-                () // Do nothing
             }
-            
         case .hidden:
             // For testing only, return the map scene to it's default state
             let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
             self.scene = scene
             updateSceneView(scene: scene)
 
+        }
+    }
+    
+    func updateSceneExtent(extent: ArcGIS.Envelope?) {
+        if let extent = extent {
+            let center = extent.center
+            
+            let cameraDistanceDefault: Double = 300
+            
+            let sceneCamera = ArcGIS.Camera(lookAtPoint: center, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
+            let cameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
+            self.sceneView = SceneView(scene: scene, graphicsOverlays: self.graphicsOverlays)
         }
     }
     
