@@ -31,15 +31,13 @@ struct EFMapSceneView: View {
     @ObservedObject var sceneContentViewModel : EFSceneContentViewModel
     
     init() {
-        let sceneContentViewModel = EFSceneContentViewModel()
-        self.sceneContentViewModel = sceneContentViewModel
+        self.sceneContentViewModel = EFSceneContentViewModel()
     }
     
     init(portal: Portal, sceneLoadResult: Result<Void, Error>) {
         self.portal = portal
         self.sceneLoadResult = sceneLoadResult
-        let sceneContentViewModel = EFSceneContentViewModel()
-        self.sceneContentViewModel = sceneContentViewModel
+        self.sceneContentViewModel = EFSceneContentViewModel()
     }
     
     var body: some View {

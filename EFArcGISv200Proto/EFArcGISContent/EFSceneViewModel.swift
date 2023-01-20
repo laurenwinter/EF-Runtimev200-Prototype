@@ -64,7 +64,6 @@ public final class EFSceneContentViewModel: ObservableObject {
                 // WIP, this is simple demo for Web Scene, needs to be a layer handler
                 switch itemModel.portalItem.kind {
                 case .webScene:
-                    scene = Scene(item: itemModel.portalItem)
                     updateSceneView(scene: scene, extent: nil)
                     
                 case .webMap:
@@ -74,7 +73,10 @@ public final class EFSceneContentViewModel: ObservableObject {
                     
                     map.operationalLayers.forEach { (layer) in
                         let clone = layer.clone()
-                        scene.addOperationalLayer(clone)
+                        if let layerID = clone.id?.rawValue {
+                            itemModel.operationalLayerIDs.insert(layerID, at: 0)
+                            scene.addOperationalLayer(clone)
+                        }
                     }
                     
                     if let extent = itemModel.portalItem.extent {
@@ -87,8 +89,9 @@ public final class EFSceneContentViewModel: ObservableObject {
                     scene.addOperationalLayer(layer)
                     
                     try await layer.load()
-                    if let extent = layer.fullExtent {
+                    if let extent = layer.fullExtent, let layerID = layer.id?.rawValue {
                         print("featureService full extent: \(extent)")
+                        itemModel.operationalLayerIDs.insert(layerID, at: 0)
                         updateSceneView(scene: scene, extent: extent)
                     }
                     
@@ -97,8 +100,9 @@ public final class EFSceneContentViewModel: ObservableObject {
                     scene.addOperationalLayer(layer)
                     
                     try await layer.load()
-                    if let extent = layer.fullExtent {
+                    if let extent = layer.fullExtent, let layerID = layer.id?.rawValue {
                         print("kml full extent: \(extent)")
+                        itemModel.operationalLayerIDs.insert(layerID, at: 0)
                         updateSceneView(scene: scene, extent: extent)
                     }
                     
@@ -107,8 +111,9 @@ public final class EFSceneContentViewModel: ObservableObject {
                     scene.addOperationalLayer(layer)
                     
                     try await layer.load()
-                    if let extent = layer.fullExtent {
+                    if let extent = layer.fullExtent, let layerID = layer.id?.rawValue {
                         print("sceneService full extent: \(extent)")
+                        itemModel.operationalLayerIDs.insert(layerID, at: 0)
                         updateSceneView(scene: scene, extent: extent)
                     }
                     
@@ -117,10 +122,21 @@ public final class EFSceneContentViewModel: ObservableObject {
                 }
             }
         case .hidden:
-            // For testing only, return the map scene to it's default state
-            let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
-            self.scene = scene
-            updateSceneView(scene: scene, extent: nil)
+            switch itemModel.portalItem.kind {
+            case .webScene:
+                // For testing only, return the map scene to it's default state
+                let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
+                updateSceneView(scene: scene, extent: nil)
+            default:
+                let operationalLayers = scene.operationalLayers
+                itemModel.operationalLayerIDs.forEach { layerID in
+                    operationalLayers.forEach { layer in
+                        if layerID == layer.id?.rawValue {
+                            scene.removeOperationalLayer(layer)
+                        }
+                    }
+                }
+            }
 
         }
     }
@@ -128,6 +144,7 @@ public final class EFSceneContentViewModel: ObservableObject {
     func updateSceneView(scene: ArcGIS.Scene, extent: ArcGIS.Envelope?) {
         dropPinGraphicsOverlay.removeAllGraphics()
 
+        self.scene = scene
         if let extent = extent {
             let center = extent.center
             
@@ -172,6 +189,8 @@ class EFPortalItemModel: ObservableObject, Identifiable {
     
     /// The ArcGIS PortalItem
     var portalItem: PortalItem
+    
+    var operationalLayerIDs = [String]()
     
     /// State that is set by the app user to load and show the portal item on the map
     @Published var currentState = ItemState.initialized
