@@ -18,6 +18,8 @@ public final class EFSceneContentViewModel: ObservableObject {
         }
     }
     
+    private var viewpoint: ArcGIS.Viewpoint?
+    
     private var sceneCamera: ArcGIS.Camera
     private var sceneCameraController: ArcGIS.CameraController
     private let cameraDistanceDefault: Double = 300
@@ -40,17 +42,19 @@ public final class EFSceneContentViewModel: ObservableObject {
     private var arcGISGeodatabaseSyncTasks = [ServiceGeodatabase]()
         
     init() {
-        let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
+        let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISImageryStandard))
         self.scene = scene
         self.baseMapDataModel = EFBasemapDataModel(geoModel: scene)
 
         self.graphicsOverlays.append(contentsOf: [favoritesGraphicsOverlay, searchResultsGraphicsOverlay, dropPinGraphicsOverlay, measureGraphicsOverlay])
         self.sceneView = SceneView(scene: scene, graphicsOverlays: self.graphicsOverlays)
         
-        self.sceneCamera = ArcGIS.Camera(latitude: 38.146978, longitude: -94.499245, altitude: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
+        self.sceneCamera = ArcGIS.Camera(latitude: 37.873350, longitude: -122.302525, altitude: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
         self.sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
         
         self.userContentViewModel.portalItemSelected = self.itemSelectedCallback
+        
+        updateSceneView(scene: self.scene, extent: nil)
     }
     
     private func itemSelectedCallback(_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) {
@@ -62,8 +66,20 @@ public final class EFSceneContentViewModel: ObservableObject {
         case .visible:
             Task {
                 // WIP, this is simple demo for Web Scene, needs to be a layer handler
+                print("Selected layer: \(itemModel.portalItem.title) type: \(itemModel.portalItem.kind.description)")
+                
                 switch itemModel.portalItem.kind {
                 case .webScene:
+                    let operationalLayers = scene.operationalLayers
+                    scene.removeAllOperationalLayers()
+                    
+                    scene = Scene(item: itemModel.portalItem)
+                    scene.addOperationalLayers(operationalLayers)
+
+                    // Not using the current extent here, webScene's often have a specific extent
+//                  let extent = viewpoint?.targetGeometry.extent
+//                  updateSceneView(scene: scene, extent: extent)
+                    
                     updateSceneView(scene: scene, extent: nil)
                     
                 case .webMap:
@@ -117,16 +133,38 @@ public final class EFSceneContentViewModel: ObservableObject {
                         updateSceneView(scene: scene, extent: extent)
                     }
                     
+                case .mapService:
+                    let layer = ArcGIS.ArcGISTiledLayer(item: itemModel.portalItem)
+                    scene.addOperationalLayer(layer)
+                    
+                    try await layer.load()
+                    if let extent = layer.fullExtent, let layerID = layer.id?.rawValue {
+                        print("sceneService full extent: \(extent)")
+                        itemModel.operationalLayerIDs.insert(layerID, at: 0)
+                        updateSceneView(scene: scene, extent: extent)
+                    }
+                    
                 default:
-                    () // Do nothing
+                    // Not supported type
+                    print("Not supported layer type: \(itemModel.portalItem.kind.description)")
                 }
             }
         case .hidden:
             switch itemModel.portalItem.kind {
             case .webScene:
                 // For testing only, return the map scene to it's default state
-                let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
-                updateSceneView(scene: scene, extent: nil)
+//                let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
+//                updateSceneView(scene: scene, extent: nil)
+                
+                let operationalLayers = scene.operationalLayers
+                scene.removeAllOperationalLayers()
+
+                // For testing only, return the map scene to it's default state
+                let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISImageryStandard))
+                scene.addOperationalLayers(operationalLayers)
+
+                let extent = viewpoint?.targetGeometry.extent
+                updateSceneView(scene: scene, extent: extent)
             default:
                 let operationalLayers = scene.operationalLayers
                 itemModel.operationalLayerIDs.forEach { layerID in
@@ -153,6 +191,14 @@ public final class EFSceneContentViewModel: ObservableObject {
         }
         
         self.sceneView = SceneView(scene: scene, cameraController: sceneCameraController, graphicsOverlays: graphicsOverlays)
+            .onViewpointChanged(kind: .centerAndScale) {
+                if let geometry = self.viewpoint?.targetGeometry {
+                    let newVP = Viewpoint(targetExtent: geometry, camera: self.sceneCamera)
+                    self.viewpoint = newVP
+                } else {
+                    self.viewpoint = $0
+                }
+            }
             .onLongPressGesture { _, mapPoint in
                 self.handleLongPress(point: mapPoint)
         }
@@ -178,6 +224,25 @@ public final class EFSceneContentViewModel: ObservableObject {
         symbol.height = image.size.height * 2
         symbol.width = image.size.width * 2
         return symbol
+    }
+    
+    public func toggleCameraController(_ selectionState: Bool) {
+        print("toggleCameraController")
+        if selectionState {
+            sceneView = SceneView(scene: scene, cameraController: GlobeCameraController())
+        } else {
+            let cameraPoint = sceneCamera.location
+            if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
+               //let matrix = self.viewpoint?.camera?.transformationMatrix {
+                //var camera = Camera(transformationMatrix: matrix)
+                var cameraController = OrbitLocationCameraController(targetPoint: targetPoint, cameraPoint: cameraPoint)
+                sceneView = SceneView(scene: scene, cameraController:cameraController)
+            }
+        }
+    }
+    
+    public func toggleScene2D3D(_ controllerState: Bool) {
+        print("toggleScene2D3D")
     }
 }
 

@@ -24,6 +24,12 @@ struct EFMapSceneView: View {
     /// A Boolean value indicating whether the basemap selector view should be presented.
     @State var showBasemapSelector = false
     
+    /// A Boolean value to toggle the camera controller type
+    @State var toggleCameraController = true
+    
+    /// A Boolean value to toggle the scene 2D or 3D state
+    @State var scene2D3DState = false
+    
     /// The result of loading the scene.
     @State var sceneLoadResult: Result<Void, Error>?
                 
@@ -52,6 +58,27 @@ struct EFMapSceneView: View {
                                 .edgesIgnoringSafeArea(.top)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .toolbar {
+                                    ToolbarItem(placement: .navigationBarTrailing) {
+                                        Button {
+                                            scene2D3DState.toggle()
+                                        } label: {
+                                            Image(systemName: self.scene2D3DState ? "view.2d" : "view.3d")
+                                                .resizable()
+                                                .frame(width: 24.0, height: 24.0)
+                                                .tint(Color.blue)
+                                        }
+                                    }
+                                    ToolbarItem(placement: .navigationBarTrailing) {
+                                        Button {
+                                            toggleCameraController.toggle()
+                                        } label: {
+                                            Image(systemName: self.toggleCameraController ? "arrow.clockwise.circle" : "arrow.up.and.down.and.arrow.left.and.right")
+                                                .resizable()
+                                                .frame(width: 24.0, height: 24.0)
+                                                .tint(Color.blue)
+                                                .rotationEffect(Angle.degrees(90))
+                                        }
+                                    }
                                     ToolbarItem(placement: .navigationBarTrailing) {
                                         Button {
                                             showBasemapSelector = true
@@ -125,6 +152,12 @@ struct EFMapSceneView: View {
             .task {
                 guard sceneLoadResult == nil else { return }
                 sceneLoadResult = await Result { try await sceneContentViewModel.scene.load() }
+            }
+            .onChange(of: toggleCameraController) { value in
+                sceneContentViewModel.toggleCameraController(value)
+            }
+            .onChange(of: scene2D3DState) { value in
+                sceneContentViewModel.toggleScene2D3D(value)
             }
         } else {
             EFSignInView(portal: $portal)
