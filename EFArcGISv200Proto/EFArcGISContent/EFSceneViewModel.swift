@@ -12,6 +12,10 @@ import Combine
 public final class EFSceneContentViewModel: ObservableObject {
         
     public var sceneView: ArcGIS.SceneView
+    
+    private var sceneCamera: ArcGIS.Camera
+    private var sceneCameraController: ArcGIS.CameraController
+    private let cameraDistanceDefault: Double = 300
 
     @Published var scene: ArcGIS.Scene
     
@@ -37,7 +41,11 @@ public final class EFSceneContentViewModel: ObservableObject {
 
         self.graphicsOverlays.append(contentsOf: [favoritesGraphicsOverlay, searchResultsGraphicsOverlay, dropPinGraphicsOverlay, measureGraphicsOverlay])
         self.sceneView = SceneView(scene: scene, graphicsOverlays: self.graphicsOverlays)
-        self.userContentViewModel.portalItemSelected = itemSelectedCallback
+        
+        self.sceneCamera = ArcGIS.Camera(latitude: 38.146978, longitude: -94.499245, altitude: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
+        self.sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
+        
+        self.userContentViewModel.portalItemSelected = self.itemSelectedCallback
     }
     
     private func itemSelectedCallback(_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) {
@@ -52,7 +60,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                 switch itemModel.portalItem.kind {
                 case .webScene:
                     scene = Scene(item: itemModel.portalItem)
-                    updateSceneView(scene: scene)
+                    updateSceneView(scene: scene, extent: nil)
                     
                 case .webMap:
                     // Web Map types can not be loaded into a 3D Scene so they're loaded into an AGSMap and then the operational layers are copied for loading into the Scene
@@ -67,7 +75,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     
                     if let extent = itemModel.portalItem.extent {
                         print("full extent: \(extent)")
-                        updateSceneExtent(extent: extent)
+                        updateSceneView(scene: scene, extent: extent)
                     }
                     
                 case .featureService:
@@ -77,7 +85,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     try await layer.load()
                     if let extent = layer.fullExtent {
                         print("full extent: \(extent)")
-                        updateSceneExtent(extent: extent)
+                        updateSceneView(scene: scene, extent: extent)
                     }
                     
                 case .kml:
@@ -87,7 +95,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     try await layer.load()
                     if let extent = layer.fullExtent {
                         print("full extent: \(extent)")
-                        updateSceneExtent(extent: extent)
+                        updateSceneView(scene: scene, extent: extent)
                     }
                     
                 case .sceneService:
@@ -97,7 +105,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     try await layer.load()
                     if let extent = layer.fullExtent {
                         print("full extent: \(extent)")
-                        updateSceneExtent(extent: extent)
+                        updateSceneView(scene: scene, extent: extent)
                     }
                     
                 default:
@@ -108,31 +116,26 @@ public final class EFSceneContentViewModel: ObservableObject {
             // For testing only, return the map scene to it's default state
             let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
             self.scene = scene
-            updateSceneView(scene: scene)
+            updateSceneView(scene: scene, extent: nil)
 
         }
     }
     
-    func updateSceneExtent(extent: ArcGIS.Envelope?) {
+    func updateSceneView(scene: ArcGIS.Scene, extent: ArcGIS.Envelope?) {
+        dropPinGraphicsOverlay.removeAllGraphics()
+
         if let extent = extent {
             let center = extent.center
             
-            let cameraDistanceDefault: Double = 300
-            
-            let sceneCamera = ArcGIS.Camera(lookAtPoint: center, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
-            let cameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
-            self.sceneView = SceneView(scene: scene, graphicsOverlays: self.graphicsOverlays)
+            sceneCamera = ArcGIS.Camera(lookAtPoint: center, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
+            sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
         }
-    }
-    
-    func updateSceneView(scene: ArcGIS.Scene) {
-        dropPinGraphicsOverlay.removeAllGraphics()
-
-        sceneView = SceneView(scene: scene, graphicsOverlays: self.graphicsOverlays)
+        
+        self.sceneView = SceneView(scene: scene, cameraController: sceneCameraController, graphicsOverlays: graphicsOverlays)
             .onLongPressGesture { _, mapPoint in
                 self.handleLongPress(point: mapPoint)
         }
-        
+                
         baseMapDataModel.geoModel = scene
     }
     
