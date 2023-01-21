@@ -28,7 +28,7 @@ struct EFMapSceneView: View {
     @State var toggleCameraController = true
     
     /// A Boolean value to toggle the scene 2D or 3D state
-    @State var scene2D3DState = false
+    @State var scene2D3DState = true
     
     /// The result of loading the scene.
     @State var sceneLoadResult: Result<Void, Error>?
@@ -62,7 +62,7 @@ struct EFMapSceneView: View {
                                         Button {
                                             scene2D3DState.toggle()
                                         } label: {
-                                            Image(systemName: self.scene2D3DState ? "view.2d" : "view.3d")
+                                            Image(systemName: self.scene2D3DState ? "view.3d" : "view.2d")
                                                 .resizable()
                                                 .frame(width: 24.0, height: 24.0)
                                                 .tint(Color.blue)

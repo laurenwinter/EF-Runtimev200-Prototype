@@ -233,9 +233,11 @@ public final class EFSceneContentViewModel: ObservableObject {
         } else {
             let cameraPoint = sceneCamera.location
             if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
-               //let matrix = self.viewpoint?.camera?.transformationMatrix {
-                //var camera = Camera(transformationMatrix: matrix)
-                var cameraController = OrbitLocationCameraController(targetPoint: targetPoint, cameraPoint: cameraPoint)
+//                if let matrix = self.viewpoint?.camera?.transformationMatrix {
+//                    var camera = Camera(transformationMatrix: matrix)
+//                    print("\(camera.heading), \(camera.pitch), \(camera.roll)")
+//                }
+                let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, cameraPoint: cameraPoint)
                 sceneView = SceneView(scene: scene, cameraController:cameraController)
             }
         }
@@ -243,6 +245,24 @@ public final class EFSceneContentViewModel: ObservableObject {
     
     public func toggleScene2D3D(_ controllerState: Bool) {
         print("toggleScene2D3D")
+        if controllerState {
+            let surface = Surface()
+            scene.baseSurface = surface
+        } else {
+            let ESRI_ELEVATION_SOURCE_URL: String = "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer"
+            let worldElevationService = URL(string: ESRI_ELEVATION_SOURCE_URL)!
+            let elevationSource = ArcGIS.ArcGISTiledElevationSource(url: worldElevationService)
+            
+            Task {
+                try await elevationSource.load()
+                
+                let surface = ArcGIS.Surface()
+                surface.addElevationSource(elevationSource)
+                
+                try await surface.load()
+                scene.baseSurface = surface
+            }
+        }
     }
 }
 
