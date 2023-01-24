@@ -65,8 +65,11 @@ struct EFMapSceneView: View {
                                             Image(systemName: self.scene2D3DState ? "view.3d" : "view.2d")
                                                 .resizable()
                                                 .frame(width: 24.0, height: 24.0)
-                                                .tint(Color.blue)
+                                                .tint(Color.white)
                                         }
+                                        .padding()
+                                        .background(Color.blue)
+                                        .clipShape(Circle())
                                     }
                                     ToolbarItem(placement: .navigationBarTrailing) {
                                         Button {
@@ -75,9 +78,12 @@ struct EFMapSceneView: View {
                                             Image(systemName: self.toggleCameraController ? "arrow.clockwise.circle" : "arrow.up.and.down.and.arrow.left.and.right")
                                                 .resizable()
                                                 .frame(width: 24.0, height: 24.0)
-                                                .tint(Color.blue)
+                                                .tint(Color.white)
                                                 .rotationEffect(Angle.degrees(90))
                                         }
+                                        .padding()
+                                        .background(Color.blue)
+                                        .clipShape(Circle())
                                     }
                                     ToolbarItem(placement: .navigationBarTrailing) {
                                         Button {
@@ -88,8 +94,11 @@ struct EFMapSceneView: View {
                                             Image(systemName: "rectangle.grid.2x2")
                                                 .resizable()
                                                 .frame(width: 24.0, height: 24.0)
-                                                .tint(Color.blue)
+                                                .tint(Color.white)
                                         }
+                                        .padding()
+                                        .background(Color.blue)
+                                        .clipShape(Circle())
                                     }
                                     ToolbarItem(placement: .navigationBarTrailing) {
                                         Button {
@@ -100,8 +109,11 @@ struct EFMapSceneView: View {
                                             Image(systemName: "person.crop.square")
                                                 .resizable()
                                                 .frame(width: 24.0, height: 24.0)
-                                                .tint(Color.blue)
+                                                .tint(Color.white)
                                         }
+                                        .padding()
+                                        .background(Color.blue)
+                                        .clipShape(Circle())
                                     }
                                 }
                                 .overlay(alignment: .topTrailing) {

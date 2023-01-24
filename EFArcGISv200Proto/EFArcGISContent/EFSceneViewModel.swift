@@ -51,7 +51,7 @@ public final class EFSceneContentViewModel: ObservableObject {
         
         self.sceneCamera = ArcGIS.Camera(latitude: 37.873350, longitude: -122.302525, altitude: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
         self.sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
-        
+
         self.userContentViewModel.portalItemSelected = self.itemSelectedCallback
         
         updateSceneView(scene: self.scene, extent: nil)
@@ -192,12 +192,15 @@ public final class EFSceneContentViewModel: ObservableObject {
         
         self.sceneView = SceneView(scene: scene, cameraController: sceneCameraController, graphicsOverlays: graphicsOverlays)
             .onViewpointChanged(kind: .centerAndScale) {
-                if let geometry = self.viewpoint?.targetGeometry {
-                    let newVP = Viewpoint(targetExtent: geometry, camera: self.sceneCamera)
-                    self.viewpoint = newVP
-                } else {
+//                if let geometry = self.viewpoint?.targetGeometry {
+//                    let newVP = Viewpoint(targetExtent: geometry, camera: self.sceneCamera)
+//                    self.viewpoint = newVP
+//
+//                    print("viewpoint: \(self.viewpoint), target: \(self.viewpoint?.targetGeometry), cameraPoint:\(self.sceneCamera.location)")
+//                } else {
                     self.viewpoint = $0
-                }
+                    print("viewpoint: \(self.viewpoint), target: \(self.viewpoint?.targetGeometry), cameraPoint:\(self.sceneCamera.location)")
+//                }
             }
             .onLongPressGesture { _, mapPoint in
                 self.handleLongPress(point: mapPoint)
@@ -227,18 +230,19 @@ public final class EFSceneContentViewModel: ObservableObject {
     }
     
     public func toggleCameraController(_ selectionState: Bool) {
-        print("toggleCameraController")
         if selectionState {
-            sceneView = SceneView(scene: scene, cameraController: GlobeCameraController())
+            sceneView = SceneView(scene: scene, cameraController: GlobeCameraController(), graphicsOverlays: graphicsOverlays)
         } else {
             let cameraPoint = sceneCamera.location
             if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
-//                if let matrix = self.viewpoint?.camera?.transformationMatrix {
-//                    var camera = Camera(transformationMatrix: matrix)
-//                    print("\(camera.heading), \(camera.pitch), \(camera.roll)")
-//                }
+                if let matrix = self.viewpoint?.camera?.transformationMatrix {
+                    var camera = Camera(transformationMatrix: matrix)
+                    print("Matrix = \(camera.heading), \(camera.pitch), \(camera.roll)")
+                }
+                print("target: \(targetPoint), cameraPoint:\(cameraPoint)")
                 let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, cameraPoint: cameraPoint)
-                sceneView = SceneView(scene: scene, cameraController:cameraController)
+                sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
+                
             }
         }
     }
@@ -248,6 +252,11 @@ public final class EFSceneContentViewModel: ObservableObject {
         if controllerState {
             let surface = Surface()
             scene.baseSurface = surface
+            if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
+                sceneCamera = ArcGIS.Camera(lookAtPoint: targetPoint, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
+            }
+            self.sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
+            sceneView = SceneView(scene: scene, cameraController:self.sceneCameraController, graphicsOverlays: graphicsOverlays)
         } else {
             let ESRI_ELEVATION_SOURCE_URL: String = "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer"
             let worldElevationService = URL(string: ESRI_ELEVATION_SOURCE_URL)!
@@ -261,6 +270,13 @@ public final class EFSceneContentViewModel: ObservableObject {
                 
                 try await surface.load()
                 scene.baseSurface = surface
+                
+                let cameraPoint = sceneCamera.location
+                if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
+                    //print("target: \(targetPoint), cameraPoint:\(cameraPoint)")
+                    let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, cameraPoint: cameraPoint)
+                    sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
+                }
             }
         }
     }
