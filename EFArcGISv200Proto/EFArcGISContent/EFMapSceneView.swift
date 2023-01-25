@@ -58,60 +58,49 @@ struct EFMapSceneView: View {
                                 .edgesIgnoringSafeArea(.top)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .toolbar {
-                                    ToolbarItem(placement: .navigationBarTrailing) {
+                                    ToolbarItemGroup {
                                         Button {
                                             scene2D3DState.toggle()
                                         } label: {
                                             Image(systemName: self.scene2D3DState ? "view.3d" : "view.2d")
-                                                .resizable()
-                                                .frame(width: 24.0, height: 24.0)
                                                 .tint(Color.white)
                                         }
-                                        .padding()
+                                        .frame(width: 36.0, height: 36.0)
                                         .background(Color.blue)
                                         .clipShape(Circle())
-                                    }
-                                    ToolbarItem(placement: .navigationBarTrailing) {
+                                        
                                         Button {
                                             toggleCameraController.toggle()
                                         } label: {
                                             Image(systemName: self.toggleCameraController ? "arrow.clockwise.circle" : "arrow.up.and.down.and.arrow.left.and.right")
-                                                .resizable()
-                                                .frame(width: 24.0, height: 24.0)
                                                 .tint(Color.white)
                                                 .rotationEffect(Angle.degrees(90))
                                         }
-                                        .padding()
+                                        .frame(width: 36.0, height: 36.0)
                                         .background(Color.blue)
                                         .clipShape(Circle())
-                                    }
-                                    ToolbarItem(placement: .navigationBarTrailing) {
+                                        
                                         Button {
                                             showBasemapSelector = true
                                             showProfile = false
                                             showContentAndGroup = false
                                         } label: {
                                             Image(systemName: "rectangle.grid.2x2")
-                                                .resizable()
-                                                .frame(width: 24.0, height: 24.0)
                                                 .tint(Color.white)
                                         }
-                                        .padding()
+                                        .frame(width: 36.0, height: 36.0)
                                         .background(Color.blue)
                                         .clipShape(Circle())
-                                    }
-                                    ToolbarItem(placement: .navigationBarTrailing) {
+                                        
                                         Button {
                                             showProfile = true
                                             showBasemapSelector = false
                                             showContentAndGroup = false
                                         } label: {
-                                            Image(systemName: "person.crop.square")
-                                                .resizable()
-                                                .frame(width: 24.0, height: 24.0)
+                                            Image(systemName: "person.crop.circle")
                                                 .tint(Color.white)
                                         }
-                                        .padding()
+                                        .frame(width: 36.0, height: 36.0)
                                         .background(Color.blue)
                                         .clipShape(Circle())
                                     }

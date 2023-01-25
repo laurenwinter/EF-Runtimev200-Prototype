@@ -54,7 +54,7 @@ public final class EFSceneContentViewModel: ObservableObject {
 
         self.userContentViewModel.portalItemSelected = self.itemSelectedCallback
         
-        updateSceneView(scene: self.scene, extent: nil)
+        updateSceneView(scene: self.scene, extent: nil, orbitalCameraState: nil)
     }
     
     private func itemSelectedCallback(_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) {
@@ -80,7 +80,7 @@ public final class EFSceneContentViewModel: ObservableObject {
 //                  let extent = viewpoint?.targetGeometry.extent
 //                  updateSceneView(scene: scene, extent: extent)
                     
-                    updateSceneView(scene: scene, extent: nil)
+                    updateSceneView(scene: scene, extent: nil, orbitalCameraState: nil)
                     
                 case .webMap:
                     // Web Map types can not be loaded into a 3D Scene so they're loaded into an AGSMap and then the operational layers are copied for loading into the Scene
@@ -97,7 +97,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     
                     if let extent = itemModel.portalItem.extent {
                         print("webMap full extent: \(extent)")
-                        updateSceneView(scene: scene, extent: extent)
+                        updateSceneView(scene: scene, extent: extent, orbitalCameraState: nil)
                     }
                     
                 case .featureService:
@@ -108,7 +108,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     if let extent = layer.fullExtent, let layerID = layer.id?.rawValue {
                         print("featureService full extent: \(extent)")
                         itemModel.operationalLayerIDs.insert(layerID, at: 0)
-                        updateSceneView(scene: scene, extent: extent)
+                        updateSceneView(scene: scene, extent: extent, orbitalCameraState: nil)
                     }
                     
                 case .kml:
@@ -119,7 +119,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     if let extent = layer.fullExtent, let layerID = layer.id?.rawValue {
                         print("kml full extent: \(extent)")
                         itemModel.operationalLayerIDs.insert(layerID, at: 0)
-                        updateSceneView(scene: scene, extent: extent)
+                        updateSceneView(scene: scene, extent: extent, orbitalCameraState: nil)
                     }
                     
                 case .sceneService:
@@ -130,7 +130,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     if let extent = layer.fullExtent, let layerID = layer.id?.rawValue {
                         print("sceneService full extent: \(extent)")
                         itemModel.operationalLayerIDs.insert(layerID, at: 0)
-                        updateSceneView(scene: scene, extent: extent)
+                        updateSceneView(scene: scene, extent: extent, orbitalCameraState: nil)
                     }
                     
                 case .mapService:
@@ -141,7 +141,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     if let extent = layer.fullExtent, let layerID = layer.id?.rawValue {
                         print("sceneService full extent: \(extent)")
                         itemModel.operationalLayerIDs.insert(layerID, at: 0)
-                        updateSceneView(scene: scene, extent: extent)
+                        updateSceneView(scene: scene, extent: extent, orbitalCameraState: nil)
                     }
                     
                 default:
@@ -164,7 +164,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                 scene.addOperationalLayers(operationalLayers)
 
                 let extent = viewpoint?.targetGeometry.extent
-                updateSceneView(scene: scene, extent: extent)
+                updateSceneView(scene: scene, extent: extent, orbitalCameraState: nil)
             default:
                 let operationalLayers = scene.operationalLayers
                 itemModel.operationalLayerIDs.forEach { layerID in
@@ -179,15 +179,32 @@ public final class EFSceneContentViewModel: ObservableObject {
         }
     }
     
-    func updateSceneView(scene: ArcGIS.Scene, extent: ArcGIS.Envelope?) {
+    func updateSceneView(scene: ArcGIS.Scene, extent: ArcGIS.Envelope?, orbitalCameraState: Bool?) {
         dropPinGraphicsOverlay.removeAllGraphics()
 
-        self.scene = scene
-        if let extent = extent {
-            let center = extent.center
-            
-            sceneCamera = ArcGIS.Camera(lookAtPoint: center, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
-            sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
+        if let cameraState = orbitalCameraState {
+            if cameraState {
+                sceneCameraController = GlobeCameraController()
+            } else {
+                let cameraPoint = sceneCamera.location
+                //if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Envelope {
+                if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
+                    if let matrix = self.viewpoint?.camera?.transformationMatrix {
+                        var camera = Camera(transformationMatrix: matrix)
+                        print("Matrix = \(camera.heading), \(camera.pitch), \(camera.roll)")
+                    }
+                    print("target: \(targetPoint), cameraPoint:\(cameraPoint)")
+                    sceneCameraController = OrbitLocationCameraController(targetPoint: targetPoint, cameraPoint: cameraPoint)
+                }
+            }
+        } else {
+            self.scene = scene
+            if let extent = extent {
+                let center = extent.center
+                
+                sceneCamera = ArcGIS.Camera(lookAtPoint: center, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
+                sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
+            }
         }
         
         self.sceneView = SceneView(scene: scene, cameraController: sceneCameraController, graphicsOverlays: graphicsOverlays)
@@ -196,7 +213,7 @@ public final class EFSceneContentViewModel: ObservableObject {
 //                    let newVP = Viewpoint(targetExtent: geometry, camera: self.sceneCamera)
 //                    self.viewpoint = newVP
 //
-//                    print("viewpoint: \(self.viewpoint), target: \(self.viewpoint?.targetGeometry), cameraPoint:\(self.sceneCamera.location)")
+//                    //print("new viewpoint: \(self.viewpoint), target: \(self.viewpoint?.targetGeometry), cameraPoint:\(self.sceneCamera.location)")
 //                } else {
                     self.viewpoint = $0
                     print("viewpoint: \(self.viewpoint), target: \(self.viewpoint?.targetGeometry), cameraPoint:\(self.sceneCamera.location)")
@@ -230,10 +247,13 @@ public final class EFSceneContentViewModel: ObservableObject {
     }
     
     public func toggleCameraController(_ selectionState: Bool) {
+        updateSceneView(scene: scene, extent: nil, orbitalCameraState: selectionState)
+        /*
         if selectionState {
             sceneView = SceneView(scene: scene, cameraController: GlobeCameraController(), graphicsOverlays: graphicsOverlays)
         } else {
             let cameraPoint = sceneCamera.location
+            //if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Envelope {
             if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
                 if let matrix = self.viewpoint?.camera?.transformationMatrix {
                     var camera = Camera(transformationMatrix: matrix)
@@ -244,7 +264,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                 sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
                 
             }
-        }
+        }*/
     }
     
     public func toggleScene2D3D(_ controllerState: Bool) {
