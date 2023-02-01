@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1520FF6829708D0A00D1A7D4 /* MapDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520FF6729708D0A00D1A7D4 /* MapDataModel.swift */; };
 		1520FF6A2970B72C00D1A7D4 /* EFBasemapGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520FF692970B72C00D1A7D4 /* EFBasemapGalleryView.swift */; };
 		1520FF6C2977188C00D1A7D4 /* EFBasemapDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520FF6B2977188C00D1A7D4 /* EFBasemapDataModel.swift */; };
 		154F779C2953812500A06195 /* EFArcGISv200ProtoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F779B2953812500A06195 /* EFArcGISv200ProtoApp.swift */; };
@@ -52,7 +51,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1520FF6729708D0A00D1A7D4 /* MapDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDataModel.swift; sourceTree = "<group>"; };
 		1520FF692970B72C00D1A7D4 /* EFBasemapGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFBasemapGalleryView.swift; sourceTree = "<group>"; };
 		1520FF6B2977188C00D1A7D4 /* EFBasemapDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFBasemapDataModel.swift; sourceTree = "<group>"; };
 		154F77982953812500A06195 /* EFArcGISv200Proto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EFArcGISv200Proto.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,7 +109,6 @@
 		1520FF6429708C6500D1A7D4 /* RuntimeSamplesCode */ = {
 			isa = PBXGroup;
 			children = (
-				1520FF6729708D0A00D1A7D4 /* MapDataModel.swift */,
 			);
 			path = RuntimeSamplesCode;
 			sourceTree = "<group>";
@@ -373,7 +370,6 @@
 				154F77CB29538A4E00A06195 /* ProfileView.swift in Sources */,
 				1520FF6A2970B72C00D1A7D4 /* EFBasemapGalleryView.swift in Sources */,
 				15DE89BF296E1B0400C4F632 /* EFSignInView.swift in Sources */,
-				1520FF6829708D0A00D1A7D4 /* MapDataModel.swift in Sources */,
 				159CBF75296F2FB500CF0BEC /* KeychainAccess.swift in Sources */,
 				154F77CD29538A8A00A06195 /* UserView.swift in Sources */,
 				154F779C2953812500A06195 /* EFArcGISv200ProtoApp.swift in Sources */,

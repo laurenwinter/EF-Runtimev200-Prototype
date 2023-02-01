@@ -16,6 +16,10 @@ import ArcGIS
 import ArcGISToolkit
 import CryptoKit
 
+//
+// Note: This is copied from Runtime Toolkit AuthenticationExample, SignInView.swift
+//
+
 /// A view that allows the user to sign in to a portal.
 struct EFSignInView: View {
     /// The authenticator which has been passed from the app through the environment.

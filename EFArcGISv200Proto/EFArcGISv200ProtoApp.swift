@@ -9,6 +9,10 @@ import SwiftUI
 import ArcGISToolkit
 import ArcGIS
 
+//
+// Note: This code is copied from the ArcGISToolkit AuthenticationExample app
+//
+
 @main
 struct EFArcGISv200ProtoApp: App {
     @ObservedObject var authenticator: Authenticator

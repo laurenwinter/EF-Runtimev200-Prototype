@@ -9,8 +9,6 @@ import SwiftUI
 import ArcGIS
 import Combine
 
-var scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
-
 struct EFMapSceneView: View {
     /// The portal that the user is signed in to.
     @State var portal: Portal?
@@ -18,8 +16,8 @@ struct EFMapSceneView: View {
     /// A Boolean value indicating whether the profile view should be presented.
     @State var showProfile = false
     
-    /// A Boolean value indicating whether the content view should be presented.
-    @State var showContentAndGroup = false
+    /// A Boolean value indicating whether the content and group layer view should be presented.
+    @State var showEFPortalUserTabbedView = false
     
     /// A Boolean value indicating whether the basemap selector view should be presented.
     @State var showBasemapSelector = false
@@ -28,22 +26,22 @@ struct EFMapSceneView: View {
     @State var toggleCameraController = true
     
     /// A Boolean value to toggle the scene 2D or 3D state
-    @State var scene2D3DState = true
+    @State var toggleScene2D3DState = true
     
     /// The result of loading the scene.
     @State var sceneLoadResult: Result<Void, Error>?
                 
     /// The persistent ArcGIS layer view model for all the User and Group content
-    @ObservedObject var sceneContentViewModel : EFSceneContentViewModel
+    @StateObject var sceneContentViewModel : EFSceneContentViewModel = EFSceneContentViewModel()
     
     init() {
-        self.sceneContentViewModel = EFSceneContentViewModel()
+        // The default app initializer
     }
     
     init(portal: Portal, sceneLoadResult: Result<Void, Error>) {
+        // Initializer for the Preview
         self.portal = portal
         self.sceneLoadResult = sceneLoadResult
-        self.sceneContentViewModel = EFSceneContentViewModel()
     }
     
     var body: some View {
@@ -60,9 +58,9 @@ struct EFMapSceneView: View {
                                 .toolbar {
                                     ToolbarItemGroup {
                                         Button {
-                                            scene2D3DState.toggle()
+                                            toggleScene2D3DState.toggle()
                                         } label: {
-                                            Image(systemName: self.scene2D3DState ? "view.3d" : "view.2d")
+                                            Image(systemName: self.toggleScene2D3DState ? "view.3d" : "view.2d")
                                                 .tint(Color.white)
                                         }
                                         .frame(width: 36.0, height: 36.0)
@@ -83,7 +81,7 @@ struct EFMapSceneView: View {
                                         Button {
                                             showBasemapSelector = true
                                             showProfile = false
-                                            showContentAndGroup = false
+                                            showEFPortalUserTabbedView = false
                                         } label: {
                                             Image(systemName: "rectangle.grid.2x2")
                                                 .tint(Color.white)
@@ -95,7 +93,7 @@ struct EFMapSceneView: View {
                                         Button {
                                             showProfile = true
                                             showBasemapSelector = false
-                                            showContentAndGroup = false
+                                            showEFPortalUserTabbedView = false
                                         } label: {
                                             Image(systemName: "person.crop.circle")
                                                 .tint(Color.white)
@@ -120,10 +118,10 @@ struct EFMapSceneView: View {
                             HStack {
                                 Spacer()
                                 VStack {
-                                    if !showContentAndGroup {
+                                    if !showEFPortalUserTabbedView {
                                         Button {
-                                            showContentAndGroup.toggle()
-                                            if showContentAndGroup {
+                                            showEFPortalUserTabbedView.toggle()
+                                            if showEFPortalUserTabbedView {
                                                 showProfile = false
                                                 showBasemapSelector = false
                                             }
@@ -138,7 +136,7 @@ struct EFMapSceneView: View {
                                         .background(Color.blue)
                                         .clipShape(Circle())
                                     } else {
-                                        EFPortalUserTabbedView(portal: portal, showContentAndGroup: $showContentAndGroup, sceneContentViewModel: sceneContentViewModel)
+                                        EFPortalUserTabbedView(portal: portal, showContentAndGroup: $showEFPortalUserTabbedView, sceneContentViewModel: sceneContentViewModel)
                                     }
                                 }
                             }
@@ -157,7 +155,7 @@ struct EFMapSceneView: View {
             .onChange(of: toggleCameraController) { value in
                 sceneContentViewModel.toggleCameraController(value)
             }
-            .onChange(of: scene2D3DState) { value in
+            .onChange(of: toggleScene2D3DState) { value in
                 sceneContentViewModel.toggleScene2D3D(value)
             }
         } else {
