@@ -106,11 +106,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1520FF6429708C6500D1A7D4 /* RuntimeSamplesCode */ = {
+		1520FF6429708C6500D1A7D4 /* EFDataModels */ = {
 			isa = PBXGroup;
 			children = (
+				155190742954C0DA00BF2128 /* EFSceneViewModel.swift */,
+				1520FF6B2977188C00D1A7D4 /* EFBasemapDataModel.swift */,
 			);
-			path = RuntimeSamplesCode;
+			path = EFDataModels;
 			sourceTree = "<group>";
 		};
 		154F778F2953812500A06195 = {
@@ -137,7 +139,7 @@
 		154F779A2953812500A06195 /* EFArcGISv200Proto */ = {
 			isa = PBXGroup;
 			children = (
-				1520FF6429708C6500D1A7D4 /* RuntimeSamplesCode */,
+				1520FF6429708C6500D1A7D4 /* EFDataModels */,
 				15B7396C2968AF46008558AC /* EFArcGISGraphics */,
 				154F77D129538E4500A06195 /* EFArcGISContent */,
 				154F77D029538B5E00A06195 /* RuntimeCode */,
@@ -187,14 +189,12 @@
 		154F77D129538E4500A06195 /* EFArcGISContent */ = {
 			isa = PBXGroup;
 			children = (
-				155190742954C0DA00BF2128 /* EFSceneViewModel.swift */,
 				155190732954C0DA00BF2128 /* EFPortalFolderView.swift */,
 				155190752954C0DA00BF2128 /* EFPortalUserTabbedView.swift */,
 				155190772954C0DA00BF2128 /* EFUserContentView.swift */,
 				155190762954C0DA00BF2128 /* EFMapSceneView.swift */,
 				15DE89BE296E1B0400C4F632 /* EFSignInView.swift */,
 				1520FF692970B72C00D1A7D4 /* EFBasemapGalleryView.swift */,
-				1520FF6B2977188C00D1A7D4 /* EFBasemapDataModel.swift */,
 			);
 			path = EFArcGISContent;
 			sourceTree = "<group>";

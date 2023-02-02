@@ -57,6 +57,8 @@ public final class EFSceneContentViewModel: ObservableObject {
         updateSceneView(scene: self.scene, extent: nil, orbitalCameraState: nil)
     }
     
+    // This is a simple test operational layers
+    // This is a basic PortalItem (layer) function to add and remove layers.
     private func itemSelectedCallback(_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) {
         //print("itemSelectedFunc, \(itemModel.portalItem.title), selected: \(state)")
         switch state {
@@ -152,9 +154,6 @@ public final class EFSceneContentViewModel: ObservableObject {
         case .hidden:
             switch itemModel.portalItem.kind {
             case .webScene:
-                // For testing only, return the map scene to it's default state
-//                let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISNewspaper))
-//                updateSceneView(scene: scene, extent: nil)
                 
                 let operationalLayers = scene.operationalLayers
                 scene.removeAllOperationalLayers()
@@ -179,6 +178,8 @@ public final class EFSceneContentViewModel: ObservableObject {
         }
     }
     
+    // No reason to review this function yet
+    // We need a Runtime fix before developing this into usable code
     func updateSceneView(scene: ArcGIS.Scene, extent: ArcGIS.Envelope?, orbitalCameraState: Bool?) {
         dropPinGraphicsOverlay.removeAllGraphics()
 
@@ -186,8 +187,9 @@ public final class EFSceneContentViewModel: ObservableObject {
             if cameraState {
                 sceneCameraController = GlobeCameraController()
             } else {
+                // This functionality doesn't work yet because Runtime isn't returning the current viewpoint camera, self.viewpoint is incorrect
+                // https://devtopia.esri.com/runtime/swift/issues/3434
                 let cameraPoint = sceneCamera.location
-                //if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Envelope {
                 if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
                     if let matrix = self.viewpoint?.camera?.transformationMatrix {
                         var camera = Camera(transformationMatrix: matrix)
@@ -246,6 +248,7 @@ public final class EFSceneContentViewModel: ObservableObject {
         return symbol
     }
     
+    // No reason to review this function yet
     public func toggleCameraController(_ selectionState: Bool) {
         updateSceneView(scene: scene, extent: nil, orbitalCameraState: selectionState)
         /*
@@ -267,6 +270,7 @@ public final class EFSceneContentViewModel: ObservableObject {
         }*/
     }
     
+    // No reason to review this function yet
     public func toggleScene2D3D(_ controllerState: Bool) {
         print("toggleScene2D3D")
         if controllerState {
@@ -311,6 +315,7 @@ class EFPortalItemModel: ObservableObject, Identifiable {
     /// The ArcGIS PortalItem
     var portalItem: PortalItem
     
+    /// String array used to manage the layers added by the user
     var operationalLayerIDs = [String]()
     
     /// State that is set by the app user to load and show the portal item on the map
