@@ -13,11 +13,14 @@ public final class EFSceneContentViewModel: ObservableObject {
         
     public var sceneView: ArcGIS.SceneView {
         willSet {
-            // This will update the Views that are using the SceneView
+            // This will force the Views that are using the SceneView to refresh
+            // There must be a better SwiftUI way to update the SceneView???
             objectWillChange.send()
         }
     }
     
+    // A property that may be used to change the camera controller and elevation.
+    // Waiting for Runtime fix to see if this is needed or not
     private var viewpoint: ArcGIS.Viewpoint?
     
     private var sceneCamera: ArcGIS.Camera
@@ -29,8 +32,10 @@ public final class EFSceneContentViewModel: ObservableObject {
     // All of the ArcGIS User content, items are placed in associated folders
     @ObservedObject var userContentViewModel = EFUserContentViewModel()
     
+    // Data model to test the scene basemap changing functionality
     let baseMapDataModel: EFBasemapDataModel
     
+    // Set of GraphicsOverlay for testing struct SceneView
     public let dropPinGraphicsOverlay = GraphicsOverlay()
     public let favoritesGraphicsOverlay = GraphicsOverlay()
     public let searchResultsGraphicsOverlay = GraphicsOverlay()
@@ -57,7 +62,7 @@ public final class EFSceneContentViewModel: ObservableObject {
         updateSceneView(scene: self.scene, extent: nil, orbitalCameraState: nil)
     }
     
-    // This is a simple test operational layers
+    // This is a simple test for operational layers, the ArcGIS Online layers that the user can select
     // This is a basic PortalItem (layer) function to add and remove layers.
     private func itemSelectedCallback(_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) {
         //print("itemSelectedFunc, \(itemModel.portalItem.title), selected: \(state)")
@@ -347,45 +352,52 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
 
 @MainActor class EFUserContentViewModel: ObservableObject {
     
+    // Essentially a callback assigned to this model from the parent mode (EFSceneContentViewModel) to handle user select/deselect of a layer
+    // We'll review this model hierarchy to determine if there's a better approach
     public var portalItemSelected: ((_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) -> Void)?
-        
+       
+    // Array of item models that holds the ArcGIs Online users Content items
     @Published var portalItemModels : [EFPortalItemModel] = []
     
+    // Array of folder models that holds the ArcGIs Online users Folders items, each Folder model will have an array of item models
     @Published var portalFolderModels : Dictionary = [String: EFPortalItemFolderModel]()
     
-    private var subscriptions = Set<AnyCancellable>()
+    private var itemSubscriptions = Set<AnyCancellable>()
     
     func updatePortalItems(portal: Portal) async {
         guard let user = portal.user else {
             return
         }
-        var results = [EFPortalItemModel]()
+        
+        var allRootItemModels = [EFPortalItemModel]()
         if let contentItems = await updatePortalContent(user) {
             contentItems.forEach() { item in
+                // Create a model for each item
                 let portalItemModel = EFPortalItemModel(portalItem: item)
+                
+                // Add sink to the item model state for change-of-state
                 portalItemModel.$currentState
                     .sink { isVisible in
-                        //print("Item \(item.title) is visible: \(isVisible)")
-                }.store(in: &subscriptions)
+                        self.portalItemSelected?(portalItemModel, isVisible)
+                }.store(in: &itemSubscriptions)
 
-                results.append(portalItemModel)
+                allRootItemModels.append(portalItemModel)
             }
         }
         if let allFolderContent = await updatePortalContentFolders(user) {
             allFolderContent.forEach() { item in
                 let portalItemModel = EFPortalItemModel(portalItem: item)
-                results.append(portalItemModel)
+                allRootItemModels.append(portalItemModel)
             }
         }
         self.portalItemModels.removeAll()
-        self.portalItemModels = results.sorted { $0.portalItem.title.lowercased() < $1.portalItem.title.lowercased() }
+        self.portalItemModels = allRootItemModels.sorted { $0.portalItem.title.lowercased() < $1.portalItem.title.lowercased() }
     }
     
     func loadPortal(portal: Portal) async throws -> ArcGIS.PortalUser? {
         do {
             try await portal.load()
             if let user = portal.user {
-                //print("xxx portal user = \(user.fullName)")
                 return user
             } else {
                 return nil
@@ -406,12 +418,14 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
             }
             let contentItems = try await user.content.items
             contentItems.forEach { rootItem in
+                // Create a model for each item
                 let portalItemModel = EFPortalItemModel(portalItem: rootItem)
+                
+                // Add sink to the item model state for change-of-state
                 portalItemModel.$currentState
                     .sink { isVisible in
                         self.portalItemSelected?(portalItemModel, isVisible)
-                        //print("Root Item \(rootItem.title) is visible: \(isVisible)")
-                }.store(in: &subscriptions)
+                }.store(in: &itemSubscriptions)
 
                 // If it doesn't already exist then add the item to the root folder
                 if portalFolderModels[EFPortalItemFolderModel.ARCGIS_ROOT_FOLDER_ID]?.portalItemModels[portalItemModel.portalItem.id.rawValue] == nil {
@@ -432,11 +446,14 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                     if let folderItems = await loadFolderContent(user, folder: folder) {
                         folderItems.forEach { folderItem in
                             if let portalFolderModel = portalFolderModels[folder.id.rawValue], portalFolderModel.portalItemModels[folderItem.id.rawValue] == nil {
+                                // Create a model for each item
                                 let portalItemModel = EFPortalItemModel(portalItem: folderItem)
+                                
+                                // Add sink to the item model state for change-of-state
                                 portalItemModel.$currentState
                                     .sink { isVisible in
                                         self.portalItemSelected?(portalItemModel, isVisible)
-                                    }.store(in: &subscriptions)
+                                    }.store(in: &itemSubscriptions)
                                 portalFolderModel.portalItemModels[portalItemModel.portalItem.id.rawValue] = portalItemModel
                             }
                         }
@@ -450,7 +467,6 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
     private func updatePortalContent(_ user: ArcGIS.PortalUser) async -> [PortalItem]? {
         do {
             let contentItems = try await user.content.items
-            //print("xxx portal user content = \(contentItems.count)")
             return contentItems
         } catch {
             return nil
@@ -462,10 +478,8 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
             var allFolderItems = [PortalItem]()
             let folders = try await user.content.folders
                 for folder in folders {
-                    // WIP let folderItem = EFPortalItemFolderModel(portalFolder: folder)
                     if let folderItems = await loadFolderContent(user, folder: folder) {
                         allFolderItems.append(contentsOf: folderItems)
-                        //print("xxx folder: \(folder.title) items = \(folderItems.count)")
                     }
                 }
                 return allFolderItems

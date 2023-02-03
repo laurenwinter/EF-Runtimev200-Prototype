@@ -13,7 +13,6 @@
 
 import SwiftUI
 import ArcGIS
-import OrderedCollections
 
 struct EFPortalFolderView: View {
     
@@ -24,11 +23,10 @@ struct EFPortalFolderView: View {
     var body: some View {
         Group {
             VStack {
-                let orderedDict = OrderedDictionary(uniqueKeys: contentViewModel.portalFolderModels.keys, values: contentViewModel.portalFolderModels.values)
                 if contentViewModel.portalFolderModels.keys.isEmpty {
                     ProgressView("Loading Content Folders")
                 } else {
-                    let alphaFolderList = orderedDict.values.sorted { $0.folderTitle.lowercased() < $1.folderTitle.lowercased() }
+                    let alphaFolderList = contentViewModel.portalFolderModels.values.sorted { $0.folderTitle.lowercased() < $1.folderTitle.lowercased() }
                     List(alphaFolderList) { folderModel in
                         NavigationLink(destination: ContentFolderView(folderModel: folderModel), label: {
                             HStack {
@@ -69,11 +67,10 @@ struct ContentFolderView: View {
     var body: some View {
         Group {
             VStack {
-                let orderedDict = OrderedDictionary(uniqueKeys: folderModel.portalItemModels.keys, values: folderModel.portalItemModels.values)
                 if folderModel.portalItemModels.keys.isEmpty {
                     Text("0 layer items")
                 } else {
-                    let alphaItemList = orderedDict.values.sorted { $0.portalItem.title.lowercased() < $1.portalItem.title.lowercased() }
+                    let alphaItemList = folderModel.portalItemModels.values.sorted { $0.portalItem.title.lowercased() < $1.portalItem.title.lowercased() }
                     List(alphaItemList) { itemModel in
                         LRWPortalItemView(item: itemModel)
                     }
@@ -81,7 +78,7 @@ struct ContentFolderView: View {
                 }
             }
         
-            // Could add a model function to refresh the folder
+            // Will add a model function to refresh the folder
 //            .refreshable {
 //                Task {
 //                    await contentViewModel.updatePortalUserFolders(portal: portal)
