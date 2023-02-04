@@ -34,6 +34,9 @@ struct EFMapSceneView: View {
     /// The persistent ArcGIS layer view model for all the User and Group content
     @StateObject var sceneContentViewModel : EFSceneContentViewModel = EFSceneContentViewModel()
     
+    /// The point on the screen the user tapped on to identify a feature.
+    @State private var identifyScreenPoint: CGPoint?
+    
     init() {
         // The default app initializer
     }
@@ -52,69 +55,96 @@ struct EFMapSceneView: View {
                         ProgressView()
                     case .success:
                         ZStack {
-                            sceneContentViewModel.sceneView
-                                .edgesIgnoringSafeArea(.top)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .toolbar {
-                                    ToolbarItemGroup {
-                                        Button {
-                                            toggleScene2D3DState.toggle()
-                                        } label: {
-                                            Image(systemName: self.toggleScene2D3DState ? "view.3d" : "view.2d")
-                                                .tint(Color.white)
-                                        }
-                                        .frame(width: 36.0, height: 36.0)
-                                        .background(Color.blue)
-                                        .clipShape(Circle())
-                                        
-                                        Button {
-                                            toggleCameraController.toggle()
-                                        } label: {
-                                            Image(systemName: self.toggleCameraController ? "arrow.clockwise.circle" : "arrow.up.and.down.and.arrow.left.and.right")
-                                                .tint(Color.white)
-                                                .rotationEffect(Angle.degrees(90))
-                                        }
-                                        .frame(width: 36.0, height: 36.0)
-                                        .background(Color.blue)
-                                        .clipShape(Circle())
-                                        
-                                        Button {
-                                            showBasemapSelector = true
-                                            showProfile = false
-                                            showEFPortalUserTabbedView = false
-                                        } label: {
-                                            Image(systemName: "rectangle.grid.2x2")
-                                                .tint(Color.white)
-                                        }
-                                        .frame(width: 36.0, height: 36.0)
-                                        .background(Color.blue)
-                                        .clipShape(Circle())
-                                        
-                                        Button {
-                                            showProfile = true
-                                            showBasemapSelector = false
-                                            showEFPortalUserTabbedView = false
-                                        } label: {
-                                            Image(systemName: "person.crop.circle")
-                                                .tint(Color.white)
-                                        }
-                                        .frame(width: 36.0, height: 36.0)
-                                        .background(Color.blue)
-                                        .clipShape(Circle())
+                            // SceneViewReader is needed to get proxy that used for identifying graphics (or layers)
+                            SceneViewReader { sceneProxy in
+                                sceneContentViewModel.sceneView
+                                
+                                // This is a simple tap and identify test, it will be used to select and drag ROI flight plan graphics  ======================
+                                    .onSingleTapGesture { screenPoint, _ in
+                                        identifyScreenPoint = screenPoint
                                     }
-                                }
-                                .overlay(alignment: .topTrailing) {
-                                    if showBasemapSelector {
-                                        EFBasemapGalleryView(baseMapDataModel: sceneContentViewModel.baseMapDataModel, showView: $showBasemapSelector)
-                                            .padding()
+                                    .task(id: identifyScreenPoint) {
+                                        guard let identifyScreenPoint = identifyScreenPoint,
+                                              let identifyResult = await Result(awaiting: {
+                                                  try await sceneProxy.identifyGraphicsOverlays(
+                                                    screenPoint: identifyScreenPoint,
+                                                    tolerance: 10                                                  )
+                                              })
+                                            .cancellationToNil()
+                                        else {
+                                            return
+                                        }
+                                        
+                                        self.identifyScreenPoint = nil
+                                        let first = try? identifyResult.get().first?.graphicsOverlay.id
+                                        print("xxx identifyResult: \(first)")
                                     }
-                                }
-                                .sheet(isPresented: $showProfile) {
-                                    ProfileView(portal: portal) {
-                                        self.portal = nil
+                                // End of tap and identify test code ======================
+                                
+                                    .edgesIgnoringSafeArea(.top)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                    .background(Color.black.opacity(0.9).gradient)
+                                    .toolbar {
+                                        ToolbarItemGroup {
+                                            Button {
+                                                toggleScene2D3DState.toggle()
+                                            } label: {
+                                                Image(systemName: self.toggleScene2D3DState ? "view.3d" : "view.2d")
+                                                    .tint(Color.white)
+                                            }
+                                            .frame(width: 36.0, height: 36.0)
+                                            .background(Color.blue)
+                                            .clipShape(Circle())
+                                            
+                                            Button {
+                                                toggleCameraController.toggle()
+                                            } label: {
+                                                Image(systemName: self.toggleCameraController ? "arrow.clockwise.circle" : "arrow.up.and.down.and.arrow.left.and.right")
+                                                    .tint(Color.white)
+                                                    .rotationEffect(Angle.degrees(90))
+                                            }
+                                            .frame(width: 36.0, height: 36.0)
+                                            .background(Color.blue)
+                                            .clipShape(Circle())
+                                            
+                                            Button {
+                                                showBasemapSelector = true
+                                                showProfile = false
+                                                showEFPortalUserTabbedView = false
+                                            } label: {
+                                                Image(systemName: "rectangle.grid.2x2")
+                                                    .tint(Color.white)
+                                            }
+                                            .frame(width: 36.0, height: 36.0)
+                                            .background(Color.blue)
+                                            .clipShape(Circle())
+                                            
+                                            Button {
+                                                showProfile = true
+                                                showBasemapSelector = false
+                                                showEFPortalUserTabbedView = false
+                                            } label: {
+                                                Image(systemName: "person.crop.circle")
+                                                    .tint(Color.white)
+                                            }
+                                            .frame(width: 36.0, height: 36.0)
+                                            .background(Color.blue)
+                                            .clipShape(Circle())
+                                        }
                                     }
-                                }
-                                .background(Color.black.opacity(0.9).gradient)
+                                    .overlay(alignment: .topTrailing) {
+                                        if showBasemapSelector {
+                                            EFBasemapGalleryView(baseMapDataModel: sceneContentViewModel.baseMapDataModel, showView: $showBasemapSelector)
+                                                .padding()
+                                        }
+                                    }
+                                    .sheet(isPresented: $showProfile) {
+                                        ProfileView(portal: portal) {
+                                            self.portal = nil
+                                        }
+                                    }
+                            }
+                                
                             HStack {
                                 Spacer()
                                 VStack {

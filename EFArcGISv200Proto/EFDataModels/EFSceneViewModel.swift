@@ -51,6 +51,7 @@ public final class EFSceneContentViewModel: ObservableObject {
         self.scene = scene
         self.baseMapDataModel = EFBasemapDataModel(geoModel: scene)
 
+        dropPinGraphicsOverlay.id = "dropPinGraphicsOverlay"
         self.graphicsOverlays.append(contentsOf: [favoritesGraphicsOverlay, searchResultsGraphicsOverlay, dropPinGraphicsOverlay, measureGraphicsOverlay])
         self.sceneView = SceneView(scene: scene, graphicsOverlays: self.graphicsOverlays)
         
@@ -227,19 +228,20 @@ public final class EFSceneContentViewModel: ObservableObject {
 //                }
             }
             .onLongPressGesture { _, mapPoint in
+                // Test for long press gesture handling
                 self.handleLongPress(point: mapPoint)
-        }
-                
+            }
+
         baseMapDataModel.geoModel = scene
     }
     
+    // Simple test for scene gesture handling,
     func handleLongPress(point: Point?) {
 
         guard let point = point, let symbol = createDroppedPinSymbol() else {
             return
         }
         
-        dropPinGraphicsOverlay.removeAllGraphics()
         dropPinGraphicsOverlay.addGraphic(Graphic(geometry: point, attributes: [:], symbol: symbol))
     }
 
