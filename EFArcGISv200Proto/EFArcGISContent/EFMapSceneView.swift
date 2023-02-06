@@ -37,6 +37,8 @@ struct EFMapSceneView: View {
     /// The point on the screen the user tapped on to identify a feature.
     @State private var identifyScreenPoint: CGPoint?
     
+    @State private var selectedGraphic: ArcGIS.Graphic?
+    
     init() {
         // The default app initializer
     }
@@ -76,14 +78,17 @@ struct EFMapSceneView: View {
                                         }
                                         
                                         self.identifyScreenPoint = nil
-                                        let first = try? identifyResult.get().first?.graphicsOverlay.id
-                                        print("xxx identifyResult: \(first)")
+                                        if let firstGraphic = try? identifyResult.get().first?.graphics.first {
+                                            selectedGraphic = firstGraphic
+                                            print("xxx identifyResult: \(firstGraphic.symbol)")
+                                        }
                                     }
                                 // End of tap and identify test code ======================
                                 
                                     .edgesIgnoringSafeArea(.top)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                                     .background(Color.black.opacity(0.9).gradient)
+                                
                                     .toolbar {
                                         ToolbarItemGroup {
                                             Button {

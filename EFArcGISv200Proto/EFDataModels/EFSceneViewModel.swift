@@ -28,7 +28,7 @@ public final class EFSceneContentViewModel: ObservableObject {
     private let cameraDistanceDefault: Double = 300
 
     @Published var scene: ArcGIS.Scene
-    
+        
     // All of the ArcGIS User content, items are placed in associated folders
     @ObservedObject var userContentViewModel = EFUserContentViewModel()
     
@@ -36,6 +36,7 @@ public final class EFSceneContentViewModel: ObservableObject {
     let baseMapDataModel: EFBasemapDataModel
     
     // Set of GraphicsOverlay for testing struct SceneView
+    // Graphics are used for all of the flight planning objects
     public let dropPinGraphicsOverlay = GraphicsOverlay()
     public let favoritesGraphicsOverlay = GraphicsOverlay()
     public let searchResultsGraphicsOverlay = GraphicsOverlay()
