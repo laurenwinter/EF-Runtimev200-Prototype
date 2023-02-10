@@ -199,7 +199,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                 let cameraPoint = sceneCamera.location
                 if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
                     if let matrix = self.viewpoint?.camera?.transformationMatrix,
-                       var camera = Camera(transformationMatrix: matrix) {
+                       let camera = Camera(transformationMatrix: matrix) {
                         print("Matrix = \(camera.heading), \(camera.pitch), \(camera.roll)")
                     }
                     print("target: \(targetPoint), cameraPoint:\(cameraPoint)")
@@ -226,6 +226,9 @@ public final class EFSceneContentViewModel: ObservableObject {
                     self.viewpoint = $0
                     print("viewpoint: \(self.viewpoint), target: \(self.viewpoint?.targetGeometry), cameraPoint:\(self.sceneCamera.location)")
 //                }
+            }
+            .onCameraChanged { camera in
+                print("camera location: \(camera.location), pitch: \(camera.pitch), heading:\(camera.heading), roll:\(camera.roll)")
             }
             .onLongPressGesture { _, mapPoint in
                 // Test for long press gesture handling
