@@ -198,8 +198,8 @@ public final class EFSceneContentViewModel: ObservableObject {
                 // https://devtopia.esri.com/runtime/swift/issues/3434
                 let cameraPoint = sceneCamera.location
                 if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
-                    if let matrix = self.viewpoint?.camera?.transformationMatrix {
-                        var camera = Camera(transformationMatrix: matrix)
+                    if let matrix = self.viewpoint?.camera?.transformationMatrix,
+                       var camera = Camera(transformationMatrix: matrix) {
                         print("Matrix = \(camera.heading), \(camera.pitch), \(camera.roll)")
                     }
                     print("target: \(targetPoint), cameraPoint:\(cameraPoint)")
@@ -208,10 +208,9 @@ public final class EFSceneContentViewModel: ObservableObject {
             }
         } else {
             self.scene = scene
-            if let extent = extent {
-                let center = extent.center
-                
-                sceneCamera = ArcGIS.Camera(lookAtPoint: center, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
+            if let extent = extent,
+                let camera = ArcGIS.Camera(lookingAt: extent.center, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0) {
+                sceneCamera = camera
                 sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
             }
         }
@@ -284,8 +283,9 @@ public final class EFSceneContentViewModel: ObservableObject {
         if controllerState {
             let surface = Surface()
             scene.baseSurface = surface
-            if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
-                sceneCamera = ArcGIS.Camera(lookAtPoint: targetPoint, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
+            if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point,
+               let camera = ArcGIS.Camera(lookingAt: targetPoint, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0) {
+                sceneCamera = camera
             }
             self.sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
             sceneView = SceneView(scene: scene, cameraController:self.sceneCameraController, graphicsOverlays: graphicsOverlays)
@@ -520,7 +520,7 @@ class EFUserContentViewModel_Preview : EFUserContentViewModel {
                 return
             }
             let uiImage = UIImage(systemName: "moon.stars.fill")?.withTintColor(UIColor(red: CGFloat.random(in: 0.0..<1.0), green: CGFloat.random(in: 0.0..<1.0), blue: CGFloat.random(in: 0.0..<1.0), alpha: 1.0))
-            portalItem.setThumbnail(image: uiImage)
+            //portalItem.thumbnail(image: uiImage)
             let item = EFPortalItemModel(portalItem: portalItem) //PortalItem(portal: portal, id: Item.ID(rawValue: "\(itemIndex)")!))
             portalItemModels.append(item)
         }
