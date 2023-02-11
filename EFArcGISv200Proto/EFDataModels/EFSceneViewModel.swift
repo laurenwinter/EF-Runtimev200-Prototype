@@ -185,8 +185,7 @@ public final class EFSceneContentViewModel: ObservableObject {
         }
     }
     
-    // No reason to review this function yet
-    // We need a Runtime fix before developing this into usable code
+    // Prototype only, this needs to evolve into a fully implemented 2D/3D and camera controller function
     func updateSceneView(scene: ArcGIS.Scene, extent: ArcGIS.Envelope?, orbitalCameraState: Bool?) {
         dropPinGraphicsOverlay.removeAllGraphics()
 
@@ -194,15 +193,8 @@ public final class EFSceneContentViewModel: ObservableObject {
             if cameraState {
                 sceneCameraController = GlobeCameraController()
             } else {
-                // This functionality doesn't work yet because Runtime isn't returning the current viewpoint camera, self.viewpoint is incorrect
-                // https://devtopia.esri.com/runtime/swift/issues/3434
                 let cameraPoint = sceneCamera.location
                 if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
-                    if let matrix = self.viewpoint?.camera?.transformationMatrix,
-                       let camera = Camera(transformationMatrix: matrix) {
-                        print("Matrix = \(camera.heading), \(camera.pitch), \(camera.roll)")
-                    }
-                    print("target: \(targetPoint), cameraPoint:\(cameraPoint)")
                     sceneCameraController = OrbitLocationCameraController(targetPoint: targetPoint, cameraPoint: cameraPoint)
                 }
             }
@@ -217,18 +209,10 @@ public final class EFSceneContentViewModel: ObservableObject {
         
         self.sceneView = SceneView(scene: scene, cameraController: sceneCameraController, graphicsOverlays: graphicsOverlays)
             .onViewpointChanged(kind: .centerAndScale) {
-//                if let geometry = self.viewpoint?.targetGeometry {
-//                    let newVP = Viewpoint(targetExtent: geometry, camera: self.sceneCamera)
-//                    self.viewpoint = newVP
-//
-//                    //print("new viewpoint: \(self.viewpoint), target: \(self.viewpoint?.targetGeometry), cameraPoint:\(self.sceneCamera.location)")
-//                } else {
-                    self.viewpoint = $0
-                    print("viewpoint: \(self.viewpoint), target: \(self.viewpoint?.targetGeometry), cameraPoint:\(self.sceneCamera.location)")
-//                }
+                self.viewpoint = $0
             }
             .onCameraChanged { camera in
-                print("camera location: \(camera.location), pitch: \(camera.pitch), heading:\(camera.heading), roll:\(camera.roll)")
+                self.sceneCamera = camera
             }
             .onLongPressGesture { _, mapPoint in
                 // Test for long press gesture handling
