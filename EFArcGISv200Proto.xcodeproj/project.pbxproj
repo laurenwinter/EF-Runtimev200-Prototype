@@ -28,6 +28,7 @@
 		159CBF77296F2FB500CF0BEC /* KeychainError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159CBF73296F2FB500CF0BEC /* KeychainError.swift */; };
 		159CBF78296F2FB500CF0BEC /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159CBF74296F2FB500CF0BEC /* Keychain.swift */; };
 		15C1A2B62995C562003F9666 /* ArcGISToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 15C1A2B52995C562003F9666 /* ArcGISToolkit */; };
+		15D4C6D3299C68AE00D9D841 /* EFUserGroupsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4C6D2299C68AE00D9D841 /* EFUserGroupsContentView.swift */; };
 		15DE89BF296E1B0400C4F632 /* EFSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DE89BE296E1B0400C4F632 /* EFSignInView.swift */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 		159CBF73296F2FB500CF0BEC /* KeychainError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainError.swift; sourceTree = "<group>"; };
 		159CBF74296F2FB500CF0BEC /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		15C2FD4A29944DFC00EA2FE1 /* arcgis-maps-sdk-swift-toolkit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "arcgis-maps-sdk-swift-toolkit"; path = "../arcgis-maps-sdk-swift-toolkit"; sourceTree = "<group>"; };
+		15D4C6D2299C68AE00D9D841 /* EFUserGroupsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFUserGroupsContentView.swift; sourceTree = "<group>"; };
 		15DE89BE296E1B0400C4F632 /* EFSignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFSignInView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -199,6 +201,7 @@
 				155190762954C0DA00BF2128 /* EFMapSceneView.swift */,
 				15DE89BE296E1B0400C4F632 /* EFSignInView.swift */,
 				1520FF692970B72C00D1A7D4 /* EFBasemapGalleryView.swift */,
+				15D4C6D2299C68AE00D9D841 /* EFUserGroupsContentView.swift */,
 			);
 			path = EFArcGISContent;
 			sourceTree = "<group>";
@@ -374,6 +377,7 @@
 				154F77CD29538A8A00A06195 /* UserView.swift in Sources */,
 				154F779C2953812500A06195 /* EFArcGISv200ProtoApp.swift in Sources */,
 				159CBF77296F2FB500CF0BEC /* KeychainError.swift in Sources */,
+				15D4C6D3299C68AE00D9D841 /* EFUserGroupsContentView.swift in Sources */,
 				159CBF76296F2FB500CF0BEC /* KeychainItem.swift in Sources */,
 				155190792954C0DA00BF2128 /* EFSceneViewModel.swift in Sources */,
 				1551907A2954C0DA00BF2128 /* EFPortalUserTabbedView.swift in Sources */,

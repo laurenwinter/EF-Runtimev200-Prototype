@@ -34,7 +34,7 @@ struct EFPortalUserTabbedView: View {
                                 Label(viewTitles[0], systemImage: "square.2.layers.3d.top.filled")
                             }.tag(0)
                         
-                        EFUserContentView(portal: portal, contentViewModel: sceneContentViewModel.userContentViewModel)
+                        EFUserGroupsContentView(portal: portal, contentViewModel: sceneContentViewModel.userContentViewModel)
                             .tabItem {
                                 Label(viewTitles[1], systemImage: "square.3.layers.3d.top.filled")
                             }.tag(1)

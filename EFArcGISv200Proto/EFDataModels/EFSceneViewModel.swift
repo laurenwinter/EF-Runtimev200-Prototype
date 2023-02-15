@@ -245,23 +245,6 @@ public final class EFSceneContentViewModel: ObservableObject {
     // No reason to review this function yet
     public func toggleCameraController(_ selectionState: Bool) {
         updateSceneView(scene: scene, extent: nil, orbitalCameraState: selectionState)
-        /*
-        if selectionState {
-            sceneView = SceneView(scene: scene, cameraController: GlobeCameraController(), graphicsOverlays: graphicsOverlays)
-        } else {
-            let cameraPoint = sceneCamera.location
-            //if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Envelope {
-            if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
-                if let matrix = self.viewpoint?.camera?.transformationMatrix {
-                    var camera = Camera(transformationMatrix: matrix)
-                    print("Matrix = \(camera.heading), \(camera.pitch), \(camera.roll)")
-                }
-                print("target: \(targetPoint), cameraPoint:\(cameraPoint)")
-                let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, cameraPoint: cameraPoint)
-                sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
-                
-            }
-        }*/
     }
     
     // No reason to review this function yet
@@ -328,15 +311,40 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
 
     var portalID = ""
     var folderTitle = ""
-    var portalFolder: PortalFolder?
+    var portalFolder: ArcGIS.PortalFolder?
     var portalItemModels: Dictionary = [String: EFPortalItemModel]()
 
     let id = UUID()
     
-    init(_ title: String, id: String, portalFolder: PortalFolder?) {
+    init(_ title: String, id: String, portalFolder: ArcGIS.PortalFolder?) {
         self.portalID = id
         self.folderTitle = title
         self.portalFolder = portalFolder
+    }
+}
+
+class EFPortalGroupModel: ObservableObject, Identifiable {
+
+    var portalID = ""
+    var groupTitle = ""
+    var portalGroup: ArcGIS.PortalGroup?
+    var portalItemModels: Dictionary = [String: EFPortalItemModel]()
+
+    let id = UUID()
+    
+    init(_ title: String, id: String, portalGroup: ArcGIS.PortalGroup?) {
+        self.portalID = id
+        self.groupTitle = title
+        self.portalGroup = portalGroup
+    }
+    
+    func loadGroupItems() async {
+        // Load the group to get its items
+        do {
+            try await portalGroup?.load()
+        } catch {
+            ()
+        }
     }
 }
 
@@ -346,11 +354,14 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
     // We'll review this model hierarchy to determine if there's a better approach
     public var portalItemSelected: ((_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) -> Void)?
        
-    // Array of item models that holds the ArcGIs Online users Content items
+    // Array of item models that holds the ArcGIS Online users Content items
     @Published var portalItemModels : [EFPortalItemModel] = []
     
     // Array of folder models that holds the ArcGIs Online users Folders items, each Folder model will have an array of item models
     @Published var portalFolderModels : Dictionary = [String: EFPortalItemFolderModel]()
+    
+    // Array of group models that holds the ArcGIS Online users Group items, each Group model will have an array of item models
+    @Published var portalGroupModels : Dictionary = [String: EFPortalGroupModel]()
     
     private var itemSubscriptions = Set<AnyCancellable>()
     
@@ -382,6 +393,61 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
         }
         self.portalItemModels.removeAll()
         self.portalItemModels = allRootItemModels.sorted { $0.portalItem.title.lowercased() < $1.portalItem.title.lowercased() }
+    }
+    
+    func updatePortalGroups(portal: Portal) async {
+        guard let user = portal.user else {
+            return
+        }
+        
+        do {
+            try await user.load()
+        } catch {
+            ()
+        }
+
+        // Retrieve only maps, scenes and layers for all owners
+        var queryParams = PortalGroupContentSearchParameters.items(ofKinds: [ArcGIS.PortalItem.Kind.webMap,
+                                                                             ArcGIS.PortalItem.Kind.webScene,
+                                                                             ArcGIS.PortalItem.Kind.scenePackage,
+                                                                             ArcGIS.PortalItem.Kind.sceneService,
+                                                                             ArcGIS.PortalItem.Kind.featureService,
+                                                                             ArcGIS.PortalItem.Kind.featureCollection,
+                                                                             ArcGIS.PortalItem.Kind.kml,
+                                                                             ArcGIS.PortalItem.Kind.image,
+                                                                             ArcGIS.PortalItem.Kind.layer])
+        
+        // TODO: LRW, This group querey has a 100 limit and requires page loading until the restult is zero values
+        queryParams.limit = 100
+        
+        // Load all groups
+        var groups = user.groups
+        await groups.load()
+        for group in groups {
+            if portalGroupModels[group.id.rawValue] == nil {
+                portalGroupModels[group.id.rawValue] = EFPortalGroupModel(group.title, id: group.id.rawValue, portalGroup: group)
+            }
+            do {
+                let groupsSearchResult = try await group.findItems(searchParameters: queryParams)
+                let groupItems = groupsSearchResult.results
+                groupItems.forEach { groupItem in
+                    if let portalGroupModel = portalGroupModels[groupItem.id.rawValue], portalGroupModel.portalItemModels[groupItem.id.rawValue] == nil {
+                        
+                        // Create a model for each item
+                        let portalItemModel = EFPortalItemModel(portalItem: groupItem)
+                        
+                        // Add sink to the item model state for change-of-state
+                        portalItemModel.$currentState
+                            .sink { isVisible in
+                                self.portalItemSelected?(portalItemModel, isVisible)
+                            }.store(in: &itemSubscriptions)
+                        portalGroupModel.portalItemModels[portalItemModel.portalItem.id.rawValue] = portalItemModel
+                    }
+                }
+            } catch {
+                ()
+            }
+        }
     }
     
     func loadPortal(portal: Portal) async throws -> ArcGIS.PortalUser? {

@@ -72,7 +72,7 @@ struct ContentFolderView: View {
                 } else {
                     let alphaItemList = folderModel.portalItemModels.values.sorted { $0.portalItem.title.lowercased() < $1.portalItem.title.lowercased() }
                     List(alphaItemList) { itemModel in
-                        LRWPortalItemView(item: itemModel)
+                        EFPortalItemView(item: itemModel)
                     }
                     .listStyle(.plain)
                 }

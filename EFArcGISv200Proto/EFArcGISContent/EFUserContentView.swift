@@ -27,7 +27,7 @@ struct EFUserContentView: View {
                     ProgressView("Loading Folder Items")
                 } else {
                     List(contentViewModel.portalItemModels) { item in
-                        LRWPortalItemView(item: item)
+                        EFPortalItemView(item: item)
                     }
                     .listStyle(.plain)
                     .padding()
@@ -54,7 +54,7 @@ struct EFUserContentView: View {
 }
 
 /// A view that displays information about a portal item for viewing that information within a list.
-struct LRWPortalItemView: View {
+struct EFPortalItemView: View {
     /// The portal item to display information about.
     var item: EFPortalItemModel
 
