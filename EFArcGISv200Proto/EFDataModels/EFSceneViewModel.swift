@@ -323,14 +323,22 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
     }
 }
 
-class EFPortalGroupModel: ObservableObject, Identifiable {
-
+@MainActor class EFPortalGroupModel: ObservableObject, Identifiable {
+    
     var portalID = ""
     var groupTitle = ""
     var portalGroup: ArcGIS.PortalGroup?
-    var portalItemModels: Dictionary = [String: EFPortalItemModel]()
-
+    @Published var portalItemModels: Dictionary = [String: EFPortalItemModel]()
+    
     let id = UUID()
+    
+    private var itemSubscriptions = Set<AnyCancellable>()
+    
+    var searchResultSet: ArcGIS.PortalGroupContentSearchResultSet?
+    
+    // Essentially a callback assigned to this model from the parent mode (EFSceneContentViewModel) to handle user select/deselect of a layer
+    // We'll review this model hierarchy to determine if there's a better approach
+    public var portalItemSelected: ((_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) -> Void)?
     
     init(_ title: String, id: String, portalGroup: ArcGIS.PortalGroup?) {
         self.portalID = id
@@ -339,9 +347,40 @@ class EFPortalGroupModel: ObservableObject, Identifiable {
     }
     
     func loadGroupItems() async {
-        // Load the group to get its items
+        // Retrieve only maps, scenes and layers for all owners
+        var queryParams = PortalGroupContentSearchParameters.items(ofKinds: [ArcGIS.PortalItem.Kind.webMap,
+                                                                             ArcGIS.PortalItem.Kind.webScene,
+                                                                             ArcGIS.PortalItem.Kind.scenePackage,
+                                                                             ArcGIS.PortalItem.Kind.sceneService,
+                                                                             ArcGIS.PortalItem.Kind.featureService,
+                                                                             ArcGIS.PortalItem.Kind.featureCollection,
+                                                                             ArcGIS.PortalItem.Kind.kml,
+                                                                             ArcGIS.PortalItem.Kind.image,
+                                                                             ArcGIS.PortalItem.Kind.layer])
+        
+        // TODO: LRW, This group querey has a 100 limit and requires page loading until the restult is zero values
+        queryParams.limit = 100
+        
         do {
-            try await portalGroup?.load()
+            // Load the group items and create associated item models
+            searchResultSet = try await portalGroup?.findItems(searchParameters: queryParams)
+            let groupItems = searchResultSet?.results
+            groupItems?.forEach { groupItem in
+                if let portalItemModel = portalItemModels[groupItem.id.rawValue] {
+                    // The item exists so update its title
+                    portalItemModel.portalItem = groupItem
+                } else {
+                    // Create a model for each item
+                    let portalItemModel = EFPortalItemModel(portalItem: groupItem)
+                    
+                    // Add sink to the item model state for change-of-state
+                    portalItemModel.$currentState
+                        .sink { isVisible in
+                            self.portalItemSelected?(portalItemModel, isVisible)
+                        }.store(in: &itemSubscriptions)
+                    portalItemModels[portalItemModel.portalItem.id.rawValue] = portalItemModel
+                }
+            }
         } catch {
             ()
         }
@@ -405,47 +444,18 @@ class EFPortalGroupModel: ObservableObject, Identifiable {
         } catch {
             ()
         }
-
-        // Retrieve only maps, scenes and layers for all owners
-        var queryParams = PortalGroupContentSearchParameters.items(ofKinds: [ArcGIS.PortalItem.Kind.webMap,
-                                                                             ArcGIS.PortalItem.Kind.webScene,
-                                                                             ArcGIS.PortalItem.Kind.scenePackage,
-                                                                             ArcGIS.PortalItem.Kind.sceneService,
-                                                                             ArcGIS.PortalItem.Kind.featureService,
-                                                                             ArcGIS.PortalItem.Kind.featureCollection,
-                                                                             ArcGIS.PortalItem.Kind.kml,
-                                                                             ArcGIS.PortalItem.Kind.image,
-                                                                             ArcGIS.PortalItem.Kind.layer])
-        
-        // TODO: LRW, This group querey has a 100 limit and requires page loading until the restult is zero values
-        queryParams.limit = 100
         
         // Load all groups
         var groups = user.groups
         await groups.load()
+        
         for group in groups {
-            if portalGroupModels[group.id.rawValue] == nil {
+            if portalGroupModels[group.id.rawValue] != nil {
+                // The group exists so update title (it may have bee renamed)
+                portalGroupModels[group.id.rawValue]?.groupTitle = group.title
+            } else {
+                // Create and add a new model
                 portalGroupModels[group.id.rawValue] = EFPortalGroupModel(group.title, id: group.id.rawValue, portalGroup: group)
-            }
-            do {
-                let groupsSearchResult = try await group.findItems(searchParameters: queryParams)
-                let groupItems = groupsSearchResult.results
-                groupItems.forEach { groupItem in
-                    if let portalGroupModel = portalGroupModels[groupItem.id.rawValue], portalGroupModel.portalItemModels[groupItem.id.rawValue] == nil {
-                        
-                        // Create a model for each item
-                        let portalItemModel = EFPortalItemModel(portalItem: groupItem)
-                        
-                        // Add sink to the item model state for change-of-state
-                        portalItemModel.$currentState
-                            .sink { isVisible in
-                                self.portalItemSelected?(portalItemModel, isVisible)
-                            }.store(in: &itemSubscriptions)
-                        portalGroupModel.portalItemModels[portalItemModel.portalItem.id.rawValue] = portalItemModel
-                    }
-                }
-            } catch {
-                ()
             }
         }
     }

@@ -54,14 +54,11 @@ struct EFUserGroupsContentView: View {
 
 struct EFGroupView: View {
     
-    var groupModel: EFPortalGroupModel
+    @ObservedObject var groupModel: EFPortalGroupModel
     
     var body: some View {
         Group {
             VStack {
-                if groupModel.portalGroup?.loadStatus != .loaded {
-                    ProgressView("Loading Group Items")
-                } else {
                     if groupModel.portalItemModels.keys.isEmpty {
                         Text("0 layer items")
                     } else {
@@ -71,19 +68,20 @@ struct EFGroupView: View {
                         }
                         .listStyle(.plain)
                     }
-                }
+//                }
             }
             
             .onAppear() {
-//                if groupModel.portalGroup?.loadStatus != .loaded {
-//                    ProgressView("Loading Group Items")
-//                } else {
+                if groupModel.searchResultSet == nil {
+                    ProgressView("Loading Group Items")
                     Task {
                         await groupModel.loadGroupItems()
                     }
-//                }
+                }
             }
         
+            // Need task to fetch more group items when the user scrolls to the bottom of the list
+            
             // Will add a model function to refresh the group
 //            .refreshable {
 //                Task {
