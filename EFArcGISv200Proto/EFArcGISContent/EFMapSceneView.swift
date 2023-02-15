@@ -23,7 +23,7 @@ struct EFMapSceneView: View {
     @State var showBasemapSelector = false
     
     /// A Boolean value to toggle the camera controller type
-    @State var toggleCameraController = true
+    @State var toggleCameraController = false
     
     /// A Boolean value to toggle the scene 2D or 3D state
     @State var toggleScene2D3DState = true
@@ -111,6 +111,7 @@ struct EFMapSceneView: View {
                                             .frame(width: 36.0, height: 36.0)
                                             .background(Color.blue)
                                             .clipShape(Circle())
+                                            .disabled(toggleScene2D3DState)
                                             
                                             Button {
                                                 showBasemapSelector = true

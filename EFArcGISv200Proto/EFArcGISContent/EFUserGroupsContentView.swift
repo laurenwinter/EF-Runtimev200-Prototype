@@ -60,7 +60,7 @@ struct EFGroupView: View {
         Group {
             VStack {
                     if groupModel.portalItemModels.keys.isEmpty {
-                        Text("0 layer items")
+                        Text("No group layer items")
                     } else {
                         let alphaItemList = groupModel.portalItemModels.values.sorted { $0.portalItem.title.lowercased() < $1.portalItem.title.lowercased() }
                         List(alphaItemList) { itemModel in
@@ -72,11 +72,9 @@ struct EFGroupView: View {
             }
             
             .onAppear() {
-                if groupModel.searchResultSet == nil {
-                    ProgressView("Loading Group Items")
-                    Task {
-                        await groupModel.loadGroupItems()
-                    }
+                ProgressView("Loading Group Items")
+                Task {
+                    await groupModel.loadGroupItems()
                 }
             }
         

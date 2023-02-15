@@ -248,18 +248,19 @@ public final class EFSceneContentViewModel: ObservableObject {
     }
     
     // No reason to review this function yet
-    public func toggleScene2D3D(_ controllerState: Bool) {
-        print("toggleScene2D3D")
-        if controllerState {
+    public func toggleScene2D3D(_ is2DState: Bool) {
+        if is2DState {
+            // Set scene and camera controller to 2D, remove surface elevation source
             let surface = Surface()
             scene.baseSurface = surface
             if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point,
-               let camera = ArcGIS.Camera(lookingAt: targetPoint, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0) {
+               let camera = ArcGIS.Camera(lookingAt: targetPoint, distance: cameraDistanceDefault, heading: sceneCamera.heading, pitch: 0, roll: 0) {
                 sceneCamera = camera
             }
             self.sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
             sceneView = SceneView(scene: scene, cameraController:self.sceneCameraController, graphicsOverlays: graphicsOverlays)
         } else {
+            // Set scene and camera controller to 3D, add world surface elevation source
             let ESRI_ELEVATION_SOURCE_URL: String = "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer"
             let worldElevationService = URL(string: ESRI_ELEVATION_SOURCE_URL)!
             let elevationSource = ArcGIS.ArcGISTiledElevationSource(url: worldElevationService)
@@ -273,11 +274,17 @@ public final class EFSceneContentViewModel: ObservableObject {
                 try await surface.load()
                 scene.baseSurface = surface
                 
-                let cameraPoint = sceneCamera.location
                 if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
-                    //print("target: \(targetPoint), cameraPoint:\(cameraPoint)")
-                    let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, cameraPoint: cameraPoint)
-                    sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
+                    let heading = sceneCamera.heading
+                    if let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, distance: cameraDistanceDefault) {
+                        sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
+                    }
+                } else {
+                    //If the viewpoint isn't valid then use the camera location
+                    let targetPoint = sceneCamera.location
+                    if let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, distance: cameraDistanceDefault) {
+                        sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
+                    }
                 }
             }
         }
@@ -334,7 +341,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
     
     private var itemSubscriptions = Set<AnyCancellable>()
     
-    var searchResultSet: ArcGIS.PortalGroupContentSearchResultSet?
+    private var searchResultSet: ArcGIS.PortalGroupContentSearchResultSet?
     
     // Essentially a callback assigned to this model from the parent mode (EFSceneContentViewModel) to handle user select/deselect of a layer
     // We'll review this model hierarchy to determine if there's a better approach
@@ -347,6 +354,10 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
     }
     
     func loadGroupItems() async {
+        guard searchResultSet == nil else {
+            return
+        }
+        
         // Retrieve only maps, scenes and layers for all owners
         var queryParams = PortalGroupContentSearchParameters.items(ofKinds: [ArcGIS.PortalItem.Kind.webMap,
                                                                              ArcGIS.PortalItem.Kind.webScene,
@@ -381,8 +392,9 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                     portalItemModels[portalItemModel.portalItem.id.rawValue] = portalItemModel
                 }
             }
+            searchResultSet = nil
         } catch {
-            ()
+            searchResultSet = nil
         }
     }
 }
@@ -445,8 +457,8 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
             ()
         }
         
-        // Load all groups
-        var groups = user.groups
+        // Load all groups to update or create models
+        let groups = user.groups
         await groups.load()
         
         for group in groups {
@@ -455,7 +467,9 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                 portalGroupModels[group.id.rawValue]?.groupTitle = group.title
             } else {
                 // Create and add a new model
-                portalGroupModels[group.id.rawValue] = EFPortalGroupModel(group.title, id: group.id.rawValue, portalGroup: group)
+                let groupModel = EFPortalGroupModel(group.title, id: group.id.rawValue, portalGroup: group)
+                groupModel.portalItemSelected = portalItemSelected
+                portalGroupModels[group.id.rawValue] = groupModel
             }
         }
     }
