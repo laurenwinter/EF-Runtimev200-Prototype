@@ -23,9 +23,12 @@ public final class EFSceneContentViewModel: ObservableObject {
     // Waiting for Runtime fix to see if this is needed or not
     private var viewpoint: ArcGIS.Viewpoint?
     
-    private var sceneCamera: ArcGIS.Camera
-    private var sceneCameraController: ArcGIS.CameraController
+    private var sceneCamera: ArcGIS.Camera?
+    
+    private var sceneCameraController: ArcGIS.CameraController?
+    
     private let cameraDistanceDefault: Double = 300
+    private let cameraTargetDefault = ArcGIS.Point(x: -117.19494, y: 34.05723, spatialReference: .wgs84)
 
     @Published var scene: ArcGIS.Scene
         
@@ -50,18 +53,17 @@ public final class EFSceneContentViewModel: ObservableObject {
     init() {
         let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISImageryStandard))
         self.scene = scene
+        
         self.baseMapDataModel = EFBasemapDataModel(geoModel: scene)
 
         dropPinGraphicsOverlay.id = "dropPinGraphicsOverlay"
         self.graphicsOverlays.append(contentsOf: [favoritesGraphicsOverlay, searchResultsGraphicsOverlay, dropPinGraphicsOverlay, measureGraphicsOverlay])
+        
         self.sceneView = SceneView(scene: scene, graphicsOverlays: self.graphicsOverlays)
         
-        self.sceneCamera = ArcGIS.Camera(latitude: 37.873350, longitude: -122.302525, altitude: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
-        self.sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
-
         self.userContentViewModel.portalItemSelected = self.itemSelectedCallback
-        
-        updateSceneView(scene: self.scene, extent: nil, orbitalCameraState: nil)
+                
+        updateSceneView(scene: self.scene, targetPoint: cameraTargetDefault, translationCamera: nil)
     }
     
     // This is a simple test for operational layers, the ArcGIS Online layers that the user can select
@@ -89,7 +91,7 @@ public final class EFSceneContentViewModel: ObservableObject {
 //                  let extent = viewpoint?.targetGeometry.extent
 //                  updateSceneView(scene: scene, extent: extent)
                     
-                    updateSceneView(scene: scene, extent: nil, orbitalCameraState: nil)
+                    updateSceneView(scene: scene, targetPoint: nil, translationCamera: nil)
                     
                 case .webMap:
                     // Web Map types can not be loaded into a 3D Scene so they're loaded into an AGSMap and then the operational layers are copied for loading into the Scene
@@ -106,7 +108,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     
                     if let extent = itemModel.portalItem.extent {
                         print("webMap full extent: \(extent)")
-                        updateSceneView(scene: scene, extent: extent, orbitalCameraState: nil)
+                        updateSceneView(scene: scene, targetPoint: extent.center, translationCamera: nil)
                     }
                     
                 case .featureService:
@@ -117,7 +119,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     if let extent = layer.fullExtent, let layerID = layer.id?.rawValue {
                         print("featureService full extent: \(extent)")
                         itemModel.operationalLayerIDs.insert(layerID, at: 0)
-                        updateSceneView(scene: scene, extent: extent, orbitalCameraState: nil)
+                        updateSceneView(scene: scene, targetPoint: extent.center, translationCamera: nil)
                     }
                     
                 case .kml:
@@ -128,7 +130,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     if let extent = layer.fullExtent, let layerID = layer.id?.rawValue {
                         print("kml full extent: \(extent)")
                         itemModel.operationalLayerIDs.insert(layerID, at: 0)
-                        updateSceneView(scene: scene, extent: extent, orbitalCameraState: nil)
+                        updateSceneView(scene: scene, targetPoint: extent.center, translationCamera: nil)
                     }
                     
                 case .sceneService:
@@ -139,7 +141,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     if let extent = layer.fullExtent, let layerID = layer.id?.rawValue {
                         print("sceneService full extent: \(extent)")
                         itemModel.operationalLayerIDs.insert(layerID, at: 0)
-                        updateSceneView(scene: scene, extent: extent, orbitalCameraState: nil)
+                        updateSceneView(scene: scene, targetPoint: extent.center, translationCamera: nil)
                     }
                     
                 case .mapService:
@@ -150,7 +152,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     if let extent = layer.fullExtent, let layerID = layer.id?.rawValue {
                         print("sceneService full extent: \(extent)")
                         itemModel.operationalLayerIDs.insert(layerID, at: 0)
-                        updateSceneView(scene: scene, extent: extent, orbitalCameraState: nil)
+                        updateSceneView(scene: scene, targetPoint: extent.center, translationCamera: nil)
                     }
                     
                 default:
@@ -170,7 +172,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                 scene.addOperationalLayers(operationalLayers)
 
                 let extent = viewpoint?.targetGeometry.extent
-                updateSceneView(scene: scene, extent: extent, orbitalCameraState: nil)
+                updateSceneView(scene: scene, targetPoint: extent?.center, translationCamera: nil)
             default:
                 let operationalLayers = scene.operationalLayers
                 itemModel.operationalLayerIDs.forEach { layerID in
@@ -186,39 +188,48 @@ public final class EFSceneContentViewModel: ObservableObject {
     }
     
     // Prototype only, this needs to evolve into a fully implemented 2D/3D and camera controller function
-    func updateSceneView(scene: ArcGIS.Scene, extent: ArcGIS.Envelope?, orbitalCameraState: Bool?) {
+    func updateSceneView(scene: ArcGIS.Scene, targetPoint: ArcGIS.Point?, translationCamera: Bool?) { //}, type2D: Bool?) {
         dropPinGraphicsOverlay.removeAllGraphics()
 
-        if let cameraState = orbitalCameraState {
-            if cameraState {
+        if let cameraControllerChange = translationCamera {
+            // Camera controller has been changed orbital or translational.
+            if cameraControllerChange {
+                // Translational uses the Global controller
                 sceneCameraController = GlobeCameraController()
             } else {
-                let cameraPoint = sceneCamera.location
-                if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
-                    sceneCameraController = OrbitLocationCameraController(targetPoint: targetPoint, cameraPoint: cameraPoint)
+                // Orbital uses the Orbit controller
+                if let cameraPoint = sceneCamera?.location,
+                   var targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
+                    Task {
+                        let targetElevation = await surfaceElevation(targetPoint)
+                        targetPoint = Point(x: targetPoint.x, y: targetPoint.y, z: targetElevation)
+                        sceneCameraController = OrbitLocationCameraController(targetPoint: targetPoint, cameraPoint: cameraPoint)
+                    }
                 }
             }
         } else {
+            // No change to the camera controller type
             self.scene = scene
-            if let extent = extent,
-                let camera = ArcGIS.Camera(lookingAt: extent.center, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0) {
+            if let targetPoint = targetPoint,
+                let camera = ArcGIS.Camera(lookingAt: targetPoint, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0) {
                 sceneCamera = camera
-                sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
+                sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: camera)
             }
         }
         
-        self.sceneView = SceneView(scene: scene, cameraController: sceneCameraController, graphicsOverlays: graphicsOverlays)
-            .onViewpointChanged(kind: .centerAndScale) {
-                self.viewpoint = $0
-            }
-            .onCameraChanged { camera in
-                self.sceneCamera = camera
-            }
-            .onLongPressGesture { _, mapPoint in
-                // Test for long press gesture handling
-                self.handleLongPress(point: mapPoint)
-            }
-
+        if let cameraController = sceneCameraController {
+            self.sceneView = SceneView(scene: scene, cameraController: cameraController, graphicsOverlays: graphicsOverlays)
+                .onViewpointChanged(kind: .centerAndScale) {
+                    self.viewpoint = $0
+                }
+                .onCameraChanged { camera in
+                    self.sceneCamera = camera
+                }
+                .onLongPressGesture { _, mapPoint in
+                    // Test for long press gesture handling
+                    self.handleLongPress(point: mapPoint)
+                }
+        }
         baseMapDataModel.geoModel = scene
     }
     
@@ -243,22 +254,25 @@ public final class EFSceneContentViewModel: ObservableObject {
     }
     
     // No reason to review this function yet
-    public func toggleCameraController(_ selectionState: Bool) {
-        updateSceneView(scene: scene, extent: nil, orbitalCameraState: selectionState)
+    public func toggleCameraController(_ typeOrbital: Bool) {
+        updateSceneView(scene: scene, targetPoint: nil, translationCamera: typeOrbital)
     }
     
     // No reason to review this function yet
-    public func toggleScene2D3D(_ is2DState: Bool) {
-        if is2DState {
+    public func toggleScene2D3D(_ type2D: Bool) {
+        if type2D {
             // Set scene and camera controller to 2D, remove surface elevation source
-            let surface = Surface()
-            scene.baseSurface = surface
+            scene.baseSurface.isEnabled = false
+            let heading = sceneCamera?.heading ?? 0
             if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point,
-               let camera = ArcGIS.Camera(lookingAt: targetPoint, distance: cameraDistanceDefault, heading: sceneCamera.heading, pitch: 0, roll: 0) {
+               let camera = ArcGIS.Camera(lookingAt: targetPoint, distance: cameraDistanceDefault, heading: heading, pitch: 0, roll: 0) {
                 sceneCamera = camera
             }
-            self.sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: sceneCamera)
-            sceneView = SceneView(scene: scene, cameraController:self.sceneCameraController, graphicsOverlays: graphicsOverlays)
+            if let camera = sceneCamera {
+                let cameraController = ArcGIS.TransformationMatrixCameraController(originCamera: camera)
+                self.sceneCameraController = cameraController
+                sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
+            }
         } else {
             // Set scene and camera controller to 3D, add world surface elevation source
             let ESRI_ELEVATION_SOURCE_URL: String = "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer"
@@ -274,19 +288,30 @@ public final class EFSceneContentViewModel: ObservableObject {
                 try await surface.load()
                 scene.baseSurface = surface
                 
-                if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
-                    let heading = sceneCamera.heading
+                if var targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
+                    let targetElevation = await surfaceElevation(targetPoint)
+                    targetPoint = Point(x: targetPoint.x, y: targetPoint.y, z: targetElevation)
                     if let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, distance: cameraDistanceDefault) {
                         sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
                     }
                 } else {
                     //If the viewpoint isn't valid then use the camera location
-                    let targetPoint = sceneCamera.location
-                    if let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, distance: cameraDistanceDefault) {
+                    if let targetPoint = sceneCamera?.location,
+                       let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, distance: cameraDistanceDefault) {
                         sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
                     }
                 }
             }
+        }
+    }
+    
+    private func surfaceElevation(_ point: Point) async -> Double {
+        // This is a test function, the current Site Scan app has a complete implementation in
+        // public func surfaceElevations(for coords: [CLLocationCoordinate2D], callback: @escaping (_ terrain: MissionTerrain?) -> Void) {
+        do {
+            return try await scene.baseSurface.elevation(at: point)
+        } catch {
+            return 0.0
         }
     }
 }
