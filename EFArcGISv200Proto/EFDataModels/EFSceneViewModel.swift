@@ -19,7 +19,14 @@ public final class EFSceneContentViewModel: ObservableObject {
         }
     }
     
-    @Published var sceneViewpoint: Viewpoint?
+    @Published var sceneViewpoint: Viewpoint? {
+        didSet {
+        // The compass tap resets the viewpoint heading to 0 so forward that on to the sceneView
+            if sceneViewpoint?.rotation == 0 {
+                rotateCameratoNorth()
+            }
+        }
+    }
 
     private var sceneCamera: ArcGIS.Camera?
     
@@ -311,6 +318,28 @@ public final class EFSceneContentViewModel: ObservableObject {
         } catch {
             return 0.0
         }
+    }
+    
+    // This function copied from Site Scan app, refactor for this model
+    public func rotateCameratoNorth() {
+        if let targetPoint = sceneViewpoint?.targetGeometry as? Point,
+        let heading = sceneCamera?.heading {
+            let camera = sceneCamera?.rotatedAround(targetPoint: targetPoint, headingDelta: heading - 360.0, pitchDelta: 0.0, rollDelta: 0.0)
+            
+        }
+        /*
+        if let orbitCamController = sceneCameraController as? OrbitLocationCameraController {
+            // Orbital camera controllers use a property to set the heading
+            //orbitCamController.cameraHeadingOffset = 0.0
+            sceneCamera = sceneCamera?.rotatedTo(heading: 0.0, pitch: sceneCamera?.pitch ?? 0.0, roll: sceneCamera?.roll ?? 0.0)
+        } else {
+            // For other types of camera controllers, use the current camera and target viewpoint to create a new camera with a north heading
+//            if sceneCamera?.heading != 0.0, sceneCamera?.heading != 360.0,
+//               let targetPt = sceneViewpoint?.targetGeometry as? Point {
+//                let northCamera = sceneCamera?.rotateAroundTargetPoint(targetPt, deltaHeading: sceneCamera?.heading - 360.0, deltaPitch: 0.0, deltaRoll: 0.0)
+                //setViewpointCamera(northCamera)
+//            }
+        }*/
     }
 }
 

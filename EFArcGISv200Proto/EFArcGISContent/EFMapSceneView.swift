@@ -93,7 +93,7 @@ struct EFMapSceneView: View {
 
                                 // Overlay for the Compass view
                                     .overlay(alignment: .bottomLeading) {
-                                        Compass(viewpoint: $sceneContentViewModel.sceneViewpoint)
+                                        Compass(viewpoint: $sceneContentViewModel.sceneViewpoint, autoHide: false)
                                             // Optionally provide a different size for the compass.
                                             //.compassSize(size: CGFloat)
                                             .padding()
