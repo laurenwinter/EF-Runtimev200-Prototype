@@ -6,8 +6,9 @@
 //
 
 import SwiftUI
-import ArcGIS
 import Combine
+import ArcGIS
+import ArcGISToolkit
 
 struct EFMapSceneView: View {
     /// The portal that the user is signed in to.
@@ -38,7 +39,7 @@ struct EFMapSceneView: View {
     @State private var identifyScreenPoint: CGPoint?
     
     @State private var selectedGraphic: ArcGIS.Graphic?
-    
+        
     init() {
         // The default app initializer
     }
@@ -85,10 +86,20 @@ struct EFMapSceneView: View {
                                     }
                                 // End of tap and identify test code ======================
                                 
+                                // Scene view properties
                                     .edgesIgnoringSafeArea(.top)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                                     .background(Color.black.opacity(0.9).gradient)
+
+                                // Overlay for the Compass view
+                                    .overlay(alignment: .bottomLeading) {
+                                        Compass(viewpoint: $sceneContentViewModel.sceneViewpoint)
+                                            // Optionally provide a different size for the compass.
+                                            //.compassSize(size: CGFloat)
+                                            .padding()
+                                    }
                                 
+                                // Toolbar for the top right tools
                                     .toolbar {
                                         ToolbarItemGroup {
                                             Button {

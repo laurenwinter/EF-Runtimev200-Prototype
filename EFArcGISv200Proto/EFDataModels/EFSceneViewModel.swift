@@ -19,10 +19,8 @@ public final class EFSceneContentViewModel: ObservableObject {
         }
     }
     
-    // A property that may be used to change the camera controller and elevation.
-    // Waiting for Runtime fix to see if this is needed or not
-    private var viewpoint: ArcGIS.Viewpoint?
-    
+    @Published var sceneViewpoint: Viewpoint?
+
     private var sceneCamera: ArcGIS.Camera?
     
     private var sceneCameraController: ArcGIS.CameraController?
@@ -171,7 +169,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                 let scene = ArcGIS.Scene(basemap: Basemap.init(style: .arcGISImageryStandard))
                 scene.addOperationalLayers(operationalLayers)
 
-                let extent = viewpoint?.targetGeometry.extent
+                let extent = sceneViewpoint?.targetGeometry.extent
                 updateSceneView(scene: scene, targetPoint: extent?.center, translationCamera: nil)
             default:
                 let operationalLayers = scene.operationalLayers
@@ -199,7 +197,7 @@ public final class EFSceneContentViewModel: ObservableObject {
             } else {
                 // Orbital uses the Orbit controller
                 if let cameraPoint = sceneCamera?.location,
-                   var targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
+                   var targetPoint = self.sceneViewpoint?.targetGeometry as? ArcGIS.Point {
                     Task {
                         let targetElevation = await surfaceElevation(targetPoint)
                         targetPoint = Point(x: targetPoint.x, y: targetPoint.y, z: targetElevation)
@@ -220,7 +218,7 @@ public final class EFSceneContentViewModel: ObservableObject {
         if let cameraController = sceneCameraController {
             self.sceneView = SceneView(scene: scene, cameraController: cameraController, graphicsOverlays: graphicsOverlays)
                 .onViewpointChanged(kind: .centerAndScale) {
-                    self.viewpoint = $0
+                    self.sceneViewpoint = $0
                 }
                 .onCameraChanged { camera in
                     self.sceneCamera = camera
@@ -264,7 +262,7 @@ public final class EFSceneContentViewModel: ObservableObject {
             // Set scene and camera controller to 2D, remove surface elevation source
             scene.baseSurface.isEnabled = false
             let heading = sceneCamera?.heading ?? 0
-            if let targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point,
+            if let targetPoint = self.sceneViewpoint?.targetGeometry as? ArcGIS.Point,
                let camera = ArcGIS.Camera(lookingAt: targetPoint, distance: cameraDistanceDefault, heading: heading, pitch: 0, roll: 0) {
                 sceneCamera = camera
             }
@@ -288,7 +286,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                 try await surface.load()
                 scene.baseSurface = surface
                 
-                if var targetPoint = self.viewpoint?.targetGeometry as? ArcGIS.Point {
+                if var targetPoint = self.sceneViewpoint?.targetGeometry as? ArcGIS.Point {
                     let targetElevation = await surfaceElevation(targetPoint)
                     targetPoint = Point(x: targetPoint.x, y: targetPoint.y, z: targetElevation)
                     if let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, distance: cameraDistanceDefault) {
