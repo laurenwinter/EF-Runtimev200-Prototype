@@ -37,9 +37,7 @@ struct EFMapSceneView: View {
     
     /// The point on the screen the user tapped on to identify a feature.
     @State private var identifyScreenPoint: CGPoint?
-    
-    @State private var selectedGraphic: ArcGIS.Graphic?
-        
+            
     init() {
         // The default app initializer
     }
@@ -80,8 +78,7 @@ struct EFMapSceneView: View {
                                         
                                         self.identifyScreenPoint = nil
                                         if let firstGraphic = try? identifyResult.get().first?.graphics.first {
-                                            selectedGraphic = firstGraphic
-                                            print("xxx identifyResult: \(firstGraphic.symbol)")
+                                            print("xxx identifyResult: \(String(describing: firstGraphic.symbol))")
                                         }
                                     }
                                 // End of tap and identify test code ======================
@@ -94,8 +91,7 @@ struct EFMapSceneView: View {
                                 // Overlay for the Compass view
                                     .overlay(alignment: .bottomLeading) {
                                         Compass(viewpoint: $sceneContentViewModel.sceneViewpoint, autoHide: false)
-                                            // Optionally provide a different size for the compass.
-                                            //.compassSize(size: CGFloat)
+                                            .compassSize(size: 50.0) // This is an option property
                                             .padding()
                                     }
                                 
@@ -197,7 +193,9 @@ struct EFMapSceneView: View {
             .navigationViewStyle(.stack)
             .task {
                 guard sceneLoadResult == nil else { return }
-                sceneLoadResult = await Result { try await sceneContentViewModel.scene.load() }
+                sceneLoadResult = await Result {
+                    try await sceneContentViewModel.scene.load()
+                }
             }
             .onChange(of: toggleCameraController) { value in
                 sceneContentViewModel.toggleCameraController(value)

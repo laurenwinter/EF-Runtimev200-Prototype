@@ -18,15 +18,17 @@ public final class EFSceneContentViewModel: ObservableObject {
             objectWillChange.send()
         }
     }
-    
+        
     @Published var sceneViewpoint: Viewpoint? {
         didSet {
-        // The compass tap resets the viewpoint heading to 0 so forward that on to the sceneView
-            if sceneViewpoint?.rotation == 0 {
+            // The compass tap resets the viewpoint heading to 0 so forward that on to the sceneView
+            if sceneViewpoint?.rotation == .zero {
                 rotateCameratoNorth()
             }
         }
     }
+    
+    private var lastOffsetHeading: Double = 0
 
     private var sceneCamera: ArcGIS.Camera?
     
@@ -195,20 +197,22 @@ public final class EFSceneContentViewModel: ObservableObject {
     // Prototype only, this needs to evolve into a fully implemented 2D/3D and camera controller function
     func updateSceneView(scene: ArcGIS.Scene, targetPoint: ArcGIS.Point?, translationCamera: Bool?) { //}, type2D: Bool?) {
         dropPinGraphicsOverlay.removeAllGraphics()
-
+        
         if let cameraControllerChange = translationCamera {
             // Camera controller has been changed orbital or translational.
             if cameraControllerChange {
-                // Translational uses the Global controller
+                // Translational user interaction uses the Global controller
                 sceneCameraController = GlobeCameraController()
+                updateCameraController()
             } else {
-                // Orbital uses the Orbit controller
+                // Orbital user interaction uses the OrbitLocation controller
                 if let cameraPoint = sceneCamera?.location,
                    var targetPoint = self.sceneViewpoint?.targetGeometry as? ArcGIS.Point {
                     Task {
                         let targetElevation = await surfaceElevation(targetPoint)
                         targetPoint = Point(x: targetPoint.x, y: targetPoint.y, z: targetElevation)
                         sceneCameraController = OrbitLocationCameraController(targetPoint: targetPoint, cameraPoint: cameraPoint)
+                        updateCameraController()
                     }
                 }
             }
@@ -216,16 +220,24 @@ public final class EFSceneContentViewModel: ObservableObject {
             // No change to the camera controller type
             self.scene = scene
             if let targetPoint = targetPoint,
-                let camera = ArcGIS.Camera(lookingAt: targetPoint, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0) {
+               let camera = ArcGIS.Camera(lookingAt: targetPoint, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0) {
                 sceneCamera = camera
                 sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: camera)
+                updateCameraController()
             }
         }
+    }
+    
+    private func updateCameraController() {
         
         if let cameraController = sceneCameraController {
             self.sceneView = SceneView(scene: scene, cameraController: cameraController, graphicsOverlays: graphicsOverlays)
-                .onViewpointChanged(kind: .centerAndScale) {
-                    self.sceneViewpoint = $0
+                .onViewpointChanged(kind: .centerAndScale) { newViewpoint in
+                    print("onViewpointChanged: rotation = \(newViewpoint.rotation)")
+                    self.sceneViewpoint = newViewpoint
+                    if self.sceneViewpoint?.rotation != .zero {
+                        self.lastOffsetHeading = self.sceneViewpoint?.rotation ?? .zero
+                    }
                 }
                 .onCameraChanged { camera in
                     self.sceneCamera = camera
@@ -275,7 +287,7 @@ public final class EFSceneContentViewModel: ObservableObject {
             }
             if let camera = sceneCamera {
                 let cameraController = ArcGIS.TransformationMatrixCameraController(originCamera: camera)
-                self.sceneCameraController = cameraController
+                sceneCameraController = cameraController
                 sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
             }
         } else {
@@ -297,12 +309,14 @@ public final class EFSceneContentViewModel: ObservableObject {
                     let targetElevation = await surfaceElevation(targetPoint)
                     targetPoint = Point(x: targetPoint.x, y: targetPoint.y, z: targetElevation)
                     if let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, distance: cameraDistanceDefault) {
+                        sceneCameraController = cameraController
                         sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
                     }
                 } else {
                     //If the viewpoint isn't valid then use the camera location
                     if let targetPoint = sceneCamera?.location,
                        let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, distance: cameraDistanceDefault) {
+                        sceneCameraController = cameraController
                         sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
                     }
                 }
@@ -322,11 +336,44 @@ public final class EFSceneContentViewModel: ObservableObject {
     
     // This function copied from Site Scan app, refactor for this model
     public func rotateCameratoNorth() {
-        if let targetPoint = sceneViewpoint?.targetGeometry as? Point,
-        let heading = sceneCamera?.heading {
-            let camera = sceneCamera?.rotatedAround(targetPoint: targetPoint, headingDelta: heading - 360.0, pitchDelta: 0.0, rollDelta: 0.0)
-            
+        Task {
+            if let vp = sceneViewpoint, vp.rotation == 0 {
+                if let controller = sceneCameraController as? OrbitLocationCameraController {
+                    print("setViewpoint orbital, rotation = \(vp.rotation)")
+                    if let camera = sceneCamera, camera.heading != 0.0, camera.heading != 360.0 {
+                        let delta = lastOffsetHeading > .zero && lastOffsetHeading < 180 ?
+                            -lastOffsetHeading :
+                            360 - lastOffsetHeading
+                        _  = try await controller.moveCamera(
+                            distanceDelta: 0,
+                            headingDelta: delta,
+                            pitchDelta: 0,
+                            duration: 0.3
+                        )
+                    }
+                } else {
+                    print("setViewpoint global, rotation = \(vp.rotation)")
+                    // This works but needs the sceneProxy!
+                    //try await sceneProxy.setViewpoint(vp, duration: 0.3)
+                    
+                    // This doesn't work
+//                    if let targetPoint = sceneViewpoint?.targetGeometry as? Point {
+//                    //let heading = sceneCamera?.heading {
+//                        let delta = lastOffsetHeading > .zero && lastOffsetHeading < 180 ?
+//                            -lastOffsetHeading :
+//                            360 - lastOffsetHeading
+//                        let camera = sceneCamera?.rotatedAround(targetPoint: targetPoint, headingDelta: delta, pitchDelta: 0.0, rollDelta: 0.0)
+//                    }
+                }
+            }
         }
+        
+//        if let targetPoint = sceneViewpoint?.targetGeometry as? Point,
+//        let heading = sceneCamera?.heading {
+//            let camera = sceneCamera?.rotatedAround(targetPoint: targetPoint, headingDelta: heading - 360.0, pitchDelta: 0.0, rollDelta: 0.0)
+//
+//        }
+        
         /*
         if let orbitCamController = sceneCameraController as? OrbitLocationCameraController {
             // Orbital camera controllers use a property to set the heading
