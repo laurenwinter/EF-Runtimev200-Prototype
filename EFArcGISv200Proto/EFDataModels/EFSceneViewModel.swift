@@ -338,6 +338,7 @@ public final class EFSceneContentViewModel: ObservableObject {
     public func rotateCameratoNorth() {
         Task {
             if let vp = sceneViewpoint, vp.rotation == 0 {
+                // The OrbitLocation controller is managing the Viewpoint to you must move it to rotate North
                 if let controller = sceneCameraController as? OrbitLocationCameraController {
                     print("setViewpoint orbital, rotation = \(vp.rotation)")
                     if let camera = sceneCamera, camera.heading != 0.0, camera.heading != 360.0 {
@@ -352,6 +353,8 @@ public final class EFSceneContentViewModel: ObservableObject {
                         )
                     }
                 } else {
+                    // The global controller requires the SceneViewProxy.setViewpoint
+                    // I haven't test TransformationMatrix, used in our 2D view
                     print("setViewpoint global, rotation = \(vp.rotation)")
                     // This works but needs the sceneProxy!
                     //try await sceneProxy.setViewpoint(vp, duration: 0.3)

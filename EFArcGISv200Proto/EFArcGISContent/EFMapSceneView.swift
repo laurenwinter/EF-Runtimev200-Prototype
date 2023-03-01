@@ -56,7 +56,7 @@ struct EFMapSceneView: View {
                         ProgressView()
                     case .success:
                         ZStack {
-                            // SceneViewReader is needed to get proxy that used for identifying graphics (or layers)
+                            // SceneViewReader is needed to get proxy that used for identifying graphics (or layers) and to setViewPoint
                             SceneViewReader { sceneProxy in
                                 sceneContentViewModel.sceneView
                                 
