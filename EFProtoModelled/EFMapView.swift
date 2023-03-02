@@ -17,11 +17,17 @@ struct EFMapView: View {
         SceneViewReader { sceneProxy in
             SceneView(scene: viewModel.scene, cameraController: viewModel.controller)
                 .onViewpointChanged(kind: .centerAndScale, perform: viewModel.actionOnViewpointChanged)
+                .onCameraChanged(perform: viewModel.actionOnCameraChanged)
+            
+                .onSingleTapGesture(perform: viewModel.actionOnSingleTapGesture)
+                .onLongPressGesture(perform: viewModel.actionOnLongPressGesture)
+            
                 .overlay(alignment: .topTrailing) {
                     OverlayView(viewPoint: $viewModel.viewpoint,
                                 buttonAction: viewModel.createNewScene,
                                 autohide: false)
                 }
+            
                 .onChange(of: viewModel.viewpoint!, perform: viewModel.actionOnChange)
         }
     }
@@ -58,7 +64,9 @@ class EFMapViewModel: ObservableObject {
     
     @Published var scene: ArcGIS.Scene
     
-    @Published var lastNonZeroRotation: Double? = 0
+    var camera: ArcGIS.Camera?
+
+    var lastNonZeroRotation: Double? = 0
     
     init() {
         let initialViewpoint = Viewpoint(
@@ -78,6 +86,18 @@ class EFMapViewModel: ObservableObject {
         if let rotation = self.viewpoint?.rotation, rotation != .zero {
             lastNonZeroRotation = rotation
         }
+    }
+    
+    func actionOnCameraChanged(camera: ArcGIS.Camera) {
+        self.camera = camera
+    }
+    
+    func actionOnSingleTapGesture(screenPoint: CGPoint, scenePoint: ArcGIS.Point?) {
+        
+    }
+    
+    func actionOnLongPressGesture(screenPoint: CGPoint, scenePoint: ArcGIS.Point?) {
+        
     }
     
     func actionOnChange(viewpoint: ArcGIS.Viewpoint) {
@@ -102,6 +122,7 @@ class EFMapViewModel: ObservableObject {
     func createNewScene() {
         let url = URL(string: "https://www.arcgis.com/home/item.html?id=67372ff42cd145319639a99152b15bc3")!
         let basemap = Basemap(item: PortalItem(url: url)!)
-        scene.basemap = basemap // = ArcGIS.Scene(basemap: basemap)
+        scene.basemap = basemap
+        //scene.basemap = ArcGIS.Scene(basemap: basemap)
     }
 }
