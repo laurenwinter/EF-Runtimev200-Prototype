@@ -56,11 +56,11 @@ struct EFUserContentView: View {
 /// A view that displays information about a portal item for viewing that information within a list.
 struct EFPortalItemView: View {
     /// The portal item to display information about.
-    var item: EFPortalItemModel
+    var item: EFPortalItemViewModel
 
     @State private var isToggled = false
     
-    init(item: EFPortalItemModel) {
+    init(item: EFPortalItemViewModel) {
         self.item = item
         if item.currentState == .visible {
             self.isToggled = true

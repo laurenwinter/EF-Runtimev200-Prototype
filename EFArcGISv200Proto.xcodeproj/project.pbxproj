@@ -28,6 +28,15 @@
 		159CBF77296F2FB500CF0BEC /* KeychainError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159CBF73296F2FB500CF0BEC /* KeychainError.swift */; };
 		159CBF78296F2FB500CF0BEC /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159CBF74296F2FB500CF0BEC /* Keychain.swift */; };
 		15C1A2B62995C562003F9666 /* ArcGISToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 15C1A2B52995C562003F9666 /* ArcGISToolkit */; };
+		15D3804829B00664001996C8 /* EFProtoModelledApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D3804729B00664001996C8 /* EFProtoModelledApp.swift */; };
+		15D3804A29B00664001996C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D3804929B00664001996C8 /* ContentView.swift */; };
+		15D3804C29B00666001996C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15D3804B29B00666001996C8 /* Assets.xcassets */; };
+		15D3804F29B00666001996C8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15D3804E29B00666001996C8 /* Preview Assets.xcassets */; };
+		15D3805929B00667001996C8 /* EFProtoModelledTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D3805829B00667001996C8 /* EFProtoModelledTests.swift */; };
+		15D3806329B00667001996C8 /* EFProtoModelledUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D3806229B00667001996C8 /* EFProtoModelledUITests.swift */; };
+		15D3806529B00667001996C8 /* EFProtoModelledUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D3806429B00667001996C8 /* EFProtoModelledUITestsLaunchTests.swift */; };
+		15D3807029B006AA001996C8 /* EFMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D3806F29B006AA001996C8 /* EFMapView.swift */; };
+		15D3807229B00918001996C8 /* ArcGISToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 15D3807129B00918001996C8 /* ArcGISToolkit */; };
 		15D4C6D3299C68AE00D9D841 /* EFUserGroupsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4C6D2299C68AE00D9D841 /* EFUserGroupsContentView.swift */; };
 		15DE89BF296E1B0400C4F632 /* EFSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DE89BE296E1B0400C4F632 /* EFSignInView.swift */; };
 /* End PBXBuildFile section */
@@ -46,6 +55,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 154F77972953812500A06195;
 			remoteInfo = EFArcGISv200Proto;
+		};
+		15D3805529B00666001996C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 154F77902953812500A06195 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 15D3804429B00664001996C8;
+			remoteInfo = EFProtoModelled;
+		};
+		15D3805F29B00667001996C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 154F77902953812500A06195 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 15D3804429B00664001996C8;
+			remoteInfo = EFProtoModelled;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -74,6 +97,17 @@
 		159CBF73296F2FB500CF0BEC /* KeychainError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainError.swift; sourceTree = "<group>"; };
 		159CBF74296F2FB500CF0BEC /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		15C2FD4A29944DFC00EA2FE1 /* arcgis-maps-sdk-swift-toolkit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "arcgis-maps-sdk-swift-toolkit"; path = "../arcgis-maps-sdk-swift-toolkit"; sourceTree = "<group>"; };
+		15D3804529B00664001996C8 /* EFProtoModelled.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EFProtoModelled.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		15D3804729B00664001996C8 /* EFProtoModelledApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFProtoModelledApp.swift; sourceTree = "<group>"; };
+		15D3804929B00664001996C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		15D3804B29B00666001996C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		15D3804E29B00666001996C8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		15D3805429B00666001996C8 /* EFProtoModelledTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EFProtoModelledTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		15D3805829B00667001996C8 /* EFProtoModelledTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFProtoModelledTests.swift; sourceTree = "<group>"; };
+		15D3805E29B00667001996C8 /* EFProtoModelledUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EFProtoModelledUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		15D3806229B00667001996C8 /* EFProtoModelledUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFProtoModelledUITests.swift; sourceTree = "<group>"; };
+		15D3806429B00667001996C8 /* EFProtoModelledUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFProtoModelledUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		15D3806F29B006AA001996C8 /* EFMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFMapView.swift; sourceTree = "<group>"; };
 		15D4C6D2299C68AE00D9D841 /* EFUserGroupsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFUserGroupsContentView.swift; sourceTree = "<group>"; };
 		15DE89BE296E1B0400C4F632 /* EFSignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFSignInView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -95,6 +129,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		154F77AF2953812600A06195 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		15D3804229B00664001996C8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15D3807229B00918001996C8 /* ArcGISToolkit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		15D3805129B00666001996C8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		15D3805B29B00667001996C8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -127,6 +183,9 @@
 				154F779A2953812500A06195 /* EFArcGISv200Proto */,
 				154F77AB2953812600A06195 /* EFArcGISv200ProtoTests */,
 				154F77B52953812600A06195 /* EFArcGISv200ProtoUITests */,
+				15D3804629B00664001996C8 /* EFProtoModelled */,
+				15D3805729B00667001996C8 /* EFProtoModelledTests */,
+				15D3806129B00667001996C8 /* EFProtoModelledUITests */,
 				154F77992953812500A06195 /* Products */,
 				150C8ED02995B24B00AEA3EF /* Frameworks */,
 			);
@@ -138,6 +197,9 @@
 				154F77982953812500A06195 /* EFArcGISv200Proto.app */,
 				154F77A82953812600A06195 /* EFArcGISv200ProtoTests.xctest */,
 				154F77B22953812600A06195 /* EFArcGISv200ProtoUITests.xctest */,
+				15D3804529B00664001996C8 /* EFProtoModelled.app */,
+				15D3805429B00666001996C8 /* EFProtoModelledTests.xctest */,
+				15D3805E29B00667001996C8 /* EFProtoModelledUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -232,6 +294,43 @@
 			name = Packages;
 			sourceTree = "<group>";
 		};
+		15D3804629B00664001996C8 /* EFProtoModelled */ = {
+			isa = PBXGroup;
+			children = (
+				15D3804729B00664001996C8 /* EFProtoModelledApp.swift */,
+				15D3804929B00664001996C8 /* ContentView.swift */,
+				15D3806F29B006AA001996C8 /* EFMapView.swift */,
+				15D3804B29B00666001996C8 /* Assets.xcassets */,
+				15D3804D29B00666001996C8 /* Preview Content */,
+			);
+			path = EFProtoModelled;
+			sourceTree = "<group>";
+		};
+		15D3804D29B00666001996C8 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				15D3804E29B00666001996C8 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		15D3805729B00667001996C8 /* EFProtoModelledTests */ = {
+			isa = PBXGroup;
+			children = (
+				15D3805829B00667001996C8 /* EFProtoModelledTests.swift */,
+			);
+			path = EFProtoModelledTests;
+			sourceTree = "<group>";
+		};
+		15D3806129B00667001996C8 /* EFProtoModelledUITests */ = {
+			isa = PBXGroup;
+			children = (
+				15D3806229B00667001996C8 /* EFProtoModelledUITests.swift */,
+				15D3806429B00667001996C8 /* EFProtoModelledUITestsLaunchTests.swift */,
+			);
+			path = EFProtoModelledUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -291,6 +390,62 @@
 			productReference = 154F77B22953812600A06195 /* EFArcGISv200ProtoUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		15D3804429B00664001996C8 /* EFProtoModelled */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15D3806C29B00667001996C8 /* Build configuration list for PBXNativeTarget "EFProtoModelled" */;
+			buildPhases = (
+				15D3804129B00664001996C8 /* Sources */,
+				15D3804229B00664001996C8 /* Frameworks */,
+				15D3804329B00664001996C8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EFProtoModelled;
+			packageProductDependencies = (
+				15D3807129B00918001996C8 /* ArcGISToolkit */,
+			);
+			productName = EFProtoModelled;
+			productReference = 15D3804529B00664001996C8 /* EFProtoModelled.app */;
+			productType = "com.apple.product-type.application";
+		};
+		15D3805329B00666001996C8 /* EFProtoModelledTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15D3806D29B00667001996C8 /* Build configuration list for PBXNativeTarget "EFProtoModelledTests" */;
+			buildPhases = (
+				15D3805029B00666001996C8 /* Sources */,
+				15D3805129B00666001996C8 /* Frameworks */,
+				15D3805229B00666001996C8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				15D3805629B00666001996C8 /* PBXTargetDependency */,
+			);
+			name = EFProtoModelledTests;
+			productName = EFProtoModelledTests;
+			productReference = 15D3805429B00666001996C8 /* EFProtoModelledTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		15D3805D29B00667001996C8 /* EFProtoModelledUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15D3806E29B00667001996C8 /* Build configuration list for PBXNativeTarget "EFProtoModelledUITests" */;
+			buildPhases = (
+				15D3805A29B00667001996C8 /* Sources */,
+				15D3805B29B00667001996C8 /* Frameworks */,
+				15D3805C29B00667001996C8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				15D3806029B00667001996C8 /* PBXTargetDependency */,
+			);
+			name = EFProtoModelledUITests;
+			productName = EFProtoModelledUITests;
+			productReference = 15D3805E29B00667001996C8 /* EFProtoModelledUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -312,6 +467,17 @@
 						CreatedOnToolsVersion = 14.2;
 						TestTargetID = 154F77972953812500A06195;
 					};
+					15D3804429B00664001996C8 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					15D3805329B00666001996C8 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 15D3804429B00664001996C8;
+					};
+					15D3805D29B00667001996C8 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 15D3804429B00664001996C8;
+					};
 				};
 			};
 			buildConfigurationList = 154F77932953812500A06195 /* Build configuration list for PBXProject "EFArcGISv200Proto" */;
@@ -332,6 +498,9 @@
 				154F77972953812500A06195 /* EFArcGISv200Proto */,
 				154F77A72953812600A06195 /* EFArcGISv200ProtoTests */,
 				154F77B12953812600A06195 /* EFArcGISv200ProtoUITests */,
+				15D3804429B00664001996C8 /* EFProtoModelled */,
+				15D3805329B00666001996C8 /* EFProtoModelledTests */,
+				15D3805D29B00667001996C8 /* EFProtoModelledUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -354,6 +523,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		154F77B02953812600A06195 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		15D3804329B00664001996C8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15D3804F29B00666001996C8 /* Preview Assets.xcassets in Resources */,
+				15D3804C29B00666001996C8 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		15D3805229B00666001996C8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		15D3805C29B00667001996C8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -404,6 +596,33 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		15D3804129B00664001996C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15D3807029B006AA001996C8 /* EFMapView.swift in Sources */,
+				15D3804A29B00664001996C8 /* ContentView.swift in Sources */,
+				15D3804829B00664001996C8 /* EFProtoModelledApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		15D3805029B00666001996C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15D3805929B00667001996C8 /* EFProtoModelledTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		15D3805A29B00667001996C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15D3806529B00667001996C8 /* EFProtoModelledUITestsLaunchTests.swift in Sources */,
+				15D3806329B00667001996C8 /* EFProtoModelledUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -416,6 +635,16 @@
 			isa = PBXTargetDependency;
 			target = 154F77972953812500A06195 /* EFArcGISv200Proto */;
 			targetProxy = 154F77B32953812600A06195 /* PBXContainerItemProxy */;
+		};
+		15D3805629B00666001996C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 15D3804429B00664001996C8 /* EFProtoModelled */;
+			targetProxy = 15D3805529B00666001996C8 /* PBXContainerItemProxy */;
+		};
+		15D3806029B00667001996C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 15D3804429B00664001996C8 /* EFProtoModelled */;
+			targetProxy = 15D3805F29B00667001996C8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -670,6 +899,140 @@
 			};
 			name = Release;
 		};
+		15D3806629B00667001996C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EFProtoModelled/Preview Content\"";
+				DEVELOPMENT_TEAM = 75Z67E6SV2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.arcgis.swift.samples.EFProtoModelled;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		15D3806729B00667001996C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EFProtoModelled/Preview Content\"";
+				DEVELOPMENT_TEAM = 75Z67E6SV2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.arcgis.swift.samples.EFProtoModelled;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		15D3806829B00667001996C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75Z67E6SV2;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.arcgis.swift.samples.EFProtoModelledTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EFProtoModelled.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EFProtoModelled";
+			};
+			name = Debug;
+		};
+		15D3806929B00667001996C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75Z67E6SV2;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.arcgis.swift.samples.EFProtoModelledTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EFProtoModelled.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EFProtoModelled";
+			};
+			name = Release;
+		};
+		15D3806A29B00667001996C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75Z67E6SV2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.arcgis.swift.samples.EFProtoModelledUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = EFProtoModelled;
+			};
+			name = Debug;
+		};
+		15D3806B29B00667001996C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75Z67E6SV2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.arcgis.swift.samples.EFProtoModelledUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = EFProtoModelled;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -709,10 +1072,41 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		15D3806C29B00667001996C8 /* Build configuration list for PBXNativeTarget "EFProtoModelled" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				15D3806629B00667001996C8 /* Debug */,
+				15D3806729B00667001996C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		15D3806D29B00667001996C8 /* Build configuration list for PBXNativeTarget "EFProtoModelledTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				15D3806829B00667001996C8 /* Debug */,
+				15D3806929B00667001996C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		15D3806E29B00667001996C8 /* Build configuration list for PBXNativeTarget "EFProtoModelledUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				15D3806A29B00667001996C8 /* Debug */,
+				15D3806B29B00667001996C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		15C1A2B52995C562003F9666 /* ArcGISToolkit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ArcGISToolkit;
+		};
+		15D3807129B00918001996C8 /* ArcGISToolkit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ArcGISToolkit;
 		};

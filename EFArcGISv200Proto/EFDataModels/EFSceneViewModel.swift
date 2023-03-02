@@ -75,7 +75,7 @@ public final class EFSceneContentViewModel: ObservableObject {
     
     // This is a simple test for operational layers, the ArcGIS Online layers that the user can select
     // This is a basic PortalItem (layer) function to add and remove layers.
-    private func itemSelectedCallback(_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) {
+    private func itemSelectedCallback(_ itemModel: EFPortalItemViewModel, _ state: EFPortalItemViewModel.ItemState) {
         //print("itemSelectedFunc, \(itemModel.portalItem.title), selected: \(state)")
         switch state {
         case .initialized:
@@ -393,7 +393,7 @@ public final class EFSceneContentViewModel: ObservableObject {
     }
 }
 
-class EFPortalItemModel: ObservableObject, Identifiable {
+class EFPortalItemViewModel: ObservableObject, Identifiable {
     
     enum ItemState {
         case initialized, visible, hidden
@@ -421,7 +421,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
     var portalID = ""
     var folderTitle = ""
     var portalFolder: ArcGIS.PortalFolder?
-    var portalItemModels: Dictionary = [String: EFPortalItemModel]()
+    var portalItemModels: Dictionary = [String: EFPortalItemViewModel]()
 
     let id = UUID()
     
@@ -437,7 +437,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
     var portalID = ""
     var groupTitle = ""
     var portalGroup: ArcGIS.PortalGroup?
-    @Published var portalItemModels: Dictionary = [String: EFPortalItemModel]()
+    @Published var portalItemModels: Dictionary = [String: EFPortalItemViewModel]()
     
     let id = UUID()
     
@@ -447,7 +447,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
     
     // Essentially a callback assigned to this model from the parent mode (EFSceneContentViewModel) to handle user select/deselect of a layer
     // We'll review this model hierarchy to determine if there's a better approach
-    public var portalItemSelected: ((_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) -> Void)?
+    public var portalItemSelected: ((_ itemModel: EFPortalItemViewModel, _ state: EFPortalItemViewModel.ItemState) -> Void)?
     
     init(_ title: String, id: String, portalGroup: ArcGIS.PortalGroup?) {
         self.portalID = id
@@ -484,7 +484,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                     portalItemModel.portalItem = groupItem
                 } else {
                     // Create a model for each item
-                    let portalItemModel = EFPortalItemModel(portalItem: groupItem)
+                    let portalItemModel = EFPortalItemViewModel(portalItem: groupItem)
                     
                     // Add sink to the item model state for change-of-state
                     portalItemModel.$currentState
@@ -505,10 +505,10 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
     
     // Essentially a callback assigned to this model from the parent mode (EFSceneContentViewModel) to handle user select/deselect of a layer
     // We'll review this model hierarchy to determine if there's a better approach
-    public var portalItemSelected: ((_ itemModel: EFPortalItemModel, _ state: EFPortalItemModel.ItemState) -> Void)?
+    public var portalItemSelected: ((_ itemModel: EFPortalItemViewModel, _ state: EFPortalItemViewModel.ItemState) -> Void)?
        
     // Array of item models that holds the ArcGIS Online users Content items
-    @Published var portalItemModels : [EFPortalItemModel] = []
+    @Published var portalItemModels : [EFPortalItemViewModel] = []
     
     // Array of folder models that holds the ArcGIs Online users Folders items, each Folder model will have an array of item models
     @Published var portalFolderModels : Dictionary = [String: EFPortalItemFolderModel]()
@@ -523,11 +523,11 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
             return
         }
         
-        var allRootItemModels = [EFPortalItemModel]()
+        var allRootItemModels = [EFPortalItemViewModel]()
         if let contentItems = await updatePortalContent(user) {
             contentItems.forEach() { item in
                 // Create a model for each item
-                let portalItemModel = EFPortalItemModel(portalItem: item)
+                let portalItemModel = EFPortalItemViewModel(portalItem: item)
                 
                 // Add sink to the item model state for change-of-state
                 portalItemModel.$currentState
@@ -540,7 +540,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
         }
         if let allFolderContent = await updatePortalContentFolders(user) {
             allFolderContent.forEach() { item in
-                let portalItemModel = EFPortalItemModel(portalItem: item)
+                let portalItemModel = EFPortalItemViewModel(portalItem: item)
                 allRootItemModels.append(portalItemModel)
             }
         }
@@ -601,7 +601,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
             let contentItems = try await user.content.items
             contentItems.forEach { rootItem in
                 // Create a model for each item
-                let portalItemModel = EFPortalItemModel(portalItem: rootItem)
+                let portalItemModel = EFPortalItemViewModel(portalItem: rootItem)
                 
                 // Add sink to the item model state for change-of-state
                 portalItemModel.$currentState
@@ -629,7 +629,7 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                         folderItems.forEach { folderItem in
                             if let portalFolderModel = portalFolderModels[folder.id.rawValue], portalFolderModel.portalItemModels[folderItem.id.rawValue] == nil {
                                 // Create a model for each item
-                                let portalItemModel = EFPortalItemModel(portalItem: folderItem)
+                                let portalItemModel = EFPortalItemViewModel(portalItem: folderItem)
                                 
                                 // Add sink to the item model state for change-of-state
                                 portalItemModel.$currentState
@@ -700,7 +700,7 @@ class EFUserContentViewModel_Preview : EFUserContentViewModel {
             }
             let uiImage = UIImage(systemName: "moon.stars.fill")?.withTintColor(UIColor(red: CGFloat.random(in: 0.0..<1.0), green: CGFloat.random(in: 0.0..<1.0), blue: CGFloat.random(in: 0.0..<1.0), alpha: 1.0))
             //portalItem.thumbnail(image: uiImage)
-            let item = EFPortalItemModel(portalItem: portalItem) //PortalItem(portal: portal, id: Item.ID(rawValue: "\(itemIndex)")!))
+            let item = EFPortalItemViewModel(portalItem: portalItem) //PortalItem(portal: portal, id: Item.ID(rawValue: "\(itemIndex)")!))
             portalItemModels.append(item)
         }
         
