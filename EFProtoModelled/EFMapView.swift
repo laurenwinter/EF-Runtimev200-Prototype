@@ -68,6 +68,8 @@ class EFMapViewModel: ObservableObject {
 
     var lastNonZeroRotation: Double? = 0
     
+    var sceneViewProxy: ArcGIS.SceneViewProxy?
+    
     init() {
         let initialViewpoint = Viewpoint(
             center: Point(x: -117.19494, y: 34.05723, spatialReference: .wgs84),
@@ -81,7 +83,7 @@ class EFMapViewModel: ObservableObject {
         scene.initialViewpoint = initialViewpoint
     }
     
-    func actionOnViewpointChanged(viewpoint: (ArcGIS.Viewpoint)) {
+    func actionOnViewpointChanged(viewpoint: ArcGIS.Viewpoint) {
         self.viewpoint = viewpoint
         if let rotation = self.viewpoint?.rotation, rotation != .zero {
             lastNonZeroRotation = rotation

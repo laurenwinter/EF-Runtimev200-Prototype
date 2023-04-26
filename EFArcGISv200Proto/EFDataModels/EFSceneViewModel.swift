@@ -354,42 +354,12 @@ public final class EFSceneContentViewModel: ObservableObject {
                     }
                 } else {
                     // The global controller requires the SceneViewProxy.setViewpoint
-                    // I haven't test TransformationMatrix, used in our 2D view
                     print("setViewpoint global, rotation = \(vp.rotation)")
                     // This works but needs the sceneProxy!
                     //try await sceneProxy.setViewpoint(vp, duration: 0.3)
-                    
-                    // This doesn't work
-//                    if let targetPoint = sceneViewpoint?.targetGeometry as? Point {
-//                    //let heading = sceneCamera?.heading {
-//                        let delta = lastOffsetHeading > .zero && lastOffsetHeading < 180 ?
-//                            -lastOffsetHeading :
-//                            360 - lastOffsetHeading
-//                        let camera = sceneCamera?.rotatedAround(targetPoint: targetPoint, headingDelta: delta, pitchDelta: 0.0, rollDelta: 0.0)
-//                    }
                 }
             }
         }
-        
-//        if let targetPoint = sceneViewpoint?.targetGeometry as? Point,
-//        let heading = sceneCamera?.heading {
-//            let camera = sceneCamera?.rotatedAround(targetPoint: targetPoint, headingDelta: heading - 360.0, pitchDelta: 0.0, rollDelta: 0.0)
-//
-//        }
-        
-        /*
-        if let orbitCamController = sceneCameraController as? OrbitLocationCameraController {
-            // Orbital camera controllers use a property to set the heading
-            //orbitCamController.cameraHeadingOffset = 0.0
-            sceneCamera = sceneCamera?.rotatedTo(heading: 0.0, pitch: sceneCamera?.pitch ?? 0.0, roll: sceneCamera?.roll ?? 0.0)
-        } else {
-            // For other types of camera controllers, use the current camera and target viewpoint to create a new camera with a north heading
-//            if sceneCamera?.heading != 0.0, sceneCamera?.heading != 360.0,
-//               let targetPt = sceneViewpoint?.targetGeometry as? Point {
-//                let northCamera = sceneCamera?.rotateAroundTargetPoint(targetPt, deltaHeading: sceneCamera?.heading - 360.0, deltaPitch: 0.0, deltaRoll: 0.0)
-                //setViewpointCamera(northCamera)
-//            }
-        }*/
     }
 }
 
