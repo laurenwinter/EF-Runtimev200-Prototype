@@ -61,10 +61,16 @@ struct ProfileView: View {
     func signOut() {
         isSigningOut = true
         Task {
-            await authenticator.clearCredentialStores()
+            await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
+            await ArcGISEnvironment.authenticationManager.clearCredentialStores()
             isSigningOut = false
             signOutAction()
         }
+//        Task {
+//            await authenticator.clearCredentialStores()
+//            isSigningOut = false
+//            signOutAction()
+//        }
     }
 }
 

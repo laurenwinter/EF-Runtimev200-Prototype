@@ -40,8 +40,12 @@ struct OverlayView: View {
     
     var body: some View {
         VStack {
-            Compass(viewpoint: $viewPoint, autoHide: autohide)
-                .padding()
+            // TODO: Fix this v200.1 Compass change
+            Button("Compass") {
+                print("Compass tapped!")
+            }
+//            Compass(viewpoint: $viewPoint, autoHide: autohide)
+//                .padding()
             Button("button") {
                 buttonAction()
             }
@@ -52,13 +56,13 @@ struct OverlayView: View {
 class EFMapViewModel: ObservableObject {
     @Published var controller: OrbitLocationCameraController =
         OrbitLocationCameraController(
-            targetPoint: Point(
+            target: Point(
                 x: -117.19494,
                 y: 34.05723,
                 spatialReference: .wgs84
             ),
             distance: 2000
-        )!
+        )
     
     @Published var viewpoint: Viewpoint?
     
@@ -111,7 +115,7 @@ class EFMapViewModel: ObservableObject {
                 -lastRotation :
                 360 - lastRotation
             Task {
-                try await controller.moveCamera(
+                await controller.moveCamera(
                     distanceDelta: .zero,
                     headingDelta: delta,
                     pitchDelta: .zero,

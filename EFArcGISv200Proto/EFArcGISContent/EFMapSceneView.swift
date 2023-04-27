@@ -89,10 +89,19 @@ struct EFMapSceneView: View {
                                     .background(Color.black.opacity(0.9).gradient)
 
                                 // Overlay for the Compass view
+                                // TODO: 200.1 Compass change breaker, fix this
                                     .overlay(alignment: .bottomLeading) {
-                                        Compass(viewpoint: $sceneContentViewModel.sceneViewpoint, autoHide: false)
-                                            .compassSize(size: 50.0) // This is an option property
-                                            .padding()
+                                        Button("Compass") {
+                                            print("Button tapped!")
+                                        }
+//                                        MapViewReader { proxy in
+//                                            Compass(rotation: sceneContentViewModel.sceneViewpoint?.rotation, mapViewProxy: proxy)
+//                                                .compassSize(size: 50.0) // This is an option property
+//                                                .padding()
+//                                        }
+//                                        Compass(rotation: sceneContentViewModel.sceneViewpoint?.rotation, mapViewProxy: nil)
+//                                            .compassSize(size: 50.0) // This is an option property
+//                                            .padding()
                                     }
                                 
                                 // Toolbar for the top right tools
@@ -215,3 +224,25 @@ struct EFMapSceneView_Preview: PreviewProvider {
             EFMapSceneView(portal: .arcGISOnline(connection: .anonymous), sceneLoadResult: .success(()))
     }
 }
+
+//public extension Compass {
+//    /// Creates a compass with a rotation (0° indicates a direction toward true North, 90° indicates
+//    /// a direction toward true West, etc.).
+//    /// - Parameters:
+//    ///   - rotation: The rotation whose value determines the heading of the compass.
+//    ///   - mapViewProxy: The proxy to provide access to map view operations.
+//    init(
+//        rotation: Double?,
+//        mapViewProxy: MapViewProxy?
+//    ) {
+//        let heading: Double
+//        if let rotation {
+//            heading = rotation.isZero ? .zero : 360 - rotation
+//        } else {
+//            heading = .nan
+//        }
+//        MapViewReader { proxy in
+//            self.init(rotation: rotation, mapViewProxy: proxy)
+//        }
+//    }
+//}

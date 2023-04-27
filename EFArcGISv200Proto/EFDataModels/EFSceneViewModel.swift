@@ -84,7 +84,7 @@ public final class EFSceneContentViewModel: ObservableObject {
         case .visible:
             Task {
                 // WIP, this is simple demo for Web Scene, needs to be a layer handler
-                print("Selected layer: \(itemModel.portalItem.title) type: \(itemModel.portalItem.kind.description)")
+                print("Selected layer: \(itemModel.portalItem.title) type: \(itemModel.portalItem.kind?.description)")
                 
                 switch itemModel.portalItem.kind {
                 case .webScene:
@@ -164,7 +164,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     
                 default:
                     // Not supported type
-                    print("Not supported layer type: \(itemModel.portalItem.kind.description)")
+                    print("Not supported layer type: \(itemModel.portalItem.kind?.description)")
                 }
             }
         case .hidden:
@@ -181,11 +181,12 @@ public final class EFSceneContentViewModel: ObservableObject {
                 let extent = sceneViewpoint?.targetGeometry.extent
                 updateSceneView(scene: scene, targetPoint: extent?.center, translationCamera: nil)
             default:
+                // Get a reference to the scene layer by layerID and then hide it
                 let operationalLayers = scene.operationalLayers
                 itemModel.operationalLayerIDs.forEach { layerID in
                     operationalLayers.forEach { layer in
                         if layerID == layer.id?.rawValue {
-                            scene.removeOperationalLayer(layer)
+                            layer.isVisible = false
                         }
                     }
                 }
@@ -211,7 +212,7 @@ public final class EFSceneContentViewModel: ObservableObject {
                     Task {
                         let targetElevation = await surfaceElevation(targetPoint)
                         targetPoint = Point(x: targetPoint.x, y: targetPoint.y, z: targetElevation)
-                        sceneCameraController = OrbitLocationCameraController(targetPoint: targetPoint, cameraPoint: cameraPoint)
+                        sceneCameraController = OrbitLocationCameraController(target: targetPoint, cameraLocation: cameraPoint)
                         updateCameraController()
                     }
                 }
@@ -219,8 +220,8 @@ public final class EFSceneContentViewModel: ObservableObject {
         } else {
             // No change to the camera controller type
             self.scene = scene
-            if let targetPoint = targetPoint,
-               let camera = ArcGIS.Camera(lookingAt: targetPoint, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0) {
+            if let targetPoint = targetPoint {
+               let camera = ArcGIS.Camera(lookingAt: targetPoint, distance: cameraDistanceDefault, heading: 0, pitch: 0, roll: 0)
                 sceneCamera = camera
                 sceneCameraController = ArcGIS.TransformationMatrixCameraController(originCamera: camera)
                 updateCameraController()
@@ -281,8 +282,8 @@ public final class EFSceneContentViewModel: ObservableObject {
             // Set scene and camera controller to 2D, remove surface elevation source
             scene.baseSurface.isEnabled = false
             let heading = sceneCamera?.heading ?? 0
-            if let targetPoint = self.sceneViewpoint?.targetGeometry as? ArcGIS.Point,
-               let camera = ArcGIS.Camera(lookingAt: targetPoint, distance: cameraDistanceDefault, heading: heading, pitch: 0, roll: 0) {
+            if let targetPoint = self.sceneViewpoint?.targetGeometry as? ArcGIS.Point {
+               let camera = ArcGIS.Camera(lookingAt: targetPoint, distance: cameraDistanceDefault, heading: heading, pitch: 0, roll: 0)
                 sceneCamera = camera
             }
             if let camera = sceneCamera {
@@ -308,14 +309,14 @@ public final class EFSceneContentViewModel: ObservableObject {
                 if var targetPoint = self.sceneViewpoint?.targetGeometry as? ArcGIS.Point {
                     let targetElevation = await surfaceElevation(targetPoint)
                     targetPoint = Point(x: targetPoint.x, y: targetPoint.y, z: targetElevation)
-                    if let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, distance: cameraDistanceDefault) {
+                    let cameraController = OrbitLocationCameraController(target: targetPoint, distance: cameraDistanceDefault)
                         sceneCameraController = cameraController
                         sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
-                    }
+
                 } else {
                     //If the viewpoint isn't valid then use the camera location
-                    if let targetPoint = sceneCamera?.location,
-                       let cameraController = OrbitLocationCameraController(targetPoint: targetPoint, distance: cameraDistanceDefault) {
+                    if let targetPoint = sceneCamera?.location {
+                       let cameraController = OrbitLocationCameraController(target: targetPoint, distance: cameraDistanceDefault)
                         sceneCameraController = cameraController
                         sceneView = SceneView(scene: scene, cameraController:cameraController, graphicsOverlays: graphicsOverlays)
                     }
@@ -449,7 +450,8 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
             searchResultSet = try await portalGroup?.findItems(searchParameters: queryParams)
             let groupItems = searchResultSet?.results
             groupItems?.forEach { groupItem in
-                if let portalItemModel = portalItemModels[groupItem.id.rawValue] {
+                if let itemID = groupItem.id,
+                   let portalItemModel = portalItemModels[itemID.rawValue] {
                     // The item exists so update its title
                     portalItemModel.portalItem = groupItem
                 } else {
@@ -461,7 +463,9 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                         .sink { isVisible in
                             self.portalItemSelected?(portalItemModel, isVisible)
                         }.store(in: &itemSubscriptions)
-                    portalItemModels[portalItemModel.portalItem.id.rawValue] = portalItemModel
+                    if let id = portalItemModel.portalItem.id?.rawValue {
+                        portalItemModels[id] = portalItemModel
+                    }
                 }
             }
             searchResultSet = nil
@@ -580,8 +584,9 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
                 }.store(in: &itemSubscriptions)
 
                 // If it doesn't already exist then add the item to the root folder
-                if portalFolderModels[EFPortalItemFolderModel.ARCGIS_ROOT_FOLDER_ID]?.portalItemModels[portalItemModel.portalItem.id.rawValue] == nil {
-                    portalFolderModels[EFPortalItemFolderModel.ARCGIS_ROOT_FOLDER_ID]?.portalItemModels[portalItemModel.portalItem.id.rawValue] = portalItemModel
+                if let id = portalItemModel.portalItem.id?.rawValue,
+                   portalFolderModels[EFPortalItemFolderModel.ARCGIS_ROOT_FOLDER_ID]?.portalItemModels[id] == nil {
+                    portalFolderModels[EFPortalItemFolderModel.ARCGIS_ROOT_FOLDER_ID]?.portalItemModels[id] = portalItemModel
                 }
             }
         } catch {
@@ -591,26 +596,29 @@ class EFPortalItemFolderModel: ObservableObject, Identifiable {
         do {
             // Load all folders
             let folders = try await user.content.folders
-                for folder in folders {
-                    if portalFolderModels[folder.id.rawValue] == nil {
-                        portalFolderModels[folder.id.rawValue] = EFPortalItemFolderModel(folder.title, id: folder.id.rawValue, portalFolder: folder)
-                    }
-                    if let folderItems = await loadFolderContent(user, folder: folder) {
-                        folderItems.forEach { folderItem in
-                            if let portalFolderModel = portalFolderModels[folder.id.rawValue], portalFolderModel.portalItemModels[folderItem.id.rawValue] == nil {
-                                // Create a model for each item
-                                let portalItemModel = EFPortalItemViewModel(portalItem: folderItem)
-                                
-                                // Add sink to the item model state for change-of-state
-                                portalItemModel.$currentState
-                                    .sink { isVisible in
-                                        self.portalItemSelected?(portalItemModel, isVisible)
-                                    }.store(in: &itemSubscriptions)
-                                portalFolderModel.portalItemModels[portalItemModel.portalItem.id.rawValue] = portalItemModel
+            for folder in folders {
+                if portalFolderModels[folder.id.rawValue] == nil {
+                    portalFolderModels[folder.id.rawValue] = EFPortalItemFolderModel(folder.title, id: folder.id.rawValue, portalFolder: folder)
+                }
+                if let folderItems = await loadFolderContent(user, folder: folder) {
+                    folderItems.forEach { folderItem in
+                        if let folderItemID = folderItem.id?.rawValue,
+                           let portalFolderModel = portalFolderModels[folder.id.rawValue], portalFolderModel.portalItemModels[folderItemID] == nil {
+                            // Create a model for each item
+                            let portalItemModel = EFPortalItemViewModel(portalItem: folderItem)
+                            
+                            // Add sink to the item model state for change-of-state
+                            portalItemModel.$currentState
+                                .sink { isVisible in
+                                    self.portalItemSelected?(portalItemModel, isVisible)
+                                }.store(in: &itemSubscriptions)
+                            if let id = portalItemModel.portalItem.id?.rawValue {
+                                portalFolderModel.portalItemModels[id] = portalItemModel
                             }
                         }
                     }
                 }
+            }
         } catch {
             ()
         }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15159C1C29F9BC93008736CA /* ArcGISToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 15159C1B29F9BC93008736CA /* ArcGISToolkit */; };
 		1520FF6A2970B72C00D1A7D4 /* EFBasemapGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520FF692970B72C00D1A7D4 /* EFBasemapGalleryView.swift */; };
 		1520FF6C2977188C00D1A7D4 /* EFBasemapDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520FF6B2977188C00D1A7D4 /* EFBasemapDataModel.swift */; };
 		154F779C2953812500A06195 /* EFArcGISv200ProtoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F779B2953812500A06195 /* EFArcGISv200ProtoApp.swift */; };
@@ -96,7 +97,6 @@
 		159CBF72296F2FB500CF0BEC /* KeychainItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainItem.swift; sourceTree = "<group>"; };
 		159CBF73296F2FB500CF0BEC /* KeychainError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainError.swift; sourceTree = "<group>"; };
 		159CBF74296F2FB500CF0BEC /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
-		15C2FD4A29944DFC00EA2FE1 /* arcgis-maps-sdk-swift-toolkit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "arcgis-maps-sdk-swift-toolkit"; path = "../arcgis-maps-sdk-swift-toolkit"; sourceTree = "<group>"; };
 		15D3804529B00664001996C8 /* EFProtoModelled.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EFProtoModelled.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15D3804729B00664001996C8 /* EFProtoModelledApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EFProtoModelledApp.swift; sourceTree = "<group>"; };
 		15D3804929B00664001996C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -117,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15159C1C29F9BC93008736CA /* ArcGISToolkit in Frameworks */,
 				15C1A2B62995C562003F9666 /* ArcGISToolkit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -179,7 +180,6 @@
 		154F778F2953812500A06195 = {
 			isa = PBXGroup;
 			children = (
-				15B73974296CD30D008558AC /* Packages */,
 				154F779A2953812500A06195 /* EFArcGISv200Proto */,
 				154F77AB2953812600A06195 /* EFArcGISv200ProtoTests */,
 				154F77B52953812600A06195 /* EFArcGISv200ProtoUITests */,
@@ -286,14 +286,6 @@
 			path = EFArcGISGraphics;
 			sourceTree = "<group>";
 		};
-		15B73974296CD30D008558AC /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				15C2FD4A29944DFC00EA2FE1 /* arcgis-maps-sdk-swift-toolkit */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		15D3804629B00664001996C8 /* EFProtoModelled */ = {
 			isa = PBXGroup;
 			children = (
@@ -349,6 +341,7 @@
 			name = EFArcGISv200Proto;
 			packageProductDependencies = (
 				15C1A2B52995C562003F9666 /* ArcGISToolkit */,
+				15159C1B29F9BC93008736CA /* ArcGISToolkit */,
 			);
 			productName = EFArcGISv200Proto;
 			productReference = 154F77982953812500A06195 /* EFArcGISv200Proto.app */;
@@ -490,6 +483,7 @@
 			);
 			mainGroup = 154F778F2953812500A06195;
 			packageReferences = (
+				15159C1A29F9BC93008736CA /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */,
 			);
 			productRefGroup = 154F77992953812500A06195 /* Products */;
 			projectDirPath = "";
@@ -1101,7 +1095,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		15159C1A29F9BC93008736CA /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		15159C1B29F9BC93008736CA /* ArcGISToolkit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 15159C1A29F9BC93008736CA /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */;
+			productName = ArcGISToolkit;
+		};
 		15C1A2B52995C562003F9666 /* ArcGISToolkit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ArcGISToolkit;
