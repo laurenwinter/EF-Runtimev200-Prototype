@@ -25,10 +25,9 @@ struct EFBasemapGalleryView: View {
                 }
             }
             .padding()
-            .frame(width: 300)
             BasemapGallery(items: baseMapDataModel.basemaps, geoModel: baseMapDataModel.geoModel)
         }
-        .frame(height: 400)
+        .frame(width: 600, height: 600)
         .background(Color.white.opacity(0.9))
         .cornerRadius(10)
         .shadow(radius: 10)

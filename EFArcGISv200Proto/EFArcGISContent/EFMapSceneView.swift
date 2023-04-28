@@ -92,12 +92,15 @@ struct EFMapSceneView: View {
                                 // TODO: 200.1 Compass change breaker, fix this
                                     .overlay(alignment: .bottomLeading) {
                                         Button("Compass") {
-                                            print("Button tapped!")
+                                            print("Compass button tapped!")
                                         }
 //                                        MapViewReader { proxy in
 //                                            Compass(rotation: sceneContentViewModel.sceneViewpoint?.rotation, mapViewProxy: proxy)
 //                                                .compassSize(size: 50.0) // This is an option property
 //                                                .padding()
+//                                                .onTapGesture {
+//                                                    print("tap tap")
+//                                                }
 //                                        }
 //                                        Compass(rotation: sceneContentViewModel.sceneViewpoint?.rotation, mapViewProxy: nil)
 //                                            .compassSize(size: 50.0) // This is an option property
@@ -232,8 +235,7 @@ struct EFMapSceneView_Preview: PreviewProvider {
 //    ///   - rotation: The rotation whose value determines the heading of the compass.
 //    ///   - mapViewProxy: The proxy to provide access to map view operations.
 //    init(
-//        rotation: Double?,
-//        mapViewProxy: MapViewProxy?
+//        rotation: Double?
 //    ) {
 //        let heading: Double
 //        if let rotation {
