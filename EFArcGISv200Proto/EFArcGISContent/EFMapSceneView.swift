@@ -66,6 +66,32 @@ struct EFMapSceneView: View {
                                     .onSingleTapGesture { screenPoint, _ in
                                         identifyScreenPoint = screenPoint
                                     }
+                                    
+                                //https://devtopia.esri.com/runtime/swift/pull/4088/files
+//                                    .onDragGesture(
+//                                                        shouldBegin: { screenPoint, _ in
+//                                                        guard let identifyResult = try? await proxy.identify(
+//                                                          on: graphicsOverlay,
+//                                                          screenPoint: screenPoint,
+//                                                          tolerance: 1
+//                                                        ), let identifyGraphic = identifyResult.graphics.first else {
+//                                                            return false // The SDK should handle the drag gesture.
+//                                                        }
+//
+//                                                        // The user clicked on a valid graphic so lets keep track of that graphic.
+//                                                        selectedGraphic = identifyGraphic
+//
+//                                                        return true // We will handle the drag gesture.
+//                                                    }, onChanged: { _, scenePoint in
+//
+//                                                        // Change location of the selected graphic to the new drag location.
+//                                                        selectedGraphic.geometry = scenePoint
+//                                                    }, onEnded: { _, _ in
+//                                                        selectedGraphic = nil
+//                                                    }, onCancelled: {
+//                                                        selectedGraphic = nil
+//                                                    })
+                                
                                     .task(id: identifyScreenPoint) {
                                         guard let identifyScreenPoint = identifyScreenPoint,
                                               let identifyResult = await Result(awaiting: {
