@@ -37,6 +37,8 @@ struct EFMapSceneView: View {
     
     /// The point on the screen the user tapped on to identify a feature.
     @State private var identifyScreenPoint: CGPoint?
+    
+    @State private var dragActive = false
             
     init() {
         // The default app initializer
@@ -79,33 +81,58 @@ struct EFMapSceneView: View {
                                         self.identifyScreenPoint = nil
                                         if let firstGraphic = try? identifyResult.get().first?.graphics.first {
                                             print("xxx identifyResult: \(String(describing: firstGraphic.symbol))")
+                                            if dragActive {
+                                                // Dragging the touched graphic
+                                                
+                                            }
                                         }
                                     }
                                 // End of tap and identify test code ======================
+                                
+                                // Gesture handling test Graphic interaction
+                                    .gesture(
+                                        DragGesture()
+                                            .onChanged { point in
+                                                
+                                                guard let mapPoint = sceneProxy.baseSurfaceLocation(fromScreenPoint: point.location) else {
+                                                    print("Dragged outside the visible scene area")
+                                                    return
+                                                }
+                                                // Note, mapPoint == nil when dragging outside the visible SceneView View area
+                                                
+                                                // The initial drag change is when to test for touching a Graphic
+                                                if !dragActive {
+                                                    dragActive = true
+                                                    identifyScreenPoint = point.location
+                                                    print("ZZZ Drag started: screenPoint: \(point.location), mapPoint: \(mapPoint.x), \(mapPoint.y)")
+                                                    //sceneProxy.identify(on: GraphicsOverlay, screenPoint: <#T##CGPoint#>, tolerance: <#T##Double#>)
+                                                } else {
+                                                    print("ZZZ Drag in progress: screenPoint: \(point.location), mapPoint: \(mapPoint.x), \(mapPoint.y)")
+                                                }
+                                            }
+                                            .onEnded { _ in
+                                                print("Drag Ended")
+                                                dragActive = false
+                                            }
+                                    )
                                 
                                 // Scene view properties
                                     .edgesIgnoringSafeArea(.top)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                                     .background(Color.black.opacity(0.9).gradient)
+                                
 
                                 // Overlay for the Compass view
                                 // TODO: 200.1 Compass change breaker, fix this
-                                    .overlay(alignment: .bottomLeading) {
-                                        Button("Compass") {
-                                            print("Compass button tapped!")
-                                        }
-//                                        MapViewReader { proxy in
-//                                            Compass(rotation: sceneContentViewModel.sceneViewpoint?.rotation, mapViewProxy: proxy)
-//                                                .compassSize(size: 50.0) // This is an option property
-//                                                .padding()
-//                                                .onTapGesture {
-//                                                    print("tap tap")
-//                                                }
-//                                        }
-//                                        Compass(rotation: sceneContentViewModel.sceneViewpoint?.rotation, mapViewProxy: nil)
-//                                            .compassSize(size: 50.0) // This is an option property
-//                                            .padding()
-                                    }
+//                                    .overlay(alignment: .bottomLeading) {
+//                                        Compass(rotation: $sceneContentViewModel.sceneViewpoint?.rotation, action: {
+//                                            //mapViewModel.rotateMapToNorthFacing(sceneViewProxy: sceneViewProxy)
+//                                            print("Compass rotate to North")
+//                                        })
+//                                        .autoHideDisabled(true)
+//                                        .compassSize(size: 50.0)
+//                                        .padding()
+//                                    }
                                 
                                 // Toolbar for the top right tools
                                     .toolbar {

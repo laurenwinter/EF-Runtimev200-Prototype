@@ -257,8 +257,8 @@ public final class EFSceneContentViewModel: ObservableObject {
         guard let point = point, let symbol = createDroppedPinSymbol() else {
             return
         }
-        
-        dropPinGraphicsOverlay.addGraphic(Graphic(geometry: point, attributes: [:], symbol: symbol))
+        let graphic = Graphic(geometry: point, attributes: [:], symbol: symbol)
+        dropPinGraphicsOverlay.addGraphic(graphic)
     }
 
     private func createDroppedPinSymbol() -> PictureMarkerSymbol? {
